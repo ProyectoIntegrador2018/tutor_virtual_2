@@ -1,0 +1,12 @@
+{
+  "name": "tutor_virtual_2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ProyectoIntegrador2018/tutor_virtual_2.git",
+  "author": "Arturo Torres <arturotc22@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "services/*"
+  ]
+}
