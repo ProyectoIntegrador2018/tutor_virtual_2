@@ -1,0 +1,2 @@
+Contact: rafael.salazar@tec.mx
+Preferred-Languages: en, es
