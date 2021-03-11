@@ -43,7 +43,7 @@ export const routes: IRoute[] = [
     path: "/example-with-middleware",
     method: "GET",
     middleware: [
-      (req, res, next) => {
+      (_req, _res, next) => {
         console.log("Im a middleware!");
         next();
       },
