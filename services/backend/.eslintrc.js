@@ -11,6 +11,6 @@ module.exports = {
     sourceType: "module",
   },
   rules: {
-    "prefer-default-export": false,
+    "prefer-default-export": "0",
   },
 };
