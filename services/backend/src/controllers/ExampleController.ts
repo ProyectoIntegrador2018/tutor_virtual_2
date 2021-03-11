@@ -55,4 +55,19 @@ export default class ExampleController extends BaseController {
       myOptionalParam: joi.string().optional(),
     });
   }
+
+  /**
+   * You can have multiple Action methods on a single controller. But you should
+   * group methods by piece of functionality.
+   */
+  private myOtherAction() {
+    this.ok({ success: true, data: { myNumber: 1 } });
+  }
+
+  /**
+   * Specify an empty joi object when no params should be used.
+   */
+  private myOtherActionParams() {
+    return joi.object({});
+  }
 }
