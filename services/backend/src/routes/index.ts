@@ -7,10 +7,11 @@ import { IRoute } from "../lib/IRoute";
 
 // ================== import all the routes here =========================
 import { routes as exampleRoutes } from "./example";
+import { routes as user } from "./user";
 
 // =======================================================================
 
-const routes: IRoute[] = [...exampleRoutes];
+const routes: IRoute[] = [...exampleRoutes, ...user];
 const router = Router();
 routes.forEach((route) => {
   route.buildRoute(router);
