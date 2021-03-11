@@ -1,5 +1,18 @@
 /**
- * Export every router from this file for easier access to routers.
+ * Add the routes array here and add them to the main routes array.
  */
 
-export { router as exampleRouter } from "./example";
+import { Router } from "express";
+import { IRoute } from "../lib/IRoute";
+
+// ================== import all the routes here =========================
+import { routes as exampleRoutes } from "./example";
+
+// =======================================================================
+
+const routes: IRoute[] = [...exampleRoutes];
+const router = Router();
+routes.forEach((route) => {
+  route.buildRoute(router);
+});
+export { router };
