@@ -11,12 +11,4 @@ export const routes: IRoute[] = [
       controller: SessionsController,
     },
   }),
-  new Route({
-    path: "/me",
-    method: "GET",
-    withController: {
-      action: "me",
-      controller: SessionsController,
-    },
-  }),
 ];

@@ -19,15 +19,6 @@ export default class SessionsController extends BaseController {
     this.userService = Container.get(UserService);
   }
 
-  async me() {
-    const user = await this.cv.getUser();
-    this.ok({ user });
-  }
-
-  private meParams() {
-    return joi.object({});
-  }
-
   private async login() {
     const params = this.getParams();
     const user = await this.userService.findOne(
