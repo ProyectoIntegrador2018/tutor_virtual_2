@@ -27,6 +27,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ default: false })
+  hasAccountEnabled: boolean;
+
   @OneToOne(() => Role)
   @JoinColumn()
   role: Role;

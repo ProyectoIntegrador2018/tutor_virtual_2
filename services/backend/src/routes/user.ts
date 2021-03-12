@@ -11,4 +11,12 @@ export const routes: IRoute[] = [
       controller: UserController,
     },
   }),
+  new Route({
+    path: "/users",
+    method: "POST",
+    withController: {
+      action: "create",
+      controller: UserController,
+    },
+  }),
 ];

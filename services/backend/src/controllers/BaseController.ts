@@ -50,7 +50,11 @@ export default abstract class BaseController {
       let method = requestHandlerMethod.bind(this);
       await method();
     } catch (err) {
-      logger.error(`An error ocurred while handling the request`);
+      logger.error(
+        `An error ocurred while handling the request in <${
+          (this as any).constructor.name
+        }:${this.action}>!`
+      );
       logger.error(err);
       if (!this.hasSentResponse) {
         this.serverError();
