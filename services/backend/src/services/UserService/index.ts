@@ -1,6 +1,6 @@
 import { Service } from "typedi";
 import * as argon2 from "argon2";
-import { Repository } from "typeorm";
+import { Repository, FindOneOptions, FindConditions } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { ICreateArgs } from "./ICreateArgs";
 import { User } from "../../entities/UserEntity";
@@ -23,6 +23,10 @@ export class UserService {
     user.role = args.role;
     const savedUser = await this.userRepository.save(user);
     return savedUser;
+  }
+
+  public findOne(conds?: FindConditions<User>, opts?: FindOneOptions<User>) {
+    return this.userRepository.findOne(conds, opts);
   }
 
   public findAll() {

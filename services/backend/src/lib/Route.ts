@@ -3,6 +3,7 @@ import BaseController, {
   THttpMethod,
   IArgs,
 } from "../controllers/BaseController";
+import { CurrentViewer } from "../lib/CurrentViewer";
 import { IRoute } from "./IRoute";
 import { logger } from "../utils/logger";
 
@@ -125,7 +126,8 @@ export class Route<Controller extends BaseController> implements IRoute {
     const action = this.action;
     const controller = this.controller;
     const handler = async (req: Request, res: Response) => {
-      const instance = new controller({ req, res, action: action });
+      const cv = CurrentViewer.buildFromBearerToken(req);
+      const instance = new controller({ req, res, action, currentViewer: cv });
       await instance.handleRequest();
     };
     return handler;

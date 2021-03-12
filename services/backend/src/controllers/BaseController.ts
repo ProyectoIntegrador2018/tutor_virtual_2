@@ -1,5 +1,6 @@
 import express from "express";
 import Joi from "joi";
+import { ICurrentViewer } from "../lib/ICurrentViewer";
 import { logger } from "../utils/logger";
 
 export type THttpMethod = "GET" | "POST" | "PUT" | "DELETE";
@@ -12,6 +13,7 @@ export interface IArgs {
    * This action must match to one of the methods of the controller.
    */
   action: string;
+  currentViewer: ICurrentViewer;
 }
 
 /**
@@ -22,11 +24,13 @@ export default abstract class BaseController {
   protected readonly req: express.Request;
   protected readonly res: express.Response;
   protected readonly action: string;
+  protected readonly cv: ICurrentViewer;
   private hasSentResponse: boolean;
-  constructor({ req, res, action }: IArgs) {
+  constructor({ req, res, action, currentViewer }: IArgs) {
     this.req = req;
     this.res = res;
     this.action = action;
+    this.cv = currentViewer;
     this.hasSentResponse = false;
   }
 
@@ -108,6 +112,10 @@ export default abstract class BaseController {
    */
   protected badRequest(msg: string = "Bad request") {
     this.sendResponse(401, {}, msg);
+  }
+
+  protected forbidden(msg: string = "Forbidden") {
+    this.sendResponse(403, {}, msg);
   }
 
   /**
