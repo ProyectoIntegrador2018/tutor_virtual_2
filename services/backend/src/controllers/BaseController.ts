@@ -114,6 +114,10 @@ export default abstract class BaseController {
     this.sendResponse(401, {}, msg);
   }
 
+  /**
+   * Sends a HTTP 403 Forbidden with an empty body.
+   * @param msg Status message in the response
+   */
   protected forbidden(msg: string = "Forbidden") {
     this.sendResponse(403, {}, msg);
   }
