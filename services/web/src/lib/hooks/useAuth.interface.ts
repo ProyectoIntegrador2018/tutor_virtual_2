@@ -18,7 +18,6 @@ export type SignUpArgs = {
     firstName: string;
     maternalName: string;
     confirmPassword: string;
-    // cambiar a un enum
     roleName: UserRoleName;
   };
   url: string;
