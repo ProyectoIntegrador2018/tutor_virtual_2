@@ -1,5 +1,6 @@
 import { User } from "@types/user";
 import { ReactNode } from "react";
+import { UserRoleName } from "@types/user";
 
 export type ProvideProps = {
   children: ReactNode;
@@ -18,7 +19,7 @@ export type SignUpArgs = {
     maternalName: string;
     confirmPassword: string;
     // cambiar a un enum
-    roleName: string;
+    roleName: UserRoleName;
   };
   url: string;
 };
