@@ -1,4 +1,5 @@
 import ExampleController from "../controllers/ExampleController";
+import { CurrentViewer } from "../lib/CurrentViewer";
 import { IRoute } from "../lib/IRoute";
 import { Route } from "../lib/Route";
 
@@ -30,10 +31,12 @@ export const routes: IRoute[] = [
     path: "/example-custom-callback",
     method: "GET",
     withCustomCallback: async (req, res) => {
+      const currentViewer = CurrentViewer.buildFromBearerToken(req);
       const controller = new ExampleController({
         req,
         res,
         action: "myOtherAction",
+        currentViewer,
       });
       await controller.handleRequest();
     },

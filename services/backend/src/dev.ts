@@ -5,7 +5,7 @@ main()
   .then((app) => {
     const port = process.env.PORT || 8080;
     app.listen(port, () => {
-      logger.info(`Listening for http connections on port ${port}`);
+      logger.info(`Server is now ready for http connections on port ${port}`);
     });
   })
   .catch((err) => {

@@ -1,11 +1,12 @@
 import dotenv from "dotenv";
+dotenv.config();
 import "reflect-metadata";
 import express from "express";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import startTypeorm from "./modules/Typeorm";
 import { router } from "./routes";
 import { logger } from "./utils/logger";
-
-dotenv.config();
 
 export async function main() {
   try {
@@ -15,6 +16,8 @@ export async function main() {
   }
 
   const app = express();
+  app.use(cookieParser());
+  app.use(bodyParser.json());
 
   // ========== ROUTES ===========
   app.use("/v1", router);

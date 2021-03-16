@@ -1,9 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+} from "typeorm";
+import { Role } from "./RoleEntity";
 
-@Entity()
+@Entity({ name: "users" })
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column()
   firstName: string;
@@ -20,5 +27,10 @@ export class User {
   @Column()
   password: string;
 
-  // TODO: Add Role Relation
+  @Column({ default: false })
+  hasAccountEnabled: boolean;
+
+  @OneToOne(() => Role)
+  @JoinColumn()
+  role: Role;
 }
