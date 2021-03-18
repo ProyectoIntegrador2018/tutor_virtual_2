@@ -1,0 +1,21 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "services/web"
+    },
+    {
+      "path": "services/backend"
+    },
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/dist",
+    "**/build",
+    "**/test",
+    "**/spec",
+    "**/scripts",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}

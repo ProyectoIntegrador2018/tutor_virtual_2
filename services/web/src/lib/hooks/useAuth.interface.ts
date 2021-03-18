@@ -1,5 +1,5 @@
-import { User } from "@types/user";
-import { UserRoleName } from "@types/role";
+import { User } from "lib/types/user";
+import { UserRoleName } from "lib/types/role";
 import { ReactNode } from "react";
 
 export type ProvideProps = {

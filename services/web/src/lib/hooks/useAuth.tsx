@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useRouter } from "next/dist/client/router";
+import { useRouter } from "next/router";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   LoginArgs,
