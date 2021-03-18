@@ -1,6 +1,6 @@
 import { User } from "@types/user";
+import { UserRoleName } from "@types/role";
 import { ReactNode } from "react";
-import { UserRoleName } from "@types/user";
 
 export type ProvideProps = {
   children: ReactNode;
