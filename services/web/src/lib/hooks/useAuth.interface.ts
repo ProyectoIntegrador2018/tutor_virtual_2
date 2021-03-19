@@ -9,6 +9,8 @@ export type ProvideProps = {
 export type LoginArgs = {
   data: { email: string; password: string };
   url: string;
+  onSuccess: (data: any) => void;
+  onError: (err: any) => void;
 };
 
 export type SignUpArgs = {

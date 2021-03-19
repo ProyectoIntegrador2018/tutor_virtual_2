@@ -20,14 +20,18 @@ function useProvideAuth() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const login = async ({ data, url }: LoginArgs) => {
-    const response = await axios.post(
-      `${backend}/v1/login`,
-      data,
-      axiosOptions
-    );
-    setUser(response.data.user);
-    router.push(url);
+  const login = async ({ data, url, onSuccess, onError }: LoginArgs) => {
+    const loginUrl = `${backend}/v1/login`;
+    axios
+      .post(loginUrl, data, axiosOptions)
+      .then((res) => {
+        onSuccess(res.data);
+        setUser(res.data.user);
+        router.push(url);
+      })
+      .catch((err) => {
+        onError(err);
+      });
   };
 
   const signup = async ({ data, url }: SignUpArgs) => {
