@@ -1,6 +1,6 @@
-import { User } from "@types/user";
+import { User } from "lib/types/user";
+import { UserRoleName } from "lib/types/role";
 import { ReactNode } from "react";
-import { UserRoleName } from "@types/user";
 
 export type ProvideProps = {
   children: ReactNode;
@@ -9,6 +9,8 @@ export type ProvideProps = {
 export type LoginArgs = {
   data: { email: string; password: string };
   url: string;
+  onSuccess: (data: any) => void;
+  onError: (err: any) => void;
 };
 
 export type SignUpArgs = {

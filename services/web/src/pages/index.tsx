@@ -1,7 +1,11 @@
-export default function Home() {
+import React from "react";
+import { PublicLayout } from "components/layouts/PublicLayout";
+import { LoginPageContent } from "components/contents/LoginPageContent";
+
+export default function LoginPage() {
   return (
-    <div>
-      <h1>TutorVirtual</h1>
-    </div>
+    <PublicLayout>
+      <LoginPageContent />
+    </PublicLayout>
   );
 }

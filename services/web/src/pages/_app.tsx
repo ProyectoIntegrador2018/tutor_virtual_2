@@ -1,3 +1,4 @@
+import React from "react";
 import { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ProvideAuth } from "../lib/hooks/useAuth";
