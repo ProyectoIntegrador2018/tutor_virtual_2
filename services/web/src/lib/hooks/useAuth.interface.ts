@@ -18,11 +18,14 @@ export type SignUpArgs = {
     email: string;
     password: string;
     firstName: string;
+    paternalName: string;
     maternalName: string;
     confirmPassword: string;
     roleName: UserRoleName;
   };
   url: string;
+  onSuccess: (data: any) => void;
+  onError: (err: any) => void;
 };
 
 export type AuthContext = {

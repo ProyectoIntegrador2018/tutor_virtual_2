@@ -34,7 +34,21 @@ function useProvideAuth() {
       });
   };
 
-  const signup = async ({ data, url }: SignUpArgs) => {
+  const signup = async ({ data, url, onSuccess, onError }: SignUpArgs) => {
+    const signupUrl = `${backend}/v1/users`;
+    axios
+      .post(signupUrl, data, axiosOptions)
+      .then((res) => {
+        onSuccess(res.data);
+        setUser(res.data.user);
+        router.push(url);
+      })
+      .catch((err) => {
+        onError(err);
+      });
+  };
+/*
+  const signup = async ({ data, url, onSuccess, onError }: SignUpArgs) => {
     const response = await axios.post(
       `${backend}/v1/users`,
       data,
@@ -43,6 +57,7 @@ function useProvideAuth() {
     setUser(response.data.user);
     router.push(url);
   };
+  */
 
   const signout = () => {
     /* Implement signout in backend */
