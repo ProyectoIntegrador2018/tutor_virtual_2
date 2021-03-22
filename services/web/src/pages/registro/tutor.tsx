@@ -2,15 +2,12 @@ import React from "react";
 import { PublicLayout } from "components/layouts/PublicLayout";
 import { RegisterPageContent } from "components/contents/RegisterPageContent";
 import { StringSchema } from "yup";
-
-interface roleNameProps {
-  roleName: string,
-}
+import { UserRoleName } from "lib/types/role";
 
 export default function RegisterPage() {
   return (
     <PublicLayout>
-      <RegisterPageContent roleName="TUTOR"/>
+      <RegisterPageContent roleName={UserRoleName.TUTOR}/>
     </PublicLayout>
   );
 }

@@ -2,8 +2,13 @@ import React from "react";
 import { Box, Heading, Flex, Text, useToast, propNames } from "@chakra-ui/react";
 import { useAuth } from "lib/hooks/useAuth";
 import { RegisterForm } from "./RegisterForm/RegisterForm";
+import { UserRoleName } from "lib/types/role";
 
-export function RegisterPageContent(props) {
+interface IProps {
+  roleName: UserRoleName;
+ }
+
+export function RegisterPageContent(props: IProps) {
   const toast = useToast();
   const { signup } = useAuth();
 
