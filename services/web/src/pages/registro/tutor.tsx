@@ -10,7 +10,7 @@ interface roleNameProps {
 export default function RegisterPage() {
   return (
     <PublicLayout>
-      <RegisterPageContent roleName="TUTOR"/>
+      <RegisterPageContent roleName={UserRoleName.TUTOR}/>
     </PublicLayout>
   );
 }
