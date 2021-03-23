@@ -11,4 +11,12 @@ export const routes: IRoute[] = [
       controller: MeController,
     },
   }),
+  new Route({
+    path: "/me/role",
+    method: "GET",
+    withController: {
+      action: "role",
+      controller: MeController,
+    },
+  }),
 ];
