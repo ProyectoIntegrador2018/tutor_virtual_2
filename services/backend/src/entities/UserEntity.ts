@@ -30,7 +30,7 @@ export class User {
   @Column({ default: false })
   hasAccountEnabled: boolean;
 
-  @OneToOne(() => Role)
+  @OneToOne(() => Role, (role) => role.user)
   @JoinColumn()
   role: Role;
 }

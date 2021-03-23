@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from "typeorm";
+import { User } from "./UserEntity";
 
 export enum UserRoleName {
   SUPERADMIN = "SUPERADMIN",
@@ -14,4 +15,7 @@ export class Role {
 
   @Column({ unique: true, enum: UserRoleName, type: "enum" })
   name: UserRoleName;
+
+  @OneToOne(() => User, (user) => user.role)
+  user: User;
 }
