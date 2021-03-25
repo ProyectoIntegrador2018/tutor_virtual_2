@@ -6,9 +6,9 @@ interface IProps {
   children: React.ReactNode;
 }
 
-export function TutorLayout({ children }: IProps) {
+export function PrivateLayout({ children }: IProps) {
   return (
-    <Flex backgroundColor="blackAlpha.50" h="100vh">
+    <Flex backgroundColor="blackAlpha.50" h="100vh" flexDir="row">
       <Navbar />
       <Box
         backgroundColor="white"
