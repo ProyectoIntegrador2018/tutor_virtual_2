@@ -6,24 +6,37 @@ interface IRoute {
   title: string;
   route: string;
   icon: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
-  auth: UserRoleName[];
 }
 
-const routes: IRoute[] = [
-  {
-    title: "Inicio",
-    route: "/dashboard",
-    icon: <FiHome />,
-    auth: [UserRoleName.TUTOR],
-  },
-];
-
-const authRoutes = [];
-
-routes.map((route) => {
-  authRoutes[route.route] = route.auth;
-});
-
-export { authRoutes };
+const routes: { [key in UserRoleName]?: IRoute[] } = {
+  [UserRoleName.SUPERVISOR]: [
+    {
+      title: "Inicio",
+      route: "/dashboard",
+      icon: <FiHome />,
+    },
+  ],
+  [UserRoleName.ALLY]: [
+    {
+      title: "Inicio",
+      route: "/dashboard",
+      icon: <FiHome />,
+    },
+  ],
+  [UserRoleName.SUPERADMIN]: [
+    {
+      title: "Inicio",
+      route: "/dashboard",
+      icon: <FiHome />,
+    },
+  ],
+  [UserRoleName.TUTOR]: [
+    {
+      title: "Inicio",
+      route: "/dashboard",
+      icon: <FiHome />,
+    },
+  ],
+};
 
 export default routes;
