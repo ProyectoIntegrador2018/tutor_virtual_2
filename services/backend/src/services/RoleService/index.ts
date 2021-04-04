@@ -1,3 +1,4 @@
+import { User } from "src/entities/UserEntity";
 import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
@@ -19,5 +20,13 @@ export class RoleService {
       role = await this.roleRepository.save(roleData);
     }
     return role;
+  }
+
+  public async findByUser(user: User): Promise<Role> {
+    return await this.roleRepository
+      .createQueryBuilder("role")
+      .leftJoinAndSelect("role.user", "user")
+      .where("user.id = :id", { id: user.id })
+      .getOneOrFail();
   }
 }
