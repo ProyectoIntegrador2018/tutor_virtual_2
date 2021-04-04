@@ -7,7 +7,7 @@ import Image from "next/image";
 import React from "react";
 
 export default function Navbar() {
-  const { user, loading } = useAuth();
+  const { user, loading, role } = useAuth();
 
   return (
     <NavbarLayout>
@@ -22,11 +22,13 @@ export default function Navbar() {
               />
             </Box>
           </Center>
-          <Stack spacing={2} px={2}>
-            {routes.map((route) => (
-              <NavbarItem {...route} key={route.route} />
-            ))}
-          </Stack>
+          {!loading && (
+            <Stack spacing={2} px={2}>
+              {routes[role].map((route) => (
+                <NavbarItem {...route} key={route.route} />
+              ))}
+            </Stack>
+          )}
         </Flex>
         {!loading && (
           <Flex p={5} color="gray.400">
