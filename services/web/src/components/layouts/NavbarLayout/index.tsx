@@ -21,7 +21,7 @@ export default function NavbarLayout({ children }: IProps) {
 
   if (isMoreThan728) {
     return (
-      <Flex key="no" w="100%" maxW="250px" h="100vh" flexDir="column">
+      <Flex w="100%" maxW="250px" h="100vh" flexDir="column">
         {children}
       </Flex>
     );
