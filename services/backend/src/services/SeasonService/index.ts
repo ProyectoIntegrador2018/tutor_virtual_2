@@ -14,7 +14,7 @@ export class SeasonService {
   public async create(args: ICreateArgs): Promise<Season> {
     const season = new Season();
     season.starting = args.starting;
-    season.ending = season.ending;
+    season.ending = args.ending;
     return await this.seasonRepository.save(season);
   }
 }
