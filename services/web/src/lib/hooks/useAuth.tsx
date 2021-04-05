@@ -1,4 +1,5 @@
 import axios from "axios";
+import { backend } from "lib/constants/api";
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
@@ -10,7 +11,6 @@ import {
 
 const authContext = createContext<AuthContext>(null);
 
-const backend = process.env.NEXT_PUBLIC_BACKEND_ORIGIN;
 const axiosOptions = {
   withCredentials: true,
 };
