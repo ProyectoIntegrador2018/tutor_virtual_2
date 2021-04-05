@@ -17,16 +17,20 @@ const axiosOptions = {
 
 function useProvideAuth() {
   const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   const login = async ({ data, url, onSuccess, onError }: LoginArgs) => {
+    setLoading(true);
     const loginUrl = `${backend}/v1/login`;
     axios
       .post(loginUrl, data, axiosOptions)
       .then((res) => {
         onSuccess(res.data);
         setUser(res.data.user);
+        setRole(res.data.user.role.name);
+        setLoading(false);
         router.push(url);
       })
       .catch((err) => {
@@ -40,14 +44,13 @@ function useProvideAuth() {
       .post(signupUrl, data, axiosOptions)
       .then((res) => {
         onSuccess(res.data);
-        setUser(res.data.user);
         router.push(url);
       })
       .catch((err) => {
         onError(err);
       });
   };
-/*
+  /*
   const signup = async ({ data, url, onSuccess, onError }: SignUpArgs) => {
     const response = await axios.post(
       `${backend}/v1/users`,
@@ -65,14 +68,25 @@ function useProvideAuth() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`${backend}/v1/me`, axiosOptions).then((result) => {
-      setUser(result.data.user);
-      setLoading(false);
-    });
+    Promise.all([
+      axios.get(`${backend}/v1/me`, axiosOptions),
+      axios.get(`${backend}/v1/me/role`, axiosOptions),
+    ])
+      .then((result) => {
+        setUser(result[0].data.user);
+        setRole(result[1].data.role.name);
+        setLoading(false);
+      })
+      .catch(() => {
+        /*
+          No Auth, no hacer nada
+        */
+      });
   }, []);
 
   return {
     user,
+    role,
     signup,
     signout,
     loading,

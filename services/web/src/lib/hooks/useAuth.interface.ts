@@ -30,6 +30,7 @@ export type SignUpArgs = {
 
 export type AuthContext = {
   user: User | null;
+  role: UserRoleName | null;
   login: (args: LoginArgs) => void;
   signup: (args: SignUpArgs) => void;
   signout: () => void;
