@@ -1,9 +1,9 @@
 import {
   Column,
   Entity,
-  PrimaryGeneratedColumn,
-  OneToOne,
   JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { Role } from "./RoleEntity";
 
@@ -30,7 +30,6 @@ export class User {
   @Column({ default: false })
   hasAccountEnabled: boolean;
 
-  @OneToOne(() => Role, (role) => role.user)
-  @JoinColumn()
+  @ManyToOne(() => Role, (role) => role.users)
   role: Role;
 }

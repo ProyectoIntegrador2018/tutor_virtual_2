@@ -25,8 +25,8 @@ export class RoleService {
   public async findByUser(user: User): Promise<Role> {
     return await this.roleRepository
       .createQueryBuilder("role")
-      .leftJoinAndSelect("role.user", "user")
-      .where("user.id = :id", { id: user.id })
+      .leftJoinAndSelect("role.users", "users")
+      .where("users.id = :id", { id: user.id })
       .getOneOrFail();
   }
 }

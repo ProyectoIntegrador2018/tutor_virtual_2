@@ -1,6 +1,7 @@
 import React from "react";
 import requirePageAuth from "lib/auth/requirePageAuth";
 import { UserRoleName } from "lib/types/role";
+import { PrivateLayout } from "components/layouts/PrivateLayout";
 
 export const getServerSideProps = requirePageAuth({
   roles: [
@@ -13,5 +14,5 @@ export const getServerSideProps = requirePageAuth({
 });
 
 export default function DashboardPage() {
-  return <div>Estoy Auth!</div>;
+  return <PrivateLayout>Estoy Auth!</PrivateLayout>;
 }
