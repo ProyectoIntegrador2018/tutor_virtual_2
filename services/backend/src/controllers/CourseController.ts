@@ -2,7 +2,7 @@ import joi from "joi";
 import BaseController, { IArgs } from "./BaseController";
 import { Service } from "typedi";
 import { Container } from "typeorm-typedi-extensions";
-import { CourseService } from "../services/CourseService";
+import { CourseService } from "../services/CourseService"
 import { logger } from "../utils/logger";
 
 @Service()
