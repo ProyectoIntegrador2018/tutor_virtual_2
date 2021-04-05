@@ -6,6 +6,7 @@ import { ProvideAuth } from "../lib/hooks/useAuth";
 import { theme } from "../theme";
 
 import "../styles/globals.css";
+import "react-datepicker/dist/react-datepicker.css";
 import "../components/elements/DatePicker/date-picker.css";
 
 const queryClient = new QueryClient();
