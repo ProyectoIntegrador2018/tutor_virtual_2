@@ -26,7 +26,7 @@ export default class SeasonController extends BaseController {
 
   private createParams() {
     return joi.object({
-      starting: joi.date().iso().required(),
+      starting: joi.date().iso().less(joi.ref("ending")).required(),
       ending: joi.date().iso().required(),
     });
   }
