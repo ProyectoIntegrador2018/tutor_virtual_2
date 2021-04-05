@@ -10,6 +10,7 @@ import { routes as exampleRoutes } from "./example";
 import { routes as user } from "./user";
 import { routes as sessionRoutes } from "./session";
 import { routes as meRoutes } from "./me";
+import { routes as seasonRoutes } from "./season";
 
 // =======================================================================
 
@@ -18,6 +19,7 @@ const routes: IRoute[] = [
   ...user,
   ...sessionRoutes,
   ...meRoutes,
+  ...seasonRoutes,
 ];
 const router = Router();
 routes.forEach((route) => {
