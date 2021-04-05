@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./UserEntity";
 
 export enum UserRoleName {
@@ -16,6 +16,6 @@ export class Role {
   @Column({ unique: true, enum: UserRoleName, type: "enum" })
   name: UserRoleName;
 
-  @OneToOne(() => User, (user) => user.role)
-  user: User;
+  @OneToMany(() => User, (user) => user.role)
+  users: User[];
 }
