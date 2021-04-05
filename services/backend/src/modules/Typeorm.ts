@@ -1,5 +1,6 @@
 import { User } from "../entities/UserEntity";
 import { Role } from "../entities/RoleEntity";
+import { Course } from "../entities/CourseEntity";
 import { Connection, createConnection, useContainer } from "typeorm";
 import { Container } from "typeorm-typedi-extensions";
 
@@ -19,7 +20,7 @@ const startTypeorm = (): Promise<Connection> => {
     password: "",
     database: "tutorvirtual",
     synchronize: true,
-    entities: [User, Role],
+    entities: [User, Role, Course],
   });
 };
 
