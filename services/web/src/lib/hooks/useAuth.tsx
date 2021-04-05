@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   LoginArgs,
   SignUpArgs,
+  CreateCourseArgs,
   ProvideProps,
   AuthContext,
 } from "./useAuth.interface";
@@ -47,6 +48,19 @@ function useProvideAuth() {
         onError(err);
       });
   };
+
+  const createCourse = async ({ data, url, onSuccess, onError }: CreateCourseArgs) => {
+    const createCourseUrl = `${backend}/v1/courses`;
+    axios
+      .post(createCourseUrl, data, axiosOptions)
+      .then((res) => {
+        onSuccess(res.data);
+        router.push(url);
+      })
+      .catch((err) => {
+        onError(err);
+      });
+  };
 /*
   const signup = async ({ data, url, onSuccess, onError }: SignUpArgs) => {
     const response = await axios.post(
@@ -73,6 +87,7 @@ function useProvideAuth() {
 
   return {
     user,
+    createCourse,
     signup,
     signout,
     loading,
