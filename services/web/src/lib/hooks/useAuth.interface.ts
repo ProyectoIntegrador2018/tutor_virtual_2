@@ -28,20 +28,6 @@ export type SignUpArgs = {
   onError: (err: any) => void;
 };
 
-export type CreateCourseArgs = {
-  data: {
-    name: string;
-    topic: string;
-    duration: number;
-    recognitionType: string;
-    url: string;
-    seasonID: number;
-  };
-  url: string;
-  onSuccess: (data: any) => void;
-  onError: (err: any) => void;
-}
-
 export type AuthContext = {
   user: User | null;
   role: UserRoleName | null;

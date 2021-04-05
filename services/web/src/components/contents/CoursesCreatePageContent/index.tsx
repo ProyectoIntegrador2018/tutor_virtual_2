@@ -1,11 +1,16 @@
 import { Box, Heading, Flex, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/react";
-import { useAuth } from "lib/hooks/useAuth";
 import { CourseForm } from "./CourseForm"
+import axios from "axios";
+import { backend } from "lib/constants/api";
+import { Course } from "lib/types/course";
+import { useMutation } from "react-query";
 
 export function CoursesCreatePageContent() {
   const toast = useToast();
-  const { createCourse } = useAuth();
+  const { mutate } = useMutation<Course, Error, Course>((newCourse) =>
+    axios.post(`${backend}/v1/courses`, newCourse, { withCredentials: true })
+  );
   return (
     <Box>
       <Heading textAlign="center" mt={6}>
@@ -26,29 +31,34 @@ export function CoursesCreatePageContent() {
         </Text>
         <CourseForm
           initialValues={{ name: "", topic: "", duration: "", recognitionType: "", url: "", seasonID: "" }}
-          onSubmit={(vals, actions) => {
-            createCourse({
-              data: {
-                name: vals.name,
-                topic: vals.topic,
-                duration: vals.duration,
-                recognitionType: vals.recognitionType,
-                url: vals.url,
-                seasonID: vals.seasonID
+          onSubmit={({ name, topic, duration, recognitionType, url, seasonID }, actions) => {
+            mutate(
+              {
+                name,
+                topic,
+                duration,
+                recognitionType,
+                url,
+                seasonID
               },
-              url: "/dashboard",
-              onSuccess: () => {
-                actions.setSubmitting(false);
-              },
-              onError: () => {
-                toast({
-                  status: "error",
-                  title: "No pudimos registrar el curso",
-                  description: "Vuelva a intentar más tarde",
-                });
-                actions.setSubmitting(false);
-              },
-            });
+              {
+                onSuccess: () => {
+                  actions.setSubmitting(false);
+                  toast({
+                    status: "success",
+                    title: "Curso registrado con exito",
+                  });
+                },
+                onError: () => {
+                  toast({
+                    status: "error",
+                    title: "No pudimos registrar el curso",
+                    description: "Vuelva a intentar más tarde",
+                  });
+                  actions.setSubmitting(false);
+                },
+              }
+            );
           }}
         />
       </Flex>
