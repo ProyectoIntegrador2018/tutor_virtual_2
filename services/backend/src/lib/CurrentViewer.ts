@@ -48,7 +48,10 @@ export class CurrentViewer implements ICurrentViewer {
     }
     try {
       this.hasTriedToFetchUser = true;
-      const user = await this.userService.findOne({ id: this.userId });
+      const user = await this.userService.findOne(
+        { id: this.userId },
+        { relations: ["role"] }
+      );
       if (user) {
         this.user = user;
       }
@@ -58,6 +61,15 @@ export class CurrentViewer implements ICurrentViewer {
       logger.error(err);
       return null;
     }
+  }
+
+  public async getRole() {
+    const user = await this.getUser();
+    if (!user) {
+      return null;
+    }
+    const role = user.role.name;
+    return role;
   }
 
   private static publicViewer() {

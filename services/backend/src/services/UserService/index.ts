@@ -1,6 +1,11 @@
 import { Service } from "typedi";
 import * as argon2 from "argon2";
-import { Repository, FindOneOptions, FindConditions } from "typeorm";
+import {
+  Repository,
+  FindOneOptions,
+  FindConditions,
+  FindManyOptions,
+} from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { ICreateArgs } from "./ICreateArgs";
 import { User } from "../../entities/UserEntity";
@@ -29,7 +34,11 @@ export class UserService {
     return this.userRepository.findOne(conds, opts);
   }
 
-  public findAll() {
-    return this.userRepository.find();
+  public findAll(options?: FindManyOptions<User>) {
+    return this.userRepository.find(options);
+  }
+
+  public createQueryBuilder(alias: string) {
+    return this.userRepository.createQueryBuilder(alias);
   }
 }
