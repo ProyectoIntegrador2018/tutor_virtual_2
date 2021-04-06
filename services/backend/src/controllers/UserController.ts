@@ -53,11 +53,28 @@ export default class UserController extends BaseController {
   }
 
   private async users() {
-    const result = await this.userService.findAll();
+    const params = this.getParams();
+    let query = this.userService.createQueryBuilder("user");
+    if (params.roleName) {
+      const role = await this.roleService.findOrCreate(params.roleName);
+      query = query.where("user.roleId = :roleId", { roleId: role.id });
+    }
+    const skip = params.page * params.pageSize;
+    query = query.skip(skip);
+    const take = params.pageSize;
+    query = query.take(take);
+    const result = await query.getMany();
     this.ok({ users: result });
   }
 
   private usersParams() {
-    return joi.object({});
+    return joi.object({
+      page: joi.number().min(0).required(),
+      pageSize: joi.number().min(0).max(50).required(),
+      roleName: joi
+        .string()
+        .valid(...Object.keys(UserRoleName))
+        .optional(),
+    });
   }
 }

@@ -4,6 +4,8 @@ import BaseController, {
   IArgs,
 } from "../controllers/BaseController";
 import { CurrentViewer } from "../lib/CurrentViewer";
+import { RouteAuthRolesEnum } from "./RouteAuthRolesEnum";
+import { RequireAuth } from "../middleware/RequireAuth";
 import { IRoute } from "./IRoute";
 import { logger } from "../utils/logger";
 
@@ -41,6 +43,11 @@ interface IRouteArgs<Controller> {
    */
   path: string;
   /**
+   * An array of authentication roles that are allowed to access this route.
+   * Leave empty or undefined to allow everyone to access this route.
+   */
+  requireAuth?: RouteAuthRolesEnum[];
+  /**
    * Specify any additional middleware that should be executed
    * before the main request handler.
    */
@@ -61,6 +68,7 @@ export class Route<Controller extends BaseController> implements IRoute {
   private httpMethod: THttpMethod;
   private customCallback?: TRequestHandler;
   private middleware: TMiddleware;
+  private allowedAuthRoles: RouteAuthRolesEnum[];
   private path: string;
 
   constructor(args: IRouteArgs<Controller>) {
@@ -75,6 +83,7 @@ export class Route<Controller extends BaseController> implements IRoute {
     if (args.withCustomCallback) {
       this.customCallback = args.withCustomCallback;
     }
+    this.allowedAuthRoles = args.requireAuth || [];
     this.middleware = args.middleware || [];
     this.httpMethod = args.method;
     this.path = args.path;
@@ -85,18 +94,19 @@ export class Route<Controller extends BaseController> implements IRoute {
    */
   public buildRoute(router: Router) {
     logger.info(`Registering ${this.httpMethod} Route<${this.path}>`);
+    const middleware = [RequireAuth(this.allowedAuthRoles), ...this.middleware];
     switch (this.httpMethod) {
       case "GET":
-        router.get(this.path, this.middleware, this.getRequestHandler());
+        router.get(this.path, middleware, this.getRequestHandler());
         break;
       case "POST":
-        router.post(this.path, this.middleware, this.getRequestHandler());
+        router.post(this.path, middleware, this.getRequestHandler());
         break;
       case "DELETE":
-        router.delete(this.path, this.middleware, this.getRequestHandler());
+        router.delete(this.path, middleware, this.getRequestHandler());
         break;
       case "PUT":
-        router.put(this.path, this.middleware, this.getRequestHandler());
+        router.put(this.path, middleware, this.getRequestHandler());
         break;
     }
   }
