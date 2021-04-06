@@ -1,6 +1,7 @@
 import joi from "joi";
 import { Service } from "typedi";
 import { Container } from "typeorm-typedi-extensions";
+import { User } from "../entities/UserEntity";
 import { UserService } from "../services/UserService";
 import { RoleService } from "../services/RoleService";
 import { UserRoleName } from "../entities/RoleEntity";
@@ -75,6 +76,39 @@ export default class UserController extends BaseController {
         .string()
         .valid(...Object.keys(UserRoleName))
         .optional(),
+    });
+  }
+
+  private async handleSupervisorAccountStatus() {
+    const role = await this.cv.getRole();
+    if (role !== UserRoleName.SUPERADMIN || role === null) {
+      return this.forbidden(
+        "Only superadmins can modify supervisor account status!"
+      );
+    }
+    const supervisorRole = await this.roleService.findOrCreate(
+      UserRoleName.SUPERVISOR
+    );
+    const params = this.getParams();
+    let query = this.userService.createQueryBuilder("user");
+    await query
+      .update(User)
+      .set({
+        hasAccountEnabled: params.enable,
+      })
+      .where("email = :email AND roleId = :roleId", {
+        email: params.email,
+        roleId: supervisorRole.id,
+      })
+      .execute();
+    const updatedUser = await this.userService.findOne({ email: params.email });
+    this.ok({ user: updatedUser });
+  }
+
+  private handleSupervisorAccountStatusParams() {
+    return joi.object({
+      enable: joi.boolean().required(),
+      email: joi.string().email().required(),
     });
   }
 }

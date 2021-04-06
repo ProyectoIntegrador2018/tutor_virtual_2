@@ -21,4 +21,13 @@ export const routes: IRoute[] = [
       controller: UserController,
     },
   }),
+  new Route({
+    path: "/users/supervisor/enable",
+    method: "PUT",
+    requireAuth: [RouteAuthRolesEnum.SUPERADMIN],
+    withController: {
+      action: "handleSupervisorAccountStatus",
+      controller: UserController,
+    },
+  }),
 ];
