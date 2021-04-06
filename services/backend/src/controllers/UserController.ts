@@ -77,6 +77,7 @@ export default class UserController extends BaseController {
         .valid(...Object.keys(UserRoleName))
         .optional(),
     });
+<<<<<<< HEAD
   }
 
   private async handleSupervisorAccountStatus() {
@@ -110,5 +111,7 @@ export default class UserController extends BaseController {
       enable: joi.boolean().required(),
       email: joi.string().email().required(),
     });
+=======
+>>>>>>> ee712ee551da51bb4e62962a99545b4bb2d102cb
   }
 }
