@@ -1,1 +1,1 @@
-backend: cd services/backend && yarn build && yarn start
+backend: cd services/backend && yarn install && yarn build && yarn start
