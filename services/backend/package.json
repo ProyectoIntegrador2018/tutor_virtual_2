@@ -6,7 +6,8 @@
   "scripts": {
     "watch": "tsc -w",
     "build": "tsc",
-    "dev": "nodemon dist/dev.js"
+    "dev": "nodemon dist/dev.js",
+    "start": "node dist/prod.js"
   },
   "dependencies": {
     "argon2": "^0.27.1",
