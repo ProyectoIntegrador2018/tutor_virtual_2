@@ -11,15 +11,11 @@ const startTypeorm = (): Promise<Connection> => {
   */
   useContainer(Container);
 
-  const username = process.env.DB_USERNAME || "postgres";
-  // TODO Change to database url via env
+  const databaseURL = process.env.DATABASE_URL;
+
   return createConnection({
+    url: databaseURL,
     type: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: username,
-    password: "",
-    database: "tutorvirtual",
     synchronize: true,
     entities: [User, Role, Season, Course],
   });
