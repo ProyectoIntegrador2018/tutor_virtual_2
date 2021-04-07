@@ -17,6 +17,7 @@ const startTypeorm = (): Promise<Connection> => {
     url: databaseURL,
     type: "postgres",
     synchronize: true,
+    ssl: process.env.NODE_ENV === "production",
     entities: [User, Role, Season, Course],
   });
 };
