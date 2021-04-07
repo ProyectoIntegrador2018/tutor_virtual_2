@@ -19,6 +19,11 @@ const startTypeorm = (): Promise<Connection> => {
     synchronize: true,
     ssl: process.env.NODE_ENV === "production",
     entities: [User, Role, Season, Course],
+    extra: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
   });
 };
 
