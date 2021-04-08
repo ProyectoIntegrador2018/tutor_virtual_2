@@ -6,6 +6,9 @@
   "author": "Arturo Torres <arturotc22@gmail.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "build": "cd services/backend && yarn install --production=false && yarn build"
+  },
   "workspaces": [
     "services/*"
   ]
