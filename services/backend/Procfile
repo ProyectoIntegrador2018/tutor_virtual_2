@@ -1,1 +1,1 @@
-backend: cd services/backend && yarn install --production=false && yarn build && yarn start
+web: cd services/backend && yarn install --production=false && yarn build && yarn start
