@@ -1,10 +1,9 @@
-import { Box, Heading, Flex, Text } from "@chakra-ui/layout";
-import { useToast } from "@chakra-ui/react";
-import { CourseForm } from "./CourseForm"
+import { Box, Heading, Flex, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { backend } from "lib/constants/api";
 import { Course } from "lib/types/course";
 import { useMutation } from "react-query";
+import { CourseForm } from "./CourseForm";
 
 export function CoursesCreatePageContent() {
   const toast = useToast();
@@ -30,8 +29,18 @@ export function CoursesCreatePageContent() {
           Crear curso
         </Text>
         <CourseForm
-          initialValues={{ name: "", topic: "", duration: "", recognitionType: "", url: "", seasonID: "" }}
-          onSubmit={({ name, topic, duration, recognitionType, url, seasonID }, actions) => {
+          initialValues={{
+            name: "",
+            topic: "",
+            duration: 0,
+            recognitionType: "",
+            url: "",
+            seasonID: 0,
+          }}
+          onSubmit={(
+            { name, topic, duration, recognitionType, url, seasonID },
+            actions
+          ) => {
             mutate(
               {
                 name,
@@ -39,7 +48,7 @@ export function CoursesCreatePageContent() {
                 duration,
                 recognitionType,
                 url,
-                seasonID
+                seasonID,
               },
               {
                 onSuccess: () => {
@@ -63,5 +72,5 @@ export function CoursesCreatePageContent() {
         />
       </Flex>
     </Box>
-	);
+  );
 }
