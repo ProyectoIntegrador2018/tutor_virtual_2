@@ -8,8 +8,20 @@ import cors from "cors";
 import startTypeorm from "./modules/Typeorm";
 import { router } from "./routes";
 import { logger } from "./utils/logger";
+import { __prod__, __dev__, __test__ } from "./constants";
 
 export async function main() {
+  logger.info("=====ENVIRONMENT=====");
+  if (__prod__) {
+    logger.info("Running in production mode 🦾.");
+  } else if (__dev__) {
+    logger.info("Running in dev mode 👩‍💻.");
+  } else if (__test__) {
+    logger.info("Running in test mode 👩‍🔬.");
+  } else {
+    logger.info("Running in unknown environment!!! 🤡");
+  }
+
   try {
     await startTypeorm();
   } catch (error) {

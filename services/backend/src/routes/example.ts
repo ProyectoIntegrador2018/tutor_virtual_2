@@ -1,6 +1,7 @@
 import ExampleController from "../controllers/ExampleController";
 import { CurrentViewer } from "../lib/CurrentViewer";
 import { IRoute } from "../lib/IRoute";
+import { ExcelFileUpload } from "../middleware/ExcelFileUpload";
 import { Route } from "../lib/Route";
 
 /**
@@ -53,6 +54,15 @@ export const routes: IRoute[] = [
     ],
     withController: {
       action: "myOtherAction",
+      controller: ExampleController,
+    },
+  }),
+  new Route({
+    path: "/example/upload-excel",
+    method: "POST",
+    middleware: [ExcelFileUpload()],
+    withController: {
+      action: "uploadExcelFile",
       controller: ExampleController,
     },
   }),

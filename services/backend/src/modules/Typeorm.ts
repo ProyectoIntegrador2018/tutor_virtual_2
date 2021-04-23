@@ -4,6 +4,8 @@ import { Course } from "../entities/CourseEntity";
 import { Connection, createConnection, useContainer } from "typeorm";
 import { Container } from "typeorm-typedi-extensions";
 import { Season } from "../entities/SeasonEntity";
+import { __prod__ } from "../constants";
+import { logger } from "../utils/logger";
 
 const startTypeorm = (): Promise<Connection> => {
   /*
@@ -11,19 +13,30 @@ const startTypeorm = (): Promise<Connection> => {
   */
   useContainer(Container);
 
-  const databaseURL = process.env.DATABASE_URL;
+  let databaseURL = process.env.DATABASE_URL;
+  if (!__prod__ && databaseURL === undefined) {
+    logger.info('Connecting to default db "postgres"');
+    databaseURL = "postgres";
+  }
+
+  if (__prod__ && databaseURL === undefined) {
+    logger.error("No database URL found when running in production!!!");
+    throw new Error("No database URL SPECIFIED!");
+  }
 
   return createConnection({
     url: databaseURL,
     type: "postgres",
     synchronize: true,
-    ssl: process.env.NODE_ENV === "production",
+    ssl: __prod__,
     entities: [User, Role, Season, Course],
-    extra: {
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    },
+    extra: __prod__
+      ? {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        }
+      : undefined,
   });
 };
 

@@ -2,7 +2,7 @@ import joi from "joi";
 import BaseController, { IArgs } from "./BaseController";
 import { Service } from "typedi";
 import { Container } from "typeorm-typedi-extensions";
-import { CourseService } from "../services/CourseService"
+import { CourseService } from "../services/CourseService";
 import { logger } from "../utils/logger";
 
 @Service()
@@ -22,7 +22,7 @@ export default class CourseController extends BaseController {
       duration: params.duration,
       recognitionType: params.recognitionType,
       url: params.url,
-      seasonID: params.seasonID
+      seasonID: params.seasonID,
     });
     logger.info(`Course "${course.name}" succesfully registered!`);
     this.ok({ course });
@@ -35,7 +35,7 @@ export default class CourseController extends BaseController {
       duration: joi.number().required(),
       recognitionType: joi.string().min(2).max(50).required(),
       url: joi.string().min(2).max(100).required(),
-      seasonID: joi.string().min(2).max(100).required()
+      seasonID: joi.string().min(2).max(100).required(),
     });
   }
 
@@ -48,5 +48,3 @@ export default class CourseController extends BaseController {
     return joi.object({});
   }
 }
-
-

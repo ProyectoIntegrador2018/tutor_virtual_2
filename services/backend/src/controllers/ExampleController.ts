@@ -1,5 +1,6 @@
 import BaseController from "./BaseController";
 import joi from "joi";
+import { ExcelFile } from "../lib/ExcelFile";
 import { logger } from "../utils/logger";
 
 /**
@@ -68,6 +69,32 @@ export default class ExampleController extends BaseController {
    * Specify an empty joi object when no params should be used.
    */
   private myOtherActionParams() {
+    return joi.object({});
+  }
+
+  /**
+   * Example of how to load an excel file.
+   * Go to routes/example.ts to see the middleware needed to have the excel file
+   * present in _this.req.file_;
+   */
+  private async uploadExcelFile() {
+    const excelFile = new ExcelFile({});
+    await excelFile.load(this.req.file);
+    const workbook = excelFile.getWorkbook();
+    logger.info(`Workboook last modified: ${workbook.lastModifiedBy}`);
+    logger.info(`Workbook creator: ${workbook.creator}`);
+    // Do something with the workbook...
+    // or...
+    // Do something with the worksheets.
+    const worksheets = excelFile.getWorksheets();
+    logger.info(`Number of worksheets: ${worksheets.length}`);
+    if (worksheets.length > 0) {
+      logger.info(`First worksheet name: ${worksheets[0].name}`);
+    }
+    this.ok({ excelRead: true });
+  }
+
+  private uploadExcelFileParams() {
     return joi.object({});
   }
 }
