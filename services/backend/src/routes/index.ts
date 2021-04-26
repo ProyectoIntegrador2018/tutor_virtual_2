@@ -9,9 +9,10 @@ import { IRoute } from "../lib/IRoute";
 import { routes as exampleRoutes } from "./example";
 import { routes as user } from "./user";
 import { routes as sessionRoutes } from "./session";
-import { routes as courses } from "./courses"
+import { routes as courses } from "./courses";
 import { routes as meRoutes } from "./me";
 import { routes as seasonRoutes } from "./season";
+import { routes as allyRoutes } from "./ally";
 
 // =======================================================================
 
@@ -22,6 +23,7 @@ const routes: IRoute[] = [
   ...courses,
   ...meRoutes,
   ...seasonRoutes,
+  ...allyRoutes,
 ];
 const router = Router();
 routes.forEach((route) => {
