@@ -13,4 +13,12 @@ export const routes: IRoute[] = [
       controller: AllyController,
     },
   }),
+  new Route({
+    path: "/allies",
+    method: "GET",
+    withController: {
+      action: "allies",
+      controller: AllyController,
+    },
+  }),
 ];
