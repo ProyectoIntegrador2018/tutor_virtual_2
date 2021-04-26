@@ -43,6 +43,7 @@ export default class AllyController extends BaseController {
     };
 
     worksheet.eachRow((row, number) => {
+      // Ignore Headers
       if (number > 1) {
         const ally: ICreateArgs & {
           [key: string]: string;
