@@ -6,6 +6,7 @@ import { Container } from "typeorm-typedi-extensions";
 import { Season } from "../entities/SeasonEntity";
 import { __prod__ } from "../constants";
 import { logger } from "../utils/logger";
+import { Ally } from "../entities/AllyEntity";
 
 const startTypeorm = (): Promise<Connection> => {
   /*
@@ -29,7 +30,7 @@ const startTypeorm = (): Promise<Connection> => {
     type: "postgres",
     synchronize: true,
     ssl: __prod__,
-    entities: [User, Role, Season, Course],
+    entities: [User, Role, Season, Course, Ally],
     extra: __prod__
       ? {
           ssl: {
