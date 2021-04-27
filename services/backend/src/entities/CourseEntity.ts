@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Grade } from "./GradeEntity";
 
 @Entity({ name: "courses" })
 export class Course {
@@ -22,4 +23,7 @@ export class Course {
 
   @Column()
   seasonID: number;
+
+  @OneToMany(() => Grade, (grade) => grade.course)
+  grades: Grade[];
 }
