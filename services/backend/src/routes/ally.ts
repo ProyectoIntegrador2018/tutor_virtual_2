@@ -9,6 +9,7 @@ export const routes: IRoute[] = [
     path: "/ally/upload-excel",
     method: "POST",
     middleware: [ExcelFileUpload()],
+    requireAuth: [RouteAuthRolesEnum.SUPERADMIN, RouteAuthRolesEnum.SUPERVISOR],
     withController: {
       action: "uploadAllies",
       controller: AllyController,
