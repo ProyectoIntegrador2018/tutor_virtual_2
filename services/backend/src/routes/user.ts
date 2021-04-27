@@ -30,4 +30,13 @@ export const routes: IRoute[] = [
       controller: UserController,
     },
   }),
+  new Route({
+    path: "/users/tutor/enable",
+    method: "PUT",
+    requireAuth: [RouteAuthRolesEnum.SUPERVISOR],
+    withController: {
+      action: "handleTutorAccountStatus",
+      controller: UserController,
+    },
+  }),
 ];

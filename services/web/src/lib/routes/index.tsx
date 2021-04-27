@@ -20,6 +20,11 @@ const routes: { [key in UserRoleName]?: IRoute[] } = {
       route: "/allies",
       icon: <FiStar />,
     },
+    {
+      title: "Tutores",
+      route: "/supervisor",
+      icon: <FiUsers />,
+    },
   ],
   [UserRoleName.ALLY]: [
     {
