@@ -73,10 +73,8 @@ export function AdminIndexPageContent() {
           <Tab>Superadmins</Tab>
           <Tab>Supervisores</Tab>
           <Tab>Tutores</Tab>
-          <Tab>Aliadxs</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>{null}</TabPanel>
           <TabPanel>{null}</TabPanel>
           <TabPanel>{null}</TabPanel>
           <TabPanel>{null}</TabPanel>
