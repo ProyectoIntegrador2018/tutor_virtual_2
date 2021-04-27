@@ -119,9 +119,7 @@ export default class UserController extends BaseController {
         "Only supervisors can modify tutors account status!"
       );
     }
-    const supervisorRole = await this.roleService.findOrCreate(
-      UserRoleName.TUTOR
-    );
+    const tutorRole = await this.roleService.findOrCreate(UserRoleName.TUTOR);
     const params = this.getParams();
     let query = this.userService.createQueryBuilder("user");
     await query
@@ -131,7 +129,7 @@ export default class UserController extends BaseController {
       })
       .where("email = :email AND roleId = :roleId", {
         email: params.email,
-        roleId: supervisorRole.id,
+        roleId: tutorRole.id,
       })
       .execute();
     const updatedUser = await this.userService.findOne({ email: params.email });
