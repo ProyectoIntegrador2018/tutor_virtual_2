@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import Link from "next/link";
 import {
   Box,
   Heading,
@@ -10,6 +11,7 @@ import {
   Spinner,
   Button,
   Flex,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { fetcherV1 } from "fetchers";
@@ -52,6 +54,20 @@ export function AdminIndexPageContent() {
       >
         Usuarios del sistema
       </Heading>
+      <Flex justifyContent="flex-end">
+        <Link href="/admin/users/load-from-excel">
+          <ChakraLink
+            border="1px solid"
+            borderColor="primary.700"
+            p={3}
+            borderRadius="md"
+            color="primary.700"
+            variant="filled"
+          >
+            Cargar usuarios
+          </ChakraLink>
+        </Link>
+      </Flex>
       <Tabs onChange={(index) => setUserRole(setUserRoleFromTab(index))}>
         <TabList>
           <Tab>Superadmins</Tab>

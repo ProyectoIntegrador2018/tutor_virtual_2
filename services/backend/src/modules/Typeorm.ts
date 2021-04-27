@@ -15,9 +15,9 @@ const startTypeorm = (): Promise<Connection> => {
 
   let databaseURL = process.env.DATABASE_URL;
   if (!__prod__ && databaseURL === undefined) {
-    logger.info('Connecting to default db "postgres"');
     databaseURL = "postgres";
   }
+  logger.info(`Connecting to '${databaseURL}' db.`);
 
   if (__prod__ && databaseURL === undefined) {
     logger.error("No database URL found when running in production!!!");
