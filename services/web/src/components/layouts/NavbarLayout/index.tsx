@@ -49,7 +49,7 @@ export default function NavbarLayout({ children }: IProps) {
           <DrawerContent>
             {children}
             <Button onClick={onToggle} variant="ghost" my={2}>
-              Cerrar
+              Ocultar
             </Button>
           </DrawerContent>
         </DrawerOverlay>

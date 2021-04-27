@@ -52,10 +52,28 @@ export default class SessionsController extends BaseController {
     });
   }
 
+  private async signout() {
+    this.removeLoginCookieHeaders();
+    this.ok({ logout: true });
+  }
+
+  private signoutParams() {
+    return joi.object({});
+  }
+
   // =========================== HELPER METHODS ============================
   private setLoginCookieHeaders(authToken: string) {
     const expiryDate = addDays(new Date(), AUTH_TOKEN_EXPIRY_DAYS);
     const cookieValue = `Bearer ${authToken}`;
+    this.res.cookie(AUTH_COOKIE_NAME, cookieValue, {
+      httpOnly: true,
+      expires: expiryDate,
+    });
+  }
+
+  private removeLoginCookieHeaders() {
+    const expiryDate = new Date(Date.now());
+    const cookieValue = "none";
     this.res.cookie(AUTH_COOKIE_NAME, cookieValue, {
       httpOnly: true,
       expires: expiryDate,

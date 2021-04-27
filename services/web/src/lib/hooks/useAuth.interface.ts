@@ -28,11 +28,17 @@ export type SignUpArgs = {
   onError: (err: any) => void;
 };
 
+export type SignOutArgs = {
+  url: string;
+  onSuccess: (data: any) => void;
+  onError: (err: any) => void;
+};
+
 export type AuthContext = {
   user: User | null;
   role: UserRoleName | null;
   login: (args: LoginArgs) => void;
   signup: (args: SignUpArgs) => void;
-  signout: () => void;
+  signout: (args: SignOutArgs) => void;
   loading: boolean;
 };
