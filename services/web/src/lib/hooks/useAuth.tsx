@@ -5,6 +5,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   LoginArgs,
   SignUpArgs,
+  SignOutArgs,
   ProvideProps,
   AuthContext,
 } from "./useAuth.interface";
@@ -62,8 +63,20 @@ function useProvideAuth() {
   };
   */
 
-  const signout = () => {
-    /* Implement signout in backend */
+  const signout = async ({ url, onSuccess, onError }: SignOutArgs) => {
+    const signoutUrl = `${backend}/v1/signout`;
+    axios
+      .get(signoutUrl, axiosOptions)
+      .then((res) => {
+        onSuccess(res.data);
+        router.push(url);
+        setUser(null);
+        setRole(null);
+        setLoading(false);
+      })
+      .catch((err) => {
+        onError(err);
+      });
   };
 
   useEffect(() => {
