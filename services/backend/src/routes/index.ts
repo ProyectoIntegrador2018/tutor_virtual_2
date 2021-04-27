@@ -13,6 +13,8 @@ import { routes as courses } from "./courses";
 import { routes as meRoutes } from "./me";
 import { routes as seasonRoutes } from "./season";
 import { routes as allyRoutes } from "./ally";
+import { routes as gradeRoutes } from "./grade";
+import { routes as studentRoutes } from "./student";
 
 // =======================================================================
 
@@ -24,6 +26,8 @@ const routes: IRoute[] = [
   ...meRoutes,
   ...seasonRoutes,
   ...allyRoutes,
+  ...gradeRoutes,
+  ...studentRoutes,
 ];
 const router = Router();
 routes.forEach((route) => {
