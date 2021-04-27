@@ -47,7 +47,7 @@ export default function Navbar() {
                     title: "Has cerrado sesión",
                   });
                 },
-                onError: (err) => {
+                onError: () => {
                   toast({
                     status: "error",
                     title: "Error al cerrar sesión",
