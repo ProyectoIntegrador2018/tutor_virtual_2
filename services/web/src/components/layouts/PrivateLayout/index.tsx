@@ -13,6 +13,7 @@ export function PrivateLayout({ children }: IProps) {
       <Box
         backgroundColor="white"
         borderLeftRadius={[0, 0, 44, 44]}
+        overflowY="scroll"
         p={[4, 4, 16, 16]}
         shadow="lg"
         w="100%"

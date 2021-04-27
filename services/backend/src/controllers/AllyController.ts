@@ -85,4 +85,22 @@ export default class AllyController extends BaseController {
   private uploadAlliesParams() {
     return joi.object({});
   }
+
+  private async allies() {
+    const params = this.getParams();
+    let query = this.allyService.createQueryBuilder("allies");
+    const skip = params.page * params.pageSize;
+    query = query.skip(skip);
+    const take = params.pageSize;
+    query = query.take(take);
+    const result = await query.getMany();
+    this.ok({ allies: result });
+  }
+
+  private alliesParams() {
+    return joi.object({
+      page: joi.number().min(0).required(),
+      pageSize: joi.number().min(0).max(50).required(),
+    });
+  }
 }
