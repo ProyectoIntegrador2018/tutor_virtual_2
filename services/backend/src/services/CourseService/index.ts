@@ -30,4 +30,8 @@ export class CourseService {
   public findAll() {
     return this.courseRepository.find();
   }
+
+  public createQueryBuilder(alias: string) {
+    return this.courseRepository.createQueryBuilder(alias);
+  }
 }
