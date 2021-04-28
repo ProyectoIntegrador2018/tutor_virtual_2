@@ -54,7 +54,7 @@ export function CoursesCreatePageContent() {
         <Heading fontSize="5xl">Cursos</Heading>
         <Stack direction={"row"} spacing={2}>
           <Button onClick={onOpenCreate}>Crear Curso</Button>
-          {/* <Button onClick={onOpenUpload}>Subir Cursos</Button> */}
+          <Button onClick={onOpenUpload}>Subir Cursos</Button>
         </Stack>
       </Flex>
       {isLoading && <Spinner />}

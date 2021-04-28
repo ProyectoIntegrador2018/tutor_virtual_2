@@ -9,7 +9,7 @@ import { ExcelFile } from "../lib/ExcelFile";
 import Joi from "joi";
 import { ICreateArgs } from "../services/CourseService/ICreateArgs";
 
-const courseProperty = ["topic", "name", "recognitionType", "duration", "url"];
+const courseProperty = ["program", "topic", "name", "group", "vanity_id", "inscriptionStart", "inscriptionEnd", "startDate", "endDate", "recognitionType", "duration", "activities", "url"];
 
 @Service()
 export default class CourseController extends BaseController {
@@ -66,12 +66,6 @@ export default class CourseController extends BaseController {
   private async uploadCourses() {
     const excelFile = new ExcelFile({});
     await excelFile.load(this.req.file);
-    const workbook = excelFile.getWorkbook();
-    logger.info(`Workboook last modified: ${workbook.lastModifiedBy}`);
-    logger.info(`Workbook creator: ${workbook.creator}`);
-    // Do something with the workbook...
-    // or...
-    // Do something with the worksheets.
     const worksheets = excelFile.getWorksheets();
     if (worksheets.length <= 0) {
       this.badRequest("No worksheets in Excel");
