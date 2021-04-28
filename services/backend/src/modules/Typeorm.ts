@@ -30,7 +30,7 @@ const startTypeorm = (): Promise<Connection> => {
   return createConnection({
     url: databaseURL,
     type: "postgres",
-    synchronize: true,
+    synchronize: !__prod__,
     ssl: __prod__,
     entities: [User, Role, Season, Course, Ally, Student, Grade],
     extra: __prod__

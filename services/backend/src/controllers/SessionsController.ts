@@ -4,7 +4,6 @@ import joi from "joi";
 import { Container } from "typeorm-typedi-extensions";
 import { UserRoleName } from "../entities/RoleEntity";
 import { UserService } from "../services/UserService";
-import * as argon2 from "argon2";
 import addDays from "date-fns/addDays";
 import { TokenMaker } from "../lib/TokenMaker";
 import { logger } from "../utils/logger";
@@ -29,7 +28,8 @@ export default class SessionsController extends BaseController {
     if (!user) {
       return this.notFound(notFoundMsg);
     }
-    const match = await argon2.verify(user.password, params.password);
+    // Insecure...
+    const match = user.password === params.password;
     if (!match) {
       logger.info(
         `There was a failed attempt to login to user's "${user.email}" account.`

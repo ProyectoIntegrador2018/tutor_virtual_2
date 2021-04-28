@@ -1,5 +1,4 @@
 import { Service } from "typedi";
-import * as argon2 from "argon2";
 import {
   Repository,
   FindOneOptions,
@@ -9,6 +8,7 @@ import {
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { ICreateArgs } from "./ICreateArgs";
 import { Ally } from "../../entities/AllyEntity";
+import { DEFAULT_ALLY_NAME } from "../../constants";
 
 @Service()
 export class AllyService {
@@ -37,5 +37,23 @@ export class AllyService {
 
   public createQueryBuilder(alias: string) {
     return this.allyRepository.createQueryBuilder(alias);
+  }
+
+  public async getDefaultAlly() {
+    let ally = await this.findOne({ name: DEFAULT_ALLY_NAME });
+    if (!ally) {
+      const vanityId = "00000000";
+      const email = "nocontacto@noaliado.com";
+      const contact = "N/A";
+      const type = "N/A";
+      ally = await this.create({
+        name: DEFAULT_ALLY_NAME,
+        vanity_id: vanityId,
+        email,
+        contact,
+        type,
+      });
+    }
+    return ally;
   }
 }

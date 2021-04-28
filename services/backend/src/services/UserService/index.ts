@@ -1,11 +1,11 @@
 import { Service } from "typedi";
-import * as argon2 from "argon2";
 import {
   Repository,
   FindOneOptions,
   FindConditions,
   FindManyOptions,
 } from "typeorm";
+import { nanoid } from "nanoid";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { ICreateArgs } from "./ICreateArgs";
 import { User } from "../../entities/UserEntity";
@@ -23,9 +23,15 @@ export class UserService {
     user.maternalName = args.maternalName;
     user.paternalName = args.paternalName;
     user.email = args.email;
-    const hash = await argon2.hash(args.password);
-    user.password = hash;
+    user.password = args.password;
     user.role = args.role;
+    let username = args.username;
+    if (!username) {
+      username = args.email.split("@")[0];
+      const random = nanoid(4);
+      username += random;
+    }
+    user.username = username;
     const savedUser = await this.userRepository.save(user);
     return savedUser;
   }
