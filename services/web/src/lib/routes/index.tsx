@@ -41,7 +41,7 @@ const routes: { [key in UserRoleName]?: IRoute[] } = {
     },
     {
       title: "Usuarios",
-      route: "/admin",
+      route: "/admin/users",
       icon: <FiUsers />,
     },
     {
