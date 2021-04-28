@@ -1,11 +1,13 @@
 import joi from "joi";
 import { Service } from "typedi";
+import ExcelJS from "exceljs";
 import { Container } from "typeorm-typedi-extensions";
 import { User } from "../entities/UserEntity";
 import { UserService } from "../services/UserService";
 import { RoleService } from "../services/RoleService";
 import { UserRoleName } from "../entities/RoleEntity";
 import BaseController, { IArgs } from "./BaseController";
+import { ExcelFile } from "../lib/ExcelFile";
 import { logger } from "../utils/logger";
 
 @Service()
@@ -109,6 +111,39 @@ export default class UserController extends BaseController {
     return joi.object({
       enable: joi.boolean().required(),
       email: joi.string().email().required(),
+    });
+  }
+
+  private async createFromExcel() {
+    const excel = new ExcelFile({});
+    await excel.load(this.req.file);
+    const worksheets = excel.getWorksheets();
+    if (worksheets.length < 2) {
+      logger.info("Excel file does not have the expected format.");
+      return this.notAcceptable(
+        "El archivo excel no tiene el formato esperado."
+      );
+    }
+    const userSheet = worksheets[1];
+    logger.info(`Detected ${userSheet.actualRowCount} user rows`);
+    userSheet.eachRow(async (row, rowNumber) => {
+      // Ignore row with headers.
+      if (rowNumber > 1) {
+        await this.parseUserExcelRow(row);
+      }
+    });
+    this.ok({ test: true });
+  }
+
+  private createFromExcelParams() {
+    return joi.object({});
+  }
+
+  // ========================== HELPER METHODS =================================
+
+  private async parseUserExcelRow(row: ExcelJS.Row) {
+    row.eachCell((cell, colNumber) => {
+      console.log(cell.text);
     });
   }
 }

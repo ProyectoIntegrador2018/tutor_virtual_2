@@ -19,6 +19,10 @@ interface IProps extends BoxProps {
    * Optional on submit callback;
    */
   onSubmit?: () => void;
+  /**
+   * Optional on error callback;
+   */
+  onError?: (err: any) => void;
 }
 
 /**
@@ -28,6 +32,7 @@ export function ExcelUploaderSection({
   httpMethod,
   urlPath,
   onSubmit,
+  onError,
   ...rest
 }: IProps) {
   const [isFilePicked, setIsFilePicked] = useState(false);
@@ -60,12 +65,15 @@ export function ExcelUploaderSection({
           onSubmit();
         }
       })
-      .catch(() => {
+      .catch((err: any) => {
         toast({
           status: "error",
           title: "Oops! Hubo un error",
           description: "Por favor intenta de nuevo!",
         });
+        if (onError) {
+          onError(err);
+        }
       });
   }, [selectedFile]);
   return (
@@ -91,6 +99,7 @@ export function ExcelUploaderSection({
         hidden
         onChange={handleInputChange}
         type="file"
+        accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         id="excelFileUpload"
       />
       {isFilePicked && (
