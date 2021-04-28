@@ -7,4 +7,5 @@ export interface ICreateArgs {
   email: string;
   password: string;
   role: Role;
+  username?: string;
 }
