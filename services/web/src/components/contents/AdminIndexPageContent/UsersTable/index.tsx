@@ -25,11 +25,9 @@ export function UsersTable({ data, currentSelectedRole, refetchData }: IProps) {
   const { mutate } = useMutation<
     User,
     Error,
-    { email: string; enable: boolean }
+    { email: string; enable: boolean; roleName: string }
   >((requestData) =>
-    fetcherV1
-      .put("/users/supervisor/enable", requestData)
-      .then((res) => res.data)
+    fetcherV1.put("/users/user/enable", requestData).then((res) => res.data)
   );
   const toast = useToast();
   const columns = useMemo(
@@ -57,17 +55,21 @@ export function UsersTable({ data, currentSelectedRole, refetchData }: IProps) {
       },
       {
         Header: () =>
-          currentSelectedRole === "SUPERVISOR"
+          currentSelectedRole !== "SUPERADMIN"
             ? "Habilitar cuenta"
             : () => null,
         accessor: (row) =>
-          currentSelectedRole === "SUPERVISOR" ? (
+          currentSelectedRole !== "SUPERADMIN" ? (
             <Switch
               defaultChecked={row.hasAccountEnabled}
               onChange={(e) => {
                 const on = e.target.checked;
                 mutate(
-                  { email: row.email, enable: on },
+                  {
+                    email: row.email,
+                    enable: on,
+                    roleName: currentSelectedRole,
+                  },
                   {
                     onError: () => {
                       toast({

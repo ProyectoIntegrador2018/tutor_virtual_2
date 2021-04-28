@@ -88,6 +88,43 @@ export default class UserController extends BaseController {
     });
   }
 
+  private async handleUserAccountStatus() {
+    const role = await this.cv.getRole();
+    if (role !== UserRoleName.SUPERADMIN || role === null) {
+      return this.forbidden(
+        "Only superadmins can modify user's account status!"
+      );
+    }
+    const params = this.getParams();
+
+    const userRole = await this.roleService.findOrCreate(params.roleName);
+
+    let query = this.userService.createQueryBuilder("user");
+    await query
+      .update(User)
+      .set({
+        hasAccountEnabled: params.enable,
+      })
+      .where("email = :email AND roleId = :roleId", {
+        email: params.email,
+        roleId: userRole.id,
+      })
+      .execute();
+    const updatedUser = await this.userService.findOne({ email: params.email });
+    this.ok({ user: updatedUser });
+  }
+
+  private handleUserAccountStatusParams() {
+    return joi.object({
+      enable: joi.boolean().required(),
+      email: joi.string().email().required(),
+      roleName: joi
+        .string()
+        .valid(...Object.keys(UserRoleName))
+        .required(),
+    });
+  }
+
   private async handleSupervisorAccountStatus() {
     const role = await this.cv.getRole();
     if (role !== UserRoleName.SUPERADMIN || role === null) {
