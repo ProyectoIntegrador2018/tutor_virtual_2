@@ -139,6 +139,37 @@ export default class UserController extends BaseController {
     return joi.object({});
   }
 
+  private async handleTutorAccountStatus() {
+    const role = await this.cv.getRole();
+    if (role !== UserRoleName.SUPERVISOR || role === null) {
+      return this.forbidden(
+        "Only supervisors can modify tutors account status!"
+      );
+    }
+    const tutorRole = await this.roleService.findOrCreate(UserRoleName.TUTOR);
+    const params = this.getParams();
+    let query = this.userService.createQueryBuilder("user");
+    await query
+      .update(User)
+      .set({
+        hasAccountEnabled: params.enable,
+      })
+      .where("email = :email AND roleId = :roleId", {
+        email: params.email,
+        roleId: tutorRole.id,
+      })
+      .execute();
+    const updatedUser = await this.userService.findOne({ email: params.email });
+    this.ok({ user: updatedUser });
+  }
+
+  private handleTutorAccountStatusParams() {
+    return joi.object({
+      enable: joi.boolean().required(),
+      email: joi.string().email().required(),
+    });
+  }
+
   // ========================== HELPER METHODS =================================
 
   private async parseUserExcelRow(row: ExcelJS.Row) {

@@ -19,8 +19,8 @@ import { User } from "lib/types/user";
 import { UsersTable } from "./UsersTable";
 import { setUserRoleFromTab } from "./helpers";
 
-export function AdminIndexPageContent() {
-  const [userRole, setUserRole] = useState("SUPERADMIN");
+export function SupervisorIndexPageContent() {
+  const [userRole, setUserRole] = useState("TUTOR");
   const [page, setPage] = useState(0);
   const [pageSize] = useState(30);
   const { data, isLoading, refetch, isFetched } = useQuery<
@@ -52,31 +52,13 @@ export function AdminIndexPageContent() {
         fontSize="5xl"
         textAlign={["center", null, null, "left"]}
       >
-        Usuarios del sistema
+        Tus tutores
       </Heading>
-      <Flex justifyContent="flex-end">
-        <Link href="/admin/users/load-from-excel">
-          <ChakraLink
-            border="1px solid"
-            borderColor="primary.700"
-            p={3}
-            borderRadius="md"
-            color="primary.700"
-            variant="filled"
-          >
-            Cargar usuarios
-          </ChakraLink>
-        </Link>
-      </Flex>
       <Tabs onChange={(index) => setUserRole(setUserRoleFromTab(index))}>
         <TabList>
-          <Tab>Superadmins</Tab>
-          <Tab>Supervisores</Tab>
           <Tab>Tutores</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>{null}</TabPanel>
-          <TabPanel>{null}</TabPanel>
           <TabPanel>{null}</TabPanel>
         </TabPanels>
       </Tabs>
