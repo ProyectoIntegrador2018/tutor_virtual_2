@@ -103,4 +103,20 @@ export default class AllyController extends BaseController {
       pageSize: joi.number().min(0).max(50).required(),
     });
   }
+
+  private async create() {
+    const params = this.getParams();
+    const ally = await this.allyService.create(params);
+    this.ok({ ally });
+  }
+
+  private createParams() {
+    return joi.object({
+      vanity_id: joi.string().required(),
+      name: joi.string().required(),
+      type: joi.string().required(),
+      email: joi.string().email().allow(null, ""),
+      contact: joi.string().allow(null, ""),
+    });
+  }
 }

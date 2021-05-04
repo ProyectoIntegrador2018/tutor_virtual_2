@@ -1,5 +1,5 @@
 export type Ally = {
-  id: string;
+  id?: string;
   vanity_id: string;
   name: string;
   type: string;
