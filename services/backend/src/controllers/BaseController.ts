@@ -130,6 +130,22 @@ export default abstract class BaseController {
   }
 
   /**
+   * Sends a file for download.
+   * @param path The path to the file to send for download.
+   */
+  protected sendFileForDownload(path: string) {
+    this.res.download(path, (err) => {
+      this.hasSentResponse = true;
+      if (err) {
+        logger.error(`An error ocurred while sending ${path} for download.`);
+        logger.error(err);
+      } else {
+        logger.info("File succesfully sent for download");
+      }
+    });
+  }
+
+  /**
    * Calling this method will return the request parameters sent by the client.
    * It is guaranteed that the parameters have already been validated.
    */
