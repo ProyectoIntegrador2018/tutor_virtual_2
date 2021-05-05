@@ -4,7 +4,6 @@ import {
   Flex,
   Heading,
   Modal,
-  ModalCloseButton,
   ModalContent,
   ModalOverlay,
   Spinner,

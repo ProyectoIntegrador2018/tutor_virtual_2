@@ -1,6 +1,6 @@
 import { UserRoleName } from "lib/types/role";
 import React from "react";
-import { FiHome, FiStar, FiUsers } from "react-icons/fi";
+import { FiHome, FiStar, FiUsers, FiCalendar } from "react-icons/fi";
 
 interface IRoute {
   title: string;
@@ -48,6 +48,11 @@ const routes: { [key in UserRoleName]?: IRoute[] } = {
       title: "Aliados",
       route: "/allies",
       icon: <FiStar />,
+    },
+    {
+      title: "Aperturas",
+      route: "/seasons",
+      icon: <FiCalendar />,
     },
   ],
   [UserRoleName.TUTOR]: [

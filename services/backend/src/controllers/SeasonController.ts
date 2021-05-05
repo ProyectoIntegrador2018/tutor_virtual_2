@@ -30,4 +30,13 @@ export default class SeasonController extends BaseController {
       ending: joi.date().iso().required(),
     });
   }
+
+  private async fetchSeasons() {
+    const seasons = await this.seasonService.find();
+    this.ok({ seasons });
+  }
+
+  private fetchSeasonsParams() {
+    return joi.object({});
+  }
 }
