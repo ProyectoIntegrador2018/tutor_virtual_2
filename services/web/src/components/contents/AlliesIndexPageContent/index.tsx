@@ -10,17 +10,25 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  Stack,
 } from "@chakra-ui/react";
 import { ExcelUploaderSection } from "components/modules/ExcelUploaderSection";
 import { fetcherV1 } from "fetchers";
 import { Ally } from "lib/types/ally";
 import React, { useMemo, useState } from "react";
 import { useQuery } from "react-query";
+import { AlliesForm } from "./AlliesForm";
+import { AlliesFormCreate } from "./AlliesFormCreate";
 import { AlliesTable } from "./AlliesTable";
 
 export function AlliesIndexPageContent() {
   const [page, setPage] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenForm,
+    onOpen: onOpenForm,
+    onClose: onCloseForm,
+  } = useDisclosure();
   const [pageSize] = useState(20);
   const { data, isLoading, isFetched } = useQuery<
     { allies: Ally[] },
@@ -41,7 +49,10 @@ export function AlliesIndexPageContent() {
     <Box>
       <Flex justifyContent="space-between" alignItems="center" mb={10}>
         <Heading fontSize="5xl">Aliados</Heading>
-        <Button onClick={onOpen}>Subir Aliados</Button>
+        <Stack spacing={4} direction="row">
+          <Button onClick={onOpenForm}>Crear Aliado</Button>
+          <Button onClick={onOpen}>Subir Aliados</Button>
+        </Stack>
       </Flex>
       {isLoading && <Spinner />}
       {tableData !== undefined && <AlliesTable data={tableData.allies} />}
@@ -73,6 +84,19 @@ export function AlliesIndexPageContent() {
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Cerrar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={isOpenForm} onClose={onCloseForm}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalBody>
+            <AlliesFormCreate onComplete={onCloseForm} />
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onCloseForm}>
               Cerrar
             </Button>
           </ModalFooter>

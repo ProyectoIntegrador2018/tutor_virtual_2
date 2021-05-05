@@ -24,4 +24,13 @@ export const routes: IRoute[] = [
       controller: AllyController,
     },
   }),
+  new Route({
+    path: "/allies",
+    method: "POST",
+    requireAuth: [RouteAuthRolesEnum.SUPERADMIN, RouteAuthRolesEnum.SUPERVISOR],
+    withController: {
+      action: "create",
+      controller: AllyController,
+    },
+  }),
 ];
