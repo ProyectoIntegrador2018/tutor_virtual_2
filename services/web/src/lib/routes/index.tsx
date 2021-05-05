@@ -1,6 +1,7 @@
 import { UserRoleName } from "lib/types/role";
 import React from "react";
 import { FiHome, FiStar, FiUsers, FiCalendar } from "react-icons/fi";
+import { HiOutlineDocument } from "react-icons/hi";
 
 interface IRoute {
   title: string;
@@ -25,12 +26,22 @@ const routes: { [key in UserRoleName]?: IRoute[] } = {
       route: "/supervisor",
       icon: <FiUsers />,
     },
+    {
+      title: "Guías",
+      route: "/guides",
+      icon: <HiOutlineDocument />,
+    },
   ],
   [UserRoleName.ALLY]: [
     {
       title: "Inicio",
       route: "/dashboard",
       icon: <FiHome />,
+    },
+    {
+      title: "Guías",
+      route: "/guides",
+      icon: <HiOutlineDocument />,
     },
   ],
   [UserRoleName.SUPERADMIN]: [
@@ -54,12 +65,22 @@ const routes: { [key in UserRoleName]?: IRoute[] } = {
       route: "/seasons",
       icon: <FiCalendar />,
     },
+    {
+      title: "Guías",
+      route: "/guides",
+      icon: <HiOutlineDocument />,
+    },
   ],
   [UserRoleName.TUTOR]: [
     {
       title: "Inicio",
       route: "/dashboard",
       icon: <FiHome />,
+    },
+    {
+      title: "Guías",
+      route: "/guides",
+      icon: <HiOutlineDocument />,
     },
   ],
 };
