@@ -1,6 +1,7 @@
 import SeasonController from "../controllers/SeasonController";
 import { IRoute } from "../lib/IRoute";
 import { Route } from "../lib/Route";
+import { RouteAuthRolesEnum } from "../lib/RouteAuthRolesEnum";
 
 export const routes: IRoute[] = [
   new Route({
@@ -18,5 +19,6 @@ export const routes: IRoute[] = [
       action: "fetchSeasons",
       controller: SeasonController,
     },
+    requireAuth: [RouteAuthRolesEnum.SUPERADMIN],
   }),
 ];

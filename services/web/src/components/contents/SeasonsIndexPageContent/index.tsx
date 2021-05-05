@@ -24,7 +24,7 @@ export function SeasonsIndexPageContent() {
   }
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner message="Cargando aperturas" />;
   }
 
   const { seasons } = data;

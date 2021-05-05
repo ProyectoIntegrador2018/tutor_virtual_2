@@ -15,7 +15,11 @@ export function LoadingSpinner({ message }: IProps) {
       alignItems="center"
     >
       <Spinner size="lg" color="primary.400" thickness="3px" />
-      {message && <Text>{message}</Text>}
+      {message && (
+        <Text textAlign="center" mt={6}>
+          {message}
+        </Text>
+      )}
     </Flex>
   );
 }
