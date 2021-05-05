@@ -6,7 +6,7 @@ export class Ally {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   vanity_id: string;
 
   @Column({ unique: true })

@@ -10,7 +10,7 @@ interface IProps {
 }
 
 export function AlliesFormCreate({ onComplete }: IProps) {
-  const { mutate } = useMutation<Ally, Error, Ally>((newCourse) =>
+  const { mutate } = useMutation<Ally, Error, Partial<Ally>>((newCourse) =>
     axios.post(`${backend}/v1/allies`, newCourse, { withCredentials: true })
   );
   const toast = useToast();
