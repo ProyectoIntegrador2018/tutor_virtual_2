@@ -11,4 +11,12 @@ export const routes: IRoute[] = [
       controller: SeasonController,
     },
   }),
+  new Route({
+    path: "/seasons",
+    method: "GET",
+    withController: {
+      action: "fetchSeasons",
+      controller: SeasonController,
+    },
+  }),
 ];
