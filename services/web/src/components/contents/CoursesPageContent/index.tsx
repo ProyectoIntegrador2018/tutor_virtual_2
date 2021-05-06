@@ -42,7 +42,6 @@ export function CoursesPageContent() {
       })
       .then((res) => res.data)
   );
-  const cardData = data;
   const tableData = useMemo(() => data, [page, pageSize, isLoading, isFetched]);
   const { mutate } = useMutation<Course, Error, Course>((newCourse) =>
     axios.post(`${backend}/v1/courses`, newCourse, { withCredentials: true })
