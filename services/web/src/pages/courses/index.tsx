@@ -1,4 +1,4 @@
-import { CoursesCreatePageContent } from "components/contents/CoursesCreatePageContent";
+import { CoursesPageContent } from "components/contents/CoursesPageContent";
 import { PrivateLayout } from "components/layouts/PrivateLayout";
 import requirePageAuth from "lib/auth/requirePageAuth";
 import { UserRoleName } from "lib/types/role";
@@ -12,7 +12,7 @@ export const getServerSideProps = requirePageAuth({
 export default function LoginPage() {
   return (
     <PrivateLayout>
-      <CoursesCreatePageContent />
+      <CoursesPageContent />
     </PrivateLayout>
   );
 }

@@ -3,7 +3,7 @@ import BaseController, { IArgs } from "./BaseController";
 import { Service } from "typedi";
 import { Container } from "typeorm-typedi-extensions";
 import { CourseService } from "../services/CourseService";
-import { Course } from "../entities/CourseEntity"
+import { Course } from "../entities/CourseEntity";
 import { logger } from "../utils/logger";
 import { ExcelFile } from "../lib/ExcelFile";
 import Joi from "joi";
@@ -28,7 +28,8 @@ export default class CourseController extends BaseController {
       duration: params.duration,
       recognitionType: params.recognitionType,
       url: params.url,
-      seasonID: params.seasonID,
+      startDate: params.startDate,
+      endDate: params.endDate,
     });
     logger.info(`Course "${course.name}" succesfully registered!`);
     this.ok({ course });
@@ -41,7 +42,8 @@ export default class CourseController extends BaseController {
       duration: joi.number().required(),
       recognitionType: joi.string().min(2).max(50).required(),
       url: joi.string().min(2).max(100).required(),
-      seasonID: joi.string().min(2).max(100).required(),
+      startDate: joi.date().iso().less(joi.ref("endDate")).required(),
+      endDate: joi.date().iso().required(),
     });
   }
 
@@ -81,7 +83,8 @@ export default class CourseController extends BaseController {
       recognitionType: Joi.string(),
       duration: Joi.string().required(),
       url: Joi.string().required(),
-      seasonID: Joi.string().required(),
+      startDate: Joi.date().required(),
+      endDate: Joi.date().required(),
     };
 
     worksheet.eachRow((row, number) => {
@@ -95,7 +98,8 @@ export default class CourseController extends BaseController {
           recognitionType: "",
           duration: 0,
           url: "",
-          seasonID: 0,
+          startDate: "",
+          endDate: "",
         };
         row.eachCell((cell, colNumber) => {
           try {

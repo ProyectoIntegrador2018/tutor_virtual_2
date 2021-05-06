@@ -30,10 +30,11 @@ export default class UserController extends BaseController {
 
   private async create() {
     const params = this.getParams();
+    /*
     if (params.roleName === UserRoleName.SUPERADMIN) {
       logger.info("Viewer attempted to create a superadmin user!");
       return this.notAcceptable("Can't create a superadmin user!");
-    }
+    } */
     const role = await this.roleService.findOrCreate(params.roleName);
     const user = await this.userService.create({
       firstName: params.firstName,

@@ -4,5 +4,6 @@ export interface ICreateArgs {
   duration: number;
   recognitionType: string;
   url: string;
-  seasonID: number;
+  startDate: string;
+  endDate: string;
 }

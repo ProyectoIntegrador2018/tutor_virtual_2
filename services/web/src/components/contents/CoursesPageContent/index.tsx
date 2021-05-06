@@ -1,11 +1,9 @@
 import { Box,
-  Text,
   useToast,
   Button,
   Flex,
   Heading,
   Modal,
-  ModalCloseButton,
   ModalContent,
   ModalOverlay,
   Spinner,
@@ -22,9 +20,11 @@ import React, { useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { fetcherV1 } from "fetchers";
 import { CoursesTable } from "./CoursesTable";
+import { NoCoursesText } from "./NoCoursesText";
 import { ExcelUploaderSection } from "components/modules/ExcelUploaderSection";
+import { parseISO, format } from "date-fns";
 
-export function CoursesCreatePageContent() {
+export function CoursesPageContent() {
   const toast = useToast();
   const [page, setPage] = useState(0);
   const [pageSize] = useState(20);
@@ -42,12 +42,14 @@ export function CoursesCreatePageContent() {
       })
       .then((res) => res.data)
   );
+  const cardData = data;
   const tableData = useMemo(() => data, [page, pageSize, isLoading, isFetched]);
   const { mutate } = useMutation<Course, Error, Course>((newCourse) =>
     axios.post(`${backend}/v1/courses`, newCourse, { withCredentials: true })
   );
   const { isOpen: isOpenCreate, onOpen: onOpenCreate, onClose: onCloseCreate } = useDisclosure();
   const { isOpen: isOpenUpload, onOpen: onOpenUpload, onClose: onCloseUpload } = useDisclosure();
+
   return (
     <Box>
       <Flex justifyContent="space-between" alignItems="center" mb={10}>
@@ -103,10 +105,11 @@ export function CoursesCreatePageContent() {
                 duration: 0,
                 recognitionType: "",
                 url: "",
-                seasonID: 0,
+                startDate: "",
+                endDate: ""
               }}
               onSubmit={(
-                { name, topic, duration, recognitionType, url, seasonID },
+                { name, topic, duration, recognitionType, url, startDate, endDate },
                 actions
               ) => {
                 mutate(
@@ -116,7 +119,8 @@ export function CoursesCreatePageContent() {
                     duration,
                     recognitionType,
                     url,
-                    seasonID,
+                    startDate,
+                    endDate
                   },
                   {
                     onSuccess: () => {

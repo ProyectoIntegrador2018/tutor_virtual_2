@@ -30,7 +30,7 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ default: false })
+  @Column({ default: true })
   hasAccountEnabled: boolean;
 
   @ManyToOne(() => Role, (role) => role.users)
