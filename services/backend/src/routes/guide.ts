@@ -18,7 +18,6 @@ export const routes: IRoute[] = [
   new Route({
     path: "/guides",
     method: "GET",
-    requireAuth: [RouteAuthRolesEnum.SUPERADMIN],
     withController: {
       action: "downloadGuide",
       controller: GuidesController,
