@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { Box, Table, Th, Tr, Td, Thead, Tbody } from "@chakra-ui/react";
 import { useTable } from "react-table";
 import { Course } from "lib/types/course";
+import { parseISO, format } from "date-fns";
 
 interface IProps {
   data: Course[];
@@ -25,6 +26,20 @@ export function CoursesTable({ data }: IProps) {
       {
         Header: "Tipo de Rec",
         accessor: "recognitionType",
+      },
+      {
+        Header: "Inicio",
+        accessor: "startDate",
+        Cell: ({ value }) => { 
+          return format(parseISO(value), 'dd/MM/yyyy');
+        },
+      },
+      {
+        Header: "Fin",
+        accessor: "endDate",
+        Cell: ({ value }) => { 
+          return format(parseISO(value), 'dd/MM/yyyy');
+        },
       },
       {
         Header: "URL",

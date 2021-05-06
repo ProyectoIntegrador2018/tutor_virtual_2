@@ -4,5 +4,6 @@ export type Course = {
   duration: number;
   recognitionType: string;
   url: string;
-  seasonID: number;
+  startDate: string;
+  endDate: string;
 };
