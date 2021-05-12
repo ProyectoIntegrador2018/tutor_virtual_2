@@ -20,6 +20,7 @@ export default class GradeController extends BaseController {
       course: params.course_id,
       student: params.student_id,
       grade: params.grade,
+      activity: params.activity,
     });
     logger.info(`Season "${grade.id}" succesfully created!`);
     this.ok({ grade });
@@ -30,6 +31,7 @@ export default class GradeController extends BaseController {
       course_id: joi.string().required(),
       student_id: joi.string().required(),
       grade: joi.number().required(),
+      activty: joi.number().required(),
     });
   }
 }
