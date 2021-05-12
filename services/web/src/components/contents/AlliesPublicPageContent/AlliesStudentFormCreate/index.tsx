@@ -33,7 +33,7 @@ export function AlliesStudentFormCreate({ onComplete }: IProps) {
               actions.setSubmitting(false);
               toast({
                 status: "success",
-                title: "Estudiantes",
+                title: "Los estudiantes se cargaron con exito",
               });
 
               if (data.students) {
