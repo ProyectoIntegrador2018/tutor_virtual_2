@@ -39,6 +39,19 @@ export class AllyService {
     return this.allyRepository.createQueryBuilder(alias);
   }
 
+  public async getStudentsFromVanityId(vanity_id: string) {
+    const ally = await this.allyRepository.findOne({
+      where: { vanity_id },
+      relations: ["students"],
+    });
+
+    if (!ally) {
+      return [];
+    }
+
+    return ally.students;
+  }
+
   public async getDefaultAlly() {
     let ally = await this.findOne({ name: DEFAULT_ALLY_NAME });
     if (!ally) {

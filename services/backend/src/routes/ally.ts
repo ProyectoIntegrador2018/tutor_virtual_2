@@ -33,4 +33,12 @@ export const routes: IRoute[] = [
       controller: AllyController,
     },
   }),
+  new Route({
+    path: "/ally/students",
+    method: "POST",
+    withController: {
+      action: "getStudents",
+      controller: AllyController,
+    },
+  }),
 ];
