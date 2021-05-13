@@ -1,6 +1,12 @@
 import { UserRoleName } from "lib/types/role";
 import React from "react";
-import { FiHome, FiStar, FiUsers, FiCalendar, FiBookOpen } from "react-icons/fi";
+import {
+  FiHome,
+  FiStar,
+  FiUsers,
+  FiCalendar,
+  FiBookOpen,
+} from "react-icons/fi";
 import { HiOutlineDocument } from "react-icons/hi";
 
 interface IRoute {
@@ -29,7 +35,7 @@ const routes: { [key in UserRoleName]?: IRoute[] } = {
     {
       title: "Cursos",
       route: "/courses",
-      icon: <FiBookOpen />
+      icon: <FiBookOpen />,
     },
     {
       title: "Guías",
@@ -73,7 +79,7 @@ const routes: { [key in UserRoleName]?: IRoute[] } = {
     {
       title: "Cursos",
       route: "/courses",
-      icon: <FiBookOpen />
+      icon: <FiBookOpen />,
     },
     {
       title: "Guías",
@@ -91,6 +97,11 @@ const routes: { [key in UserRoleName]?: IRoute[] } = {
       title: "Guías",
       route: "/guides",
       icon: <HiOutlineDocument />,
+    },
+    {
+      title: "Cursos",
+      route: "/courses",
+      icon: <FiBookOpen />,
     },
   ],
 };

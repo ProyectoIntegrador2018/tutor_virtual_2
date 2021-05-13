@@ -1,14 +1,16 @@
 import React, { useMemo } from "react";
-import { Box, Table, Th, Tr, Td, Thead, Tbody } from "@chakra-ui/react";
+import { Box, Table, Th, Tr, Td, Thead, Tbody, Button } from "@chakra-ui/react";
 import { useTable } from "react-table";
 import { Course } from "lib/types/course";
 import { parseISO, format } from "date-fns";
+import { useRouter } from "next/router";
 
 interface IProps {
   data: Course[];
 }
 
 export function CoursesTable({ data }: IProps) {
+  const router = useRouter();
   const columns = useMemo(
     () => [
       {
@@ -34,20 +36,27 @@ export function CoursesTable({ data }: IProps) {
       {
         Header: "Inicio",
         accessor: "startDate",
-        Cell: ({ value }) => { 
-          return format(parseISO(value), 'dd/MM/yyyy');
+        Cell: ({ value }) => {
+          return format(parseISO(value), "dd/MM/yyyy");
         },
       },
       {
         Header: "Fin",
         accessor: "endDate",
-        Cell: ({ value }) => { 
-          return format(parseISO(value), 'dd/MM/yyyy');
+        Cell: ({ value }) => {
+          return format(parseISO(value), "dd/MM/yyyy");
         },
       },
       {
         Header: "URL",
         accessor: "url",
+      },
+      {
+        Header: "Detalles",
+        accessor: (row) => (
+          <Button onClick={() => router.push("/courses/123")}>Ver más</Button>
+        ),
+        id: "id",
       },
     ],
     []
@@ -60,6 +69,7 @@ export function CoursesTable({ data }: IProps) {
     rows,
     prepareRow,
   } = useTable({ columns: columns as any, data });
+
   return (
     <Box>
       <Table {...getTableProps()}>
