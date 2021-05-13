@@ -36,7 +36,22 @@ export default class CourseController extends BaseController {
       startDate: params.startDate,
       endDate: params.endDate,
     });
+    const season = await this.seasonService.findOne({
+        starting: params.startDate,
+        ending: params.endDate
+    })
+    if (!season) {
+      const newSeason = await this.seasonService.create({
+        starting: params.startDate,
+        ending: params.endDate
+      })
+      logger.info(`Season with id ${newSeason.id} successfully created!`)
+      this.courseService.addSeason(course.id, { season_id: newSeason.id });
+    } else {
+      this.courseService.addSeason(course.id, { season_id: season.id });
+    }
     logger.info(`Course "${course.name}" succesfully registered!`);
+    logger.info(`Course "${course.name} is attached to season ${course.season}"`)
     this.ok({ course });
   }
 

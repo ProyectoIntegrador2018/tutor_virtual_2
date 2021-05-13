@@ -22,7 +22,7 @@ export class Course {
   @Column()
   url: string;
 
-  @Column({ unique: true })
+  @Column({ unique: false })
   claveCurso: string;
 
   @Column({ type: "date" })
