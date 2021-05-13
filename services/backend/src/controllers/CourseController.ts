@@ -3,21 +3,25 @@ import BaseController, { IArgs } from "./BaseController";
 import { Service } from "typedi";
 import { Container } from "typeorm-typedi-extensions";
 import { CourseService } from "../services/CourseService";
+import { SeasonService } from "../services/SeasonService";
 import { Course } from "../entities/CourseEntity";
+import { Season } from "../entities/SeasonEntity";
 import { logger } from "../utils/logger";
 import { ExcelFile } from "../lib/ExcelFile";
 import Joi from "joi";
 import { ICreateArgs } from "../services/CourseService/ICreateArgs";
 
-const courseProperty = ["program", "topic", "name", "group", "vanity_id", "inscriptionStart", "inscriptionEnd", "startDate", "endDate", "recognitionType", "duration", "activities", "url"];
+const courseProperty = ["program", "topic", "name", "group", "claveCurso", "inscriptionStart", "inscriptionEnd", "startDate", "endDate", "recognitionType", "duration", "activities", "url"];
 
 @Service()
 export default class CourseController extends BaseController {
   courseService: CourseService;
+  seasonService: SeasonService;
 
   constructor(args: IArgs) {
     super(args);
     this.courseService = Container.get(CourseService);
+    this.seasonService = Container.get(SeasonService);
   }
 
   private async create() {
@@ -28,6 +32,7 @@ export default class CourseController extends BaseController {
       duration: params.duration,
       recognitionType: params.recognitionType,
       url: params.url,
+      claveCurso: params.claveCurso,
       startDate: params.startDate,
       endDate: params.endDate,
     });
@@ -42,6 +47,7 @@ export default class CourseController extends BaseController {
       duration: joi.number().required(),
       recognitionType: joi.string().min(2).max(50).required(),
       url: joi.string().min(2).max(100).required(),
+      claveCurso: joi.string().min(2).max(100).required(),
       startDate: joi.date().iso().less(joi.ref("endDate")).required(),
       endDate: joi.date().iso().required(),
     });
@@ -83,6 +89,7 @@ export default class CourseController extends BaseController {
       recognitionType: Joi.string(),
       duration: Joi.string().required(),
       url: Joi.string().required(),
+      claveCurso: Joi.string().required(),
       startDate: Joi.date().required(),
       endDate: Joi.date().required(),
     };
@@ -91,13 +98,14 @@ export default class CourseController extends BaseController {
       // Ignore Headers
       if (number > 1) {
         const course: ICreateArgs & {
-          [key: string]: string | number;
+          [key: string]: string | number | Season;
         } = {
           topic: "",
           name: "",
           recognitionType: "",
           duration: 0,
           url: "",
+          claveCurso: "",
           startDate: "",
           endDate: "",
         };

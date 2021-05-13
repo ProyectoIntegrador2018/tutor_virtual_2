@@ -28,6 +28,10 @@ export function CoursesTable({ data }: IProps) {
         accessor: "recognitionType",
       },
       {
+        Header: "Clave Curso",
+        accessor: "claveCurso"
+      },
+      {
         Header: "Inicio",
         accessor: "startDate",
         Cell: ({ value }) => { 
