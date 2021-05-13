@@ -18,6 +18,7 @@ export class CourseService {
     course.duration = args.duration;
     course.recognitionType = args.recognitionType;
     course.url = args.url;
+    course.claveCurso = args.claveCurso;
     course.startDate = args.startDate;
     course.endDate = args.endDate;
     const savedCourse = await this.courseRepository.save(course);

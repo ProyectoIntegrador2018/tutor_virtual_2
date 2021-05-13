@@ -4,6 +4,7 @@ export interface ICreateArgs {
   duration: number;
   recognitionType: string;
   url: string;
+  claveCurso: string;
   startDate: string;
   endDate: string;
 }
