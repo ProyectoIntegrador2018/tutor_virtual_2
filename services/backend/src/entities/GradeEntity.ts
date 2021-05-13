@@ -15,4 +15,7 @@ export class Grade {
 
   @Column()
   grade: number;
+
+  @Column()
+  activity: number;
 }
