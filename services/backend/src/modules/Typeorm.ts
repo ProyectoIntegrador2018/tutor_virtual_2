@@ -9,6 +9,8 @@ import { logger } from "../utils/logger";
 import { Ally } from "../entities/AllyEntity";
 import { Student } from "../entities/StudentEntity";
 import { Grade } from "../entities/GradeEntity";
+import { TutorCourse } from "../entities/TutorCourseEntity";
+import { SupervisorCourse } from "../entities/SupervisorCourseEntity";
 
 const startTypeorm = (): Promise<Connection> => {
   /*
@@ -32,7 +34,17 @@ const startTypeorm = (): Promise<Connection> => {
     type: "postgres",
     synchronize: !__prod__,
     ssl: __prod__,
-    entities: [User, Role, Season, Course, Ally, Student, Grade],
+    entities: [
+      User,
+      Role,
+      Season,
+      Course,
+      Ally,
+      Student,
+      Grade,
+      TutorCourse,
+      SupervisorCourse,
+    ],
     extra: __prod__
       ? {
           ssl: {
