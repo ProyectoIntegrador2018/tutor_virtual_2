@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Heading, Flex, Text, useToast } from "@chakra-ui/react";
+import { Box, Link, Heading, Flex, Text, useToast } from "@chakra-ui/react";
 import { useAuth } from "lib/hooks/useAuth";
+import NextLink from "next/link";
 import { LoginForm } from "./LoginForm";
 
 export function LoginPageContent() {
@@ -57,6 +58,14 @@ export function LoginPageContent() {
             });
           }}
         />
+        <Text mt={4} textAlign="center" color="blackAlpha.700">
+          Aliado?{" "}
+          <NextLink href="/aliados" passHref>
+            <Link href="/aliados" fontWeight="600">
+              Ingresa para ver tus estudiantes aqui.
+            </Link>
+          </NextLink>
+        </Text>
       </Flex>
     </Box>
   );

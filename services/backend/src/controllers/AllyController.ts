@@ -119,4 +119,16 @@ export default class AllyController extends BaseController {
       contact: joi.string().allow(null, ""),
     });
   }
+
+  private async getStudents() {
+    const { vanity_id } = this.getParams();
+    const students = await this.allyService.getStudentsFromVanityId(vanity_id);
+    this.ok({ students });
+  }
+
+  private getStudentsParams() {
+    return joi.object({
+      vanity_id: joi.string().required(),
+    });
+  }
 }
