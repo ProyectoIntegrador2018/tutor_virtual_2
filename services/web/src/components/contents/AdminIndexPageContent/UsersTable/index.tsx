@@ -49,6 +49,10 @@ export function UsersTable({ data, currentSelectedRole, refetchData }: IProps) {
         accessor: "email",
       },
       {
+        Header: "Contraseña",
+        accessor: "password",
+      },
+      {
         Header: "Cuenta activa",
         accessor: (row) =>
           row.hasAccountEnabled === true ? "Activa" : "No activa",
