@@ -2,14 +2,16 @@ import joi from "joi";
 import { Service } from "typedi";
 import ExcelJS from "exceljs";
 import { Container } from "typeorm-typedi-extensions";
+import BaseController, { IArgs } from "./BaseController";
 import { User } from "../entities/UserEntity";
 import { Student } from "../entities/StudentEntity";
 import { UserService } from "../services/UserService";
 import { RoleService } from "../services/RoleService";
 import { StudentService } from "../services/StudentService";
 import { AllyService } from "../services/AllyService";
+import { TutorCourseService } from "../services/TutorCourseService";
+import { SupervisorCourseService } from "../services/SupervisorCourseService";
 import { Role, UserRoleName } from "../entities/RoleEntity";
-import BaseController, { IArgs } from "./BaseController";
 import { ExcelFile } from "../lib/ExcelFile";
 import { logger } from "../utils/logger";
 
@@ -19,6 +21,8 @@ export default class UserController extends BaseController {
   roleService: RoleService;
   studentService: StudentService;
   allyService: AllyService;
+  tutorCourseService: TutorCourseService;
+  supervisorCourseService: SupervisorCourseService;
 
   constructor(args: IArgs) {
     super(args);
@@ -26,6 +30,8 @@ export default class UserController extends BaseController {
     this.roleService = Container.get(RoleService);
     this.studentService = Container.get(StudentService);
     this.allyService = Container.get(AllyService);
+    this.tutorCourseService = Container.get(TutorCourseService);
+    this.supervisorCourseService = Container.get(SupervisorCourseService);
   }
 
   private async create() {
@@ -265,6 +271,7 @@ export default class UserController extends BaseController {
       country: "V",
       state: "W",
       city: "X",
+      courseKey: "J", // Clave del curso al que está asociado este usuario.
     };
     const entityData: { [key: string]: string } = {};
     Object.keys(columns).forEach((key) => {
@@ -284,7 +291,7 @@ export default class UserController extends BaseController {
         user: null,
       };
     } else if (role !== "designer") {
-      const user = this.createUserFromRow(role, entityData);
+      const user = this.createOrFindUserFromRow(role, entityData);
       return {
         student: null,
         user,
@@ -315,16 +322,18 @@ export default class UserController extends BaseController {
     });
   }
 
-  private async createUserFromRow(
+  private async createOrFindUserFromRow(
     role: string,
     entityData: { [key: string]: string }
   ) {
+    const tutorRole = "teacher";
+    const supervisorRole = "coordinador";
     let roleObject: Role;
     switch (role) {
-      case "teacher":
+      case tutorRole:
         roleObject = await this.roleService.findOrCreate(UserRoleName.TUTOR);
         break;
-      case "coordinador":
+      case supervisorRole:
         roleObject = await this.roleService.findOrCreate(
           UserRoleName.SUPERVISOR
         );
@@ -332,14 +341,57 @@ export default class UserController extends BaseController {
       default:
         roleObject = await this.roleService.findOrCreate(UserRoleName.TUTOR);
     }
-    return this.userService.create({
-      username: entityData.username,
-      email: entityData.email,
-      firstName: entityData.name,
-      paternalName: entityData.paternalName,
-      maternalName: entityData.maternalName,
-      password: entityData.password,
-      role: roleObject,
-    });
+    let user = await this.userService.findOne({ email: entityData.email });
+    if (!user) {
+      user = await this.userService.create({
+        username: entityData.username,
+        email: entityData.email,
+        firstName: entityData.name,
+        paternalName: entityData.paternalName,
+        maternalName: entityData.maternalName,
+        password: entityData.password,
+        role: roleObject,
+      });
+    }
+    if (role === tutorRole) {
+      await this.associateTutorWithCourse(user, entityData.courseKey);
+    } else if (role === supervisorRole) {
+      await this.associateSupervisorWithCourse(user, entityData.courseKey);
+    }
+    return user;
+  }
+
+  private async associateTutorWithCourse(user: User, courseKey: string) {
+    try {
+      await this.tutorCourseService.create({
+        tutorId: user.id,
+        courseKey: courseKey,
+      });
+      logger.info(
+        `Succesfully associated course ${courseKey} with tutor: ${user.email}`
+      );
+    } catch (err) {
+      logger.error(
+        `Could not associate course ${courseKey} with tutor: ${user.email}`
+      );
+      logger.error(err);
+    }
+  }
+
+  private async associateSupervisorWithCourse(user: User, courseKey: string) {
+    try {
+      await this.supervisorCourseService.create({
+        supervisorId: user.id,
+        courseKey: courseKey,
+      });
+      logger.info(
+        `Succesfully associated course ${courseKey} with supervisor: ${user.email}`
+      );
+    } catch (err) {
+      logger.error(
+        `Could not associate course ${courseKey} with supervisor: ${user.email}`
+      );
+      logger.error(err);
+    }
   }
 }
