@@ -114,6 +114,7 @@ export function CoursesPageContent() {
               initialValues={{
                 name: "",
                 topic: "",
+                claveCurso: "",
                 duration: 0,
                 recognitionType: "",
                 url: "",
@@ -124,6 +125,7 @@ export function CoursesPageContent() {
                 {
                   name,
                   topic,
+                  claveCurso,
                   duration,
                   recognitionType,
                   url,
@@ -136,6 +138,7 @@ export function CoursesPageContent() {
                   {
                     name,
                     topic,
+                    claveCurso,
                     duration,
                     recognitionType,
                     url,

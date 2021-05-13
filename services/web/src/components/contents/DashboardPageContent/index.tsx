@@ -7,9 +7,11 @@ export function DashboardPageContent() {
 
   return (
     <Box>
-      <Heading fontSize="5xl">
-        Te damos la bienvenida, {user.firstName}!{" "}
-      </Heading>
+      {user && (
+        <Heading fontSize="5xl">
+          Te damos la bienvenida, {user.firstName}!{" "}
+        </Heading>
+      )}
       <Text fontSize="xl" mt={8}>
         Comienza a explorar el menú para que veas las distintas funcionalidades
         que el sistema tiene para ti!

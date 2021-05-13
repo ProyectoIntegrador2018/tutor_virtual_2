@@ -31,7 +31,7 @@ export function CoursesTable({ data }: IProps) {
       },
       {
         Header: "Clave Curso",
-        accessor: "claveCurso"
+        accessor: "claveCurso",
       },
       {
         Header: "Inicio",
@@ -54,7 +54,11 @@ export function CoursesTable({ data }: IProps) {
       {
         Header: "Detalles",
         accessor: (row) => (
-          <Button onClick={() => router.push("/courses/123")}>Ver más</Button>
+          <div>
+            <Button onClick={() => router.push(`/courses/${row.id}`)}>
+              Ver más
+            </Button>
+          </div>
         ),
         id: "id",
       },
