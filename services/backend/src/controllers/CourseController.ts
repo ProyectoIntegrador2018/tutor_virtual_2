@@ -98,7 +98,7 @@ export default class CourseController extends BaseController {
       // Ignore Headers
       if (number > 1) {
         const course: ICreateArgs & {
-          [key: string]: string | number | Season;
+          [key: string]: string | number;
         } = {
           topic: "",
           name: "",
