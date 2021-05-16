@@ -34,7 +34,7 @@ export class TutorCourseService {
     return this.tutorCourseRepository.save(tutorCourse);
   }
 
-  private async findCoursesForUser({
+  public async findCoursesForUser({
     userId,
   }: IFindCoursesForUser): Promise<Course[]> {
     const tutorCourses = await this.tutorCourseRepository.find({

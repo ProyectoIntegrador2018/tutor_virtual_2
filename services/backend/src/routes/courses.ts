@@ -13,6 +13,14 @@ export const routes: IRoute[] = [
     },
   }),
   new Route({
+    path: "/course",
+    method: "GET",
+    withController: {
+      action: "getCourse",
+      controller: CourseController,
+    },
+  }),
+  new Route({
     path: "/courses",
     method: "POST",
     withController: {

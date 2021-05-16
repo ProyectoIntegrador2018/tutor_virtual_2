@@ -11,7 +11,21 @@ import { ExcelFile } from "../lib/ExcelFile";
 import Joi from "joi";
 import { ICreateArgs } from "../services/CourseService/ICreateArgs";
 
-const courseProperty = ["program", "topic", "name", "group", "claveCurso", "inscriptionStart", "inscriptionEnd", "startDate", "endDate", "recognitionType", "duration", "activities", "url"];
+const courseProperty = [
+  "program",
+  "topic",
+  "name",
+  "group",
+  "claveCurso",
+  "inscriptionStart",
+  "inscriptionEnd",
+  "startDate",
+  "endDate",
+  "recognitionType",
+  "duration",
+  "activities",
+  "url",
+];
 
 @Service()
 export default class CourseController extends BaseController {
@@ -68,6 +82,22 @@ export default class CourseController extends BaseController {
     return joi.object({
       page: joi.number().min(0).required(),
       pageSize: joi.number().min(0).max(50).required(),
+    });
+  }
+
+  private async getCourse() {
+    const params = this.getParams();
+    const course = await this.courseService.findOne({ id: params.id });
+    const notFoundMsg = "Course does not exist.";
+    if (!course) {
+      return this.notFound(notFoundMsg);
+    }
+    this.ok({ course });
+  }
+
+  private getCourseParams() {
+    return joi.object({
+      id: joi.string().required(),
     });
   }
 
