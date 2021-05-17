@@ -8,7 +8,9 @@ export default function Course() {
   const { courseID } = router.query;
   return (
     <PrivateLayout>
+      {courseID && (
       <CoursePageContent courseID={courseID} />
+      )}
     </PrivateLayout>
   );
 }
