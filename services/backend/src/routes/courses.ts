@@ -15,6 +15,15 @@ export const routes: IRoute[] = [
     },
   }),
   new Route({
+    path: "/courses/tutor",
+    method: "GET",
+    requireAuth: [RouteAuthRolesEnum.TUTOR],
+    withController: {
+      action: "tutorCourses",
+      controller: CourseController,
+    },
+  }),
+  new Route({
     path: "/courses",
     method: "GET",
     requireAuth: [RouteAuthRolesEnum.SUPERADMIN],
