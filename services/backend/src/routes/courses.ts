@@ -8,7 +8,7 @@ export const routes: IRoute[] = [
   new Route({
     path: "/courses",
     method: "GET",
-    requireAuth: [RouteAuthRolesEnum.SUPERADMIN, RouteAuthRolesEnum.SUPERVISOR],
+    requireAuth: [RouteAuthRolesEnum.SUPERADMIN],
     withController: {
       action: "courses",
       controller: CourseController,
