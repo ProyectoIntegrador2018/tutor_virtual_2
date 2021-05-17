@@ -11,6 +11,7 @@ import { logger } from "../utils/logger";
 import { ExcelFile } from "../lib/ExcelFile";
 import Joi from "joi";
 import { ICreateArgs } from "../services/CourseService/ICreateArgs";
+import { format, add, parseISO } from "date-fns";
 
 const courseProperty = [
   "program",
@@ -55,6 +56,9 @@ export default class CourseController extends BaseController {
       startDate: params.startDate,
       endDate: params.endDate,
     });
+    const season = await this.seasonService.findOrCreate({ starting: params.startDate, ending: params.endDate });
+    await this.courseService.addSeason(course.id, { season });
+    await this.seasonService.addCourse(season.id, { course });
     logger.info(`Course "${course.name}" succesfully registered!`);
     this.ok({ course });
   }
@@ -117,6 +121,7 @@ export default class CourseController extends BaseController {
     const worksheet = worksheets[0];
 
     const promises: Promise<Course>[] = [];
+    let seasonDates: { starting: string, ending: string }[] = [];
 
     const schema: { [key: string]: Joi.Schema } = {
       topic: Joi.string().required(),
@@ -130,7 +135,6 @@ export default class CourseController extends BaseController {
     };
 
     worksheet.eachRow((row, number) => {
-      // Ignore Headers
       if (number > 1) {
         const course: ICreateArgs & {
           [key: string]: string | number;
@@ -146,26 +150,42 @@ export default class CourseController extends BaseController {
         };
         row.eachCell((cell, colNumber) => {
           try {
-            const value = Joi.attempt(
+            let value = Joi.attempt(
               cell.text,
               schema[courseProperty[colNumber - 1]]
             );
+            if (courseProperty[colNumber - 1] === 'startDate' || courseProperty[colNumber - 1] === 'endDate') {
+              value = format(value, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
+              value = add(parseISO(value), { days: 1 });
+            }
             course[courseProperty[colNumber - 1]] = value;
           } catch (error) {
             logger.error(error);
           }
         });
+        seasonDates.push({ starting: course.startDate, ending: course.endDate });
         promises.push(this.courseService.create(course));
       }
     });
 
+    for (let i = 0; i < seasonDates.length; i++) {
+      await this.seasonService.findOrCreate({
+        starting: seasonDates[i].starting, ending: seasonDates[i].ending
+      });
+    }
+
     try {
       const courses = await Promise.all(
-        promises.map((promise) =>
+        promises.map((promise) => {
           promise.catch(({ message }) => ({
             message,
           }))
-        )
+          promise.then(async (course) => {
+            let season = await this.seasonService.findOrCreate({ starting: course.startDate, ending: course.endDate });
+            await this.courseService.addSeason(course.id, { season });
+            await this.seasonService.addCourse(season.id, { course });
+          })
+        })
       );
       this.ok({ courses });
     } catch (e) {

@@ -117,6 +117,7 @@ export function CoursesPageContent() {
                 duration: 0,
                 recognitionType: "",
                 url: "",
+                claveCurso: "",
                 startDate: "",
                 endDate: "",
               }}
@@ -127,6 +128,7 @@ export function CoursesPageContent() {
                   duration,
                   recognitionType,
                   url,
+                  claveCurso,
                   startDate,
                   endDate,
                 },
@@ -139,6 +141,7 @@ export function CoursesPageContent() {
                     duration,
                     recognitionType,
                     url,
+                    claveCurso,
                     startDate,
                     endDate,
                   },

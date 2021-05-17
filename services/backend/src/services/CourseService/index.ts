@@ -2,6 +2,7 @@ import { Service } from "typedi";
 import { Repository, FindOneOptions, FindConditions } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { ICreateArgs } from "./ICreateArgs";
+import { IAddArgs } from "./IAddArgs";
 import { Course } from "../../entities/CourseEntity";
 
 @Service()
@@ -23,6 +24,10 @@ export class CourseService {
     course.endDate = args.endDate;
     const savedCourse = await this.courseRepository.save(course);
     return savedCourse;
+  }
+
+  public async addSeason(id: string, args: IAddArgs): Promise<Course> {
+    return this.courseRepository.save({ id, ...args });
   }
 
   public findOne(conds?: FindConditions<Course>, opts?: FindOneOptions<Course>) {
