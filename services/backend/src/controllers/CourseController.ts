@@ -90,6 +90,22 @@ export default class CourseController extends BaseController {
     });
   }
 
+  private async getCourse() {
+    const params = this.getParams();
+    const course = await this.courseService.findOne({ id: params.id });
+    const notFoundMsg = "Course does not exist.";
+    if (!course) {
+      return this.notFound(notFoundMsg);
+    }
+    this.ok({ course });
+  }
+
+  private getCourseParams() {
+    return joi.object({
+      id: joi.string().required(),
+    });
+  }
+
   private async uploadCourses() {
     const excelFile = new ExcelFile({});
     await excelFile.load(this.req.file);
