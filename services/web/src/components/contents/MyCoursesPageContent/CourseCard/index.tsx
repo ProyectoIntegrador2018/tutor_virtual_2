@@ -1,12 +1,14 @@
 import React from "react";
 import NextLink from "next/link";
-import { Box, Text, Link } from "@chakra-ui/react";
+import { Box, Text, Link, Button } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 interface IProps {
   course: any;
 }
 
 export function CourseCard({ course }: IProps) {
+  const router = useRouter();
   return (
     <Box p={6} boxShadow="xl" borderRadius="xl">
       <Text fontSize="lg" fontWeight={700}>
@@ -23,6 +25,7 @@ export function CourseCard({ course }: IProps) {
           </Link>
         </NextLink>
       </Box>
+      <Button colorScheme="primary" mt="5" onClick={() => router.push(`/tutor/courses/${course.id}`)}>Ver curso</Button>
     </Box>
   );
 }
