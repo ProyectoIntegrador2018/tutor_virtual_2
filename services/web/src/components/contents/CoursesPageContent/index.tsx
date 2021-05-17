@@ -109,7 +109,16 @@ export function CoursesPageContent() {
                 endDate: ""
               }}
               onSubmit={(
-                { name, topic, duration, recognitionType, url, claveCurso, startDate, endDate },
+                {
+                  name,
+                  topic,
+                  duration,
+                  recognitionType,
+                  url,
+                  claveCurso,
+                  startDate,
+                  endDate,
+                },
                 actions
               ) => {
                 mutate(
