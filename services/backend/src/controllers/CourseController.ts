@@ -11,6 +11,8 @@ import { logger } from "../utils/logger";
 import { ExcelFile } from "../lib/ExcelFile";
 import Joi from "joi";
 import { ICreateArgs } from "../services/CourseService/ICreateArgs";
+import { StudentCourseService } from "../services/StudentCourseService";
+import { UserRoleName } from "src/entities/RoleEntity";
 
 const courseProperty = [
   "program",
@@ -34,6 +36,7 @@ export default class CourseController extends BaseController {
   seasonService: SeasonService;
   supervisorCourseService: SupervisorCourseService;
   tutorCourseService: TutorCourseService;
+  studentCourseService: StudentCourseService;
 
   constructor(args: IArgs) {
     super(args);
@@ -41,6 +44,7 @@ export default class CourseController extends BaseController {
     this.seasonService = Container.get(SeasonService);
     this.supervisorCourseService = Container.get(SupervisorCourseService);
     this.tutorCourseService = Container.get(TutorCourseService);
+    this.studentCourseService = Container.get(StudentCourseService);
   }
 
   private async create() {
@@ -190,5 +194,39 @@ export default class CourseController extends BaseController {
 
   private tutorCoursesParams() {
     return joi.object({});
+  }
+
+  private async coursesStudents() {
+    const me = await this.cv.getUser();
+    const params = this.getParams();
+    if (!me) {
+      return this.forbidden("User needs to be logged in!");
+    }
+
+    const role = await this.cv.getRole();
+
+    if (role === UserRoleName.TUTOR) {
+      const isOwner = await this.tutorCourseService.isUserOwnerOfCourse({
+        userId: me.id,
+        courseKey: params.courseKey,
+      });
+
+      if (!isOwner) {
+        this.forbidden("You are not an owner of this course");
+        return;
+      }
+    }
+
+    const students = await this.studentCourseService.getStudentsFromCourse({
+      courseKey: params.courseKey,
+    });
+
+    this.ok({ students });
+  }
+
+  private coursesStudentsParams() {
+    return joi.object({
+      courseKey: joi.string().required(),
+    });
   }
 }

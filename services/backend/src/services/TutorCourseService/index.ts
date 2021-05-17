@@ -8,6 +8,7 @@ import { UserService } from "../UserService";
 import { UserRoleName } from "../../entities/RoleEntity";
 import { Course } from "../../entities/CourseEntity";
 import { CourseService } from "../CourseService";
+import { IUserOwnerOfCourse } from "./IUserOwnerOfCourse";
 
 @Service()
 export class TutorCourseService {
@@ -52,5 +53,16 @@ export class TutorCourseService {
       })
     );
     return courses;
+  }
+
+  public async isUserOwnerOfCourse({
+    userId,
+    courseKey,
+  }: IUserOwnerOfCourse): Promise<boolean> {
+    const tutorCourses = await this.tutorCourseRepository.find({
+      tutorId: userId,
+      courseKey,
+    });
+    return tutorCourses != null;
   }
 }

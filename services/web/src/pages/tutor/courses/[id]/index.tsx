@@ -2,7 +2,8 @@ import React from "react";
 import requirePageAuth from "lib/auth/requirePageAuth";
 import { UserRoleName } from "lib/types/role";
 import { PrivateLayout } from "components/layouts/PrivateLayout";
-import { MyCoursesPageContent } from "../../components/contents/MyCoursesPageContent";
+import { TutorCoursesStudentsPageContent } from "components/contents/TutorCoursesStudentsPageContent";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = requirePageAuth({
   roles: [UserRoleName.TUTOR],
@@ -10,9 +11,13 @@ export const getServerSideProps = requirePageAuth({
 });
 
 export default function TutorCoursesPage() {
+  const router = useRouter();
+
   return (
     <PrivateLayout>
-      <MyCoursesPageContent myCoursesURL="/courses/tutor" />
+      {router.query.id && !(router.query.id instanceof Array) && (
+        <TutorCoursesStudentsPageContent courseKey={router.query.id} />
+      )}
     </PrivateLayout>
   );
 }

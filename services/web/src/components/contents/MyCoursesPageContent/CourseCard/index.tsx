@@ -1,6 +1,6 @@
 import React from "react";
 import NextLink from "next/link";
-import { Box, Text, Link } from "@chakra-ui/react";
+import { Box, Text, Link, Flex } from "@chakra-ui/react";
 
 interface IProps {
   course: any;
@@ -16,13 +16,18 @@ export function CourseCard({ course }: IProps) {
         {course.claveCurso}
       </Text>
       <Text>{course.recognitionType}</Text>
-      <Box mt={6}>
+      <Flex mt={6} justifyContent="space-between">
         <NextLink href={course.url} prefetch={false}>
           <Link target="_blank" color="primary.200" href={course.url}>
             {course.url}
           </Link>
         </NextLink>
-      </Box>
+        <NextLink href={`/tutor/courses/${course.claveCurso}`} passHref>
+          <Link href={`/tutor/courses/${course.claveCurso}`} fontWeight="600">
+            Ver Estudiantes
+          </Link>
+        </NextLink>
+      </Flex>
     </Box>
   );
 }
