@@ -7,9 +7,10 @@ import { CourseCard } from "./CourseCard";
 
 interface IProps {
   myCoursesURL: string;
+  roleName: string;
 }
 
-export function MyCoursesPageContent({ myCoursesURL }: IProps) {
+export function MyCoursesPageContent({ myCoursesURL, roleName }: IProps) {
   const { data, isLoading } = useQuery(myCoursesURL, () =>
     fetcherV1.get(myCoursesURL).then((res) => res.data)
   );
@@ -33,7 +34,7 @@ export function MyCoursesPageContent({ myCoursesURL }: IProps) {
       <Heading fontSize="5xl">Mis cursos</Heading>
       <SimpleGrid mt={10} spacing={8} columns={[1, 1, null, 2]}>
         {courses.map((c) => (
-          <CourseCard course={c} />
+          <CourseCard course={c} roleName={roleName}/>
         ))}
       </SimpleGrid>
     </Box>

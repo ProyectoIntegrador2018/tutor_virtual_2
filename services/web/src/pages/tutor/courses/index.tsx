@@ -12,7 +12,7 @@ export const getServerSideProps = requirePageAuth({
 export default function TutorCoursesPage() {
   return (
     <PrivateLayout>
-      <MyCoursesPageContent myCoursesURL="/courses/tutor" />
+      <MyCoursesPageContent myCoursesURL="/courses/tutor" roleName="tutor" />
     </PrivateLayout>
   );
 }

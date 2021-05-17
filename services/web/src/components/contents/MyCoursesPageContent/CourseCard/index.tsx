@@ -5,9 +5,10 @@ import { useRouter } from "next/router";
 
 interface IProps {
   course: any;
+  roleName: string;
 }
 
-export function CourseCard({ course }: IProps) {
+export function CourseCard({ course, roleName }: IProps) {
   const router = useRouter();
   return (
     <Box p={6} boxShadow="xl" borderRadius="xl">
@@ -25,7 +26,13 @@ export function CourseCard({ course }: IProps) {
           </Link>
         </NextLink>
       </Box>
-      <Button colorScheme="primary" mt="5" onClick={() => router.push(`/tutor/courses/${course.id}`)}>Ver curso</Button>
+      <Button
+        colorScheme="primary"
+        mt="5"
+        onClick={() => router.push(`/${roleName}/courses/${course.id}`)}
+      >
+        Ver curso
+      </Button>
     </Box>
   );
 }
