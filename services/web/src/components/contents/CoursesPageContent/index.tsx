@@ -1,4 +1,6 @@
-import { Box,
+import React, { useMemo, useState } from "react";
+import {
+  Box,
   useToast,
   Button,
   Flex,
@@ -10,21 +12,22 @@ import { Box,
   Stack,
   ModalBody,
   ModalFooter,
-  useDisclosure, } from "@chakra-ui/react";
+  useDisclosure,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { backend } from "lib/constants/api";
 import { Course } from "lib/types/course";
-import { useMutation } from "react-query";
-import { CourseForm } from "./CourseForm";
-import React, { useMemo, useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { fetcherV1 } from "fetchers";
-import { CoursesTable } from "./CoursesTable";
-import { NoCoursesText } from "./NoCoursesText";
 import { ExcelUploaderSection } from "components/modules/ExcelUploaderSection";
-import { parseISO, format } from "date-fns";
+import { useAuth } from "lib/hooks/useAuth";
+import { UserRoleName } from "lib/types/role";
+import { CoursesTable } from "./CoursesTable";
+import { CourseForm } from "./CourseForm";
 
 export function CoursesPageContent() {
+  const { role } = useAuth();
+  const isSuperadmin = UserRoleName.SUPERADMIN === role;
   const toast = useToast();
   const [page, setPage] = useState(0);
   const [pageSize] = useState(20);
@@ -46,17 +49,27 @@ export function CoursesPageContent() {
   const { mutate } = useMutation<Course, Error, Course>((newCourse) =>
     axios.post(`${backend}/v1/courses`, newCourse, { withCredentials: true })
   );
-  const { isOpen: isOpenCreate, onOpen: onOpenCreate, onClose: onCloseCreate } = useDisclosure();
-  const { isOpen: isOpenUpload, onOpen: onOpenUpload, onClose: onCloseUpload } = useDisclosure();
+  const {
+    isOpen: isOpenCreate,
+    onOpen: onOpenCreate,
+    onClose: onCloseCreate,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenUpload,
+    onOpen: onOpenUpload,
+    onClose: onCloseUpload,
+  } = useDisclosure();
 
   return (
     <Box>
       <Flex justifyContent="space-between" alignItems="center" mb={10}>
         <Heading fontSize="5xl">Cursos</Heading>
-        <Stack direction={"row"} spacing={2}>
-          <Button onClick={onOpenCreate}>Crear Curso</Button>
-          <Button onClick={onOpenUpload}>Subir Cursos</Button>
-        </Stack>
+        {isSuperadmin && (
+          <Stack direction="row" spacing={2}>
+            <Button onClick={onOpenCreate}>Crear Curso</Button>
+            <Button onClick={onOpenUpload}>Subir Cursos</Button>
+          </Stack>
+        )}
       </Flex>
       {isLoading && <Spinner />}
       {tableData !== undefined && <CoursesTable data={tableData.courses} />}
@@ -106,7 +119,7 @@ export function CoursesPageContent() {
                 url: "",
                 claveCurso: "",
                 startDate: "",
-                endDate: ""
+                endDate: "",
               }}
               onSubmit={(
                 {
@@ -130,7 +143,7 @@ export function CoursesPageContent() {
                     url,
                     claveCurso,
                     startDate,
-                    endDate
+                    endDate,
                   },
                   {
                     onSuccess: () => {

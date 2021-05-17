@@ -2,22 +2,17 @@ import React from "react";
 import requirePageAuth from "lib/auth/requirePageAuth";
 import { UserRoleName } from "lib/types/role";
 import { PrivateLayout } from "components/layouts/PrivateLayout";
-import { DashboardPageContent } from "components/contents/DashboardPageContent";
+import { MyCoursesPageContent } from "../../components/contents/MyCoursesPageContent";
 
 export const getServerSideProps = requirePageAuth({
-  roles: [
-    UserRoleName.SUPERVISOR,
-    UserRoleName.SUPERADMIN,
-    UserRoleName.ALLY,
-    UserRoleName.TUTOR,
-  ],
+  roles: [UserRoleName.SUPERVISOR],
   redirect: "/",
 });
 
-export default function DashboardPage() {
+export default function SupervisorCoursesPage() {
   return (
     <PrivateLayout>
-      <DashboardPageContent />
+      <MyCoursesPageContent myCoursesURL="/courses/supervisor" />
     </PrivateLayout>
   );
 }

@@ -4,6 +4,8 @@ import { Service } from "typedi";
 import { Container } from "typeorm-typedi-extensions";
 import { CourseService } from "../services/CourseService";
 import { SeasonService } from "../services/SeasonService";
+import { SupervisorCourseService } from "../services/SupervisorCourseService";
+import { TutorCourseService } from "../services/TutorCourseService";
 import { Course } from "../entities/CourseEntity";
 import { logger } from "../utils/logger";
 import { ExcelFile } from "../lib/ExcelFile";
@@ -11,17 +13,35 @@ import Joi from "joi";
 import { ICreateArgs } from "../services/CourseService/ICreateArgs";
 import { format, add, parseISO } from "date-fns";
 
-const courseProperty = ["program", "topic", "name", "group", "claveCurso", "inscriptionStart", "inscriptionEnd", "startDate", "endDate", "recognitionType", "duration", "activities", "url"];
+const courseProperty = [
+  "program",
+  "topic",
+  "name",
+  "group",
+  "claveCurso",
+  "inscriptionStart",
+  "inscriptionEnd",
+  "startDate",
+  "endDate",
+  "recognitionType",
+  "duration",
+  "activities",
+  "url",
+];
 
 @Service()
 export default class CourseController extends BaseController {
   courseService: CourseService;
   seasonService: SeasonService;
+  supervisorCourseService: SupervisorCourseService;
+  tutorCourseService: TutorCourseService;
 
   constructor(args: IArgs) {
     super(args);
     this.courseService = Container.get(CourseService);
     this.seasonService = Container.get(SeasonService);
+    this.supervisorCourseService = Container.get(SupervisorCourseService);
+    this.tutorCourseService = Container.get(TutorCourseService);
   }
 
   private async create() {
@@ -71,6 +91,22 @@ export default class CourseController extends BaseController {
     return joi.object({
       page: joi.number().min(0).required(),
       pageSize: joi.number().min(0).max(50).required(),
+    });
+  }
+
+  private async getCourse() {
+    const params = this.getParams();
+    const course = await this.courseService.findOne({ id: params.id });
+    const notFoundMsg = "Course does not exist.";
+    if (!course) {
+      return this.notFound(notFoundMsg);
+    }
+    this.ok({ course });
+  }
+
+  private getCourseParams() {
+    return joi.object({
+      id: joi.string().required(),
     });
   }
 
@@ -159,6 +195,36 @@ export default class CourseController extends BaseController {
   }
 
   private uploadCoursesParams() {
+    return joi.object({});
+  }
+
+  private async supervisorCourses() {
+    const me = await this.cv.getUser();
+    if (!me) {
+      return this.forbidden("User needs to be logged in!");
+    }
+    const courses = await this.supervisorCourseService.findCoursesForUser({
+      userId: me.id,
+    });
+    this.ok({ courses });
+  }
+
+  private supervisorCoursesParams() {
+    return joi.object({});
+  }
+
+  private async tutorCourses() {
+    const me = await this.cv.getUser();
+    if (!me) {
+      return this.forbidden("User needs to be logged in!");
+    }
+    const courses = await this.tutorCourseService.findCoursesForUser({
+      userId: me.id,
+    });
+    this.ok({ courses });
+  }
+
+  private tutorCoursesParams() {
     return joi.object({});
   }
 }

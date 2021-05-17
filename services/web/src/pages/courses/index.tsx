@@ -5,7 +5,7 @@ import { UserRoleName } from "lib/types/role";
 import React from "react";
 
 export const getServerSideProps = requirePageAuth({
-  roles: [UserRoleName.SUPERADMIN, UserRoleName.SUPERVISOR],
+  roles: [UserRoleName.SUPERADMIN],
   redirect: "/",
 });
 

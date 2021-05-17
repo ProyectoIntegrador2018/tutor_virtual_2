@@ -9,7 +9,7 @@ export const getServerSideProps = requirePageAuth({
   redirect: "/",
 });
 
-export default function AdminIndex() {
+export default function SupervisorIndex() {
   return (
     <PrivateLayout>
       <SupervisorIndexPageContent />
