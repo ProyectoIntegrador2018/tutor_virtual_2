@@ -12,7 +12,7 @@ import { ExcelFile } from "../lib/ExcelFile";
 import Joi from "joi";
 import { ICreateArgs } from "../services/CourseService/ICreateArgs";
 import { StudentCourseService } from "../services/StudentCourseService";
-import { UserRoleName } from "src/entities/RoleEntity";
+import { UserRoleName } from "../entities/RoleEntity";
 
 const courseProperty = [
   "program",

@@ -22,7 +22,11 @@ export function TutorCoursesStudentsPageContent({ courseKey }: IProps) {
   return (
     <Box>
       <Heading mb={4}>Mis Estudiantes</Heading>
-      <StudentsTable data={data.students} />
+      {data && data.students && data.students.length > 0 ? (
+        <StudentsTable data={data.students} />
+      ) : (
+        <Heading size="lg">No hay Estudiantes inscritos en este Curso</Heading>
+      )}
     </Box>
   );
 }
