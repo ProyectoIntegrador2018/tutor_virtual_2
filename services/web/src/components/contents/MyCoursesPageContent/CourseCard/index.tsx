@@ -19,7 +19,7 @@ export function CourseCard({ course, roleName }: IProps) {
         {course.claveCurso}
       </Text>
       <Text>{course.recognitionType}</Text>
-      <Box mt={4}>
+      <Flex mt={4} justifyContent="space-between" alignItems="center">
         <NextLink href={course.url} prefetch={false}>
           <Link target="_blank" color="primary.200" href={course.url}>
             {course.url}
@@ -32,7 +32,7 @@ export function CourseCard({ course, roleName }: IProps) {
         >
           Ver curso
         </Button>
-      </Box>
+      </Flex>
     </Box>
   );
 }

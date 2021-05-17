@@ -254,10 +254,19 @@ export default class CourseController extends BaseController {
 
     const role = await this.cv.getRole();
 
+    const course = await this.courseService.findOne({ id: params.id });
+
+    const notFoundMsg = "Course does not exist.";
+    if (!course) {
+      return this.notFound(notFoundMsg);
+    }
+
+    const courseKey = course.claveCurso;
+
     if (role === UserRoleName.TUTOR) {
       const isOwner = await this.tutorCourseService.isUserOwnerOfCourse({
         userId: me.id,
-        courseKey: params.courseKey,
+        courseKey: courseKey,
       });
 
       if (!isOwner) {
@@ -267,7 +276,7 @@ export default class CourseController extends BaseController {
     }
 
     const students = await this.studentCourseService.getStudentsFromCourse({
-      courseKey: params.courseKey,
+      courseKey: courseKey,
     });
 
     this.ok({ students });
@@ -275,7 +284,7 @@ export default class CourseController extends BaseController {
 
   private coursesStudentsParams() {
     return joi.object({
-      courseKey: joi.string().required(),
+      id: joi.string().required(),
     });
   }
 }
