@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from "react";
-import NextLink from "next/link";
-import { Box, Text, Link, Heading } from "@chakra-ui/react";
-import { Course } from "lib/types/course";
-import { useQuery } from "react-query";
+import { Box, Heading, Link, Text } from "@chakra-ui/react";
 import { fetcherV1 } from "fetchers";
+import { Course } from "lib/types/course";
+import NextLink from "next/link";
+import React, { useMemo } from "react";
+import { useQuery } from "react-query";
+import { CourseStudent } from "../MyCoursesPageContent/CourseStudent";
 
 export function CoursePageContent(props) {
   const id = props.courseID;
@@ -60,6 +61,9 @@ export function CoursePageContent(props) {
           </Box>
         </>
       )}
+      <Box mt={8}>
+        <CourseStudent id={id} />
+      </Box>
     </Box>
   );
 }
