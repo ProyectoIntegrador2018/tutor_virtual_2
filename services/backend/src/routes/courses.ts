@@ -6,6 +6,15 @@ import { RouteAuthRolesEnum } from "../lib/RouteAuthRolesEnum";
 
 export const routes: IRoute[] = [
   new Route({
+    path: "/courses/supervisor",
+    method: "GET",
+    requireAuth: [RouteAuthRolesEnum.SUPERVISOR],
+    withController: {
+      action: "supervisorCourses",
+      controller: CourseController,
+    },
+  }),
+  new Route({
     path: "/courses",
     method: "GET",
     requireAuth: [RouteAuthRolesEnum.SUPERADMIN],

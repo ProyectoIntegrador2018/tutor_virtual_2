@@ -34,21 +34,23 @@ export class TutorCourseService {
     return this.tutorCourseRepository.save(tutorCourse);
   }
 
-  private async findCoursesForUser({
+  public async findCoursesForUser({
     userId,
   }: IFindCoursesForUser): Promise<Course[]> {
     const tutorCourses = await this.tutorCourseRepository.find({
       tutorId: userId,
     });
     let courses: Course[] = [];
-    await tutorCourses.forEach(async (tutorCourse) => {
-      const course = await this.courseService.findOne({
-        claveCurso: tutorCourse.courseKey,
-      });
-      if (course) {
-        courses.push(course);
-      }
-    });
+    await Promise.all(
+      tutorCourses.map(async (tc) => {
+        const course = await this.courseService.findOne({
+          claveCurso: tc.courseKey,
+        });
+        if (course) {
+          courses.push(course);
+        }
+      })
+    );
     return courses;
   }
 }
