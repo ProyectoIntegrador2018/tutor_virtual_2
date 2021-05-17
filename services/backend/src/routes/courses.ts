@@ -51,6 +51,19 @@ export const routes: IRoute[] = [
     },
   }),
   new Route({
+    path: "/courses/students",
+    method: "GET",
+    requireAuth: [
+      RouteAuthRolesEnum.TUTOR,
+      RouteAuthRolesEnum.SUPERADMIN,
+      RouteAuthRolesEnum.SUPERVISOR,
+    ],
+    withController: {
+      action: "coursesStudents",
+      controller: CourseController,
+    },
+  }),
+  new Route({
     path: "/courses/upload-excel",
     method: "POST",
     middleware: [ExcelFileUpload()],

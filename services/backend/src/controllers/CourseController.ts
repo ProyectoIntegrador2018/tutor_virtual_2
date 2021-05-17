@@ -12,6 +12,8 @@ import { ExcelFile } from "../lib/ExcelFile";
 import Joi from "joi";
 import { ICreateArgs } from "../services/CourseService/ICreateArgs";
 import { format, add, parseISO } from "date-fns";
+import { StudentCourseService } from "../services/StudentCourseService";
+import { UserRoleName } from "src/entities/RoleEntity";
 
 const courseProperty = [
   "program",
@@ -35,6 +37,7 @@ export default class CourseController extends BaseController {
   seasonService: SeasonService;
   supervisorCourseService: SupervisorCourseService;
   tutorCourseService: TutorCourseService;
+  studentCourseService: StudentCourseService;
 
   constructor(args: IArgs) {
     super(args);
@@ -42,6 +45,7 @@ export default class CourseController extends BaseController {
     this.seasonService = Container.get(SeasonService);
     this.supervisorCourseService = Container.get(SupervisorCourseService);
     this.tutorCourseService = Container.get(TutorCourseService);
+    this.studentCourseService = Container.get(StudentCourseService);
   }
 
   private async create() {
@@ -56,7 +60,10 @@ export default class CourseController extends BaseController {
       startDate: params.startDate,
       endDate: params.endDate,
     });
-    const season = await this.seasonService.findOrCreate({ starting: params.startDate, ending: params.endDate });
+    const season = await this.seasonService.findOrCreate({
+      starting: params.startDate,
+      ending: params.endDate,
+    });
     await this.courseService.addSeason(course.id, { season });
     await this.seasonService.addCourse(season.id, { course });
     logger.info(`Course "${course.name}" succesfully registered!`);
@@ -121,7 +128,7 @@ export default class CourseController extends BaseController {
     const worksheet = worksheets[0];
 
     const promises: Promise<Course>[] = [];
-    let seasonDates: { starting: string, ending: string }[] = [];
+    let seasonDates: { starting: string; ending: string }[] = [];
 
     const schema: { [key: string]: Joi.Schema } = {
       topic: Joi.string().required(),
@@ -154,7 +161,10 @@ export default class CourseController extends BaseController {
               cell.text,
               schema[courseProperty[colNumber - 1]]
             );
-            if (courseProperty[colNumber - 1] === 'startDate' || courseProperty[colNumber - 1] === 'endDate') {
+            if (
+              courseProperty[colNumber - 1] === "startDate" ||
+              courseProperty[colNumber - 1] === "endDate"
+            ) {
               value = format(value, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
               value = add(parseISO(value), { days: 1 });
             }
@@ -163,14 +173,18 @@ export default class CourseController extends BaseController {
             logger.error(error);
           }
         });
-        seasonDates.push({ starting: course.startDate, ending: course.endDate });
+        seasonDates.push({
+          starting: course.startDate,
+          ending: course.endDate,
+        });
         promises.push(this.courseService.create(course));
       }
     });
 
     for (let i = 0; i < seasonDates.length; i++) {
       await this.seasonService.findOrCreate({
-        starting: seasonDates[i].starting, ending: seasonDates[i].ending
+        starting: seasonDates[i].starting,
+        ending: seasonDates[i].ending,
       });
     }
 
@@ -179,12 +193,15 @@ export default class CourseController extends BaseController {
         promises.map((promise) => {
           promise.catch(({ message }) => ({
             message,
-          }))
+          }));
           promise.then(async (course) => {
-            let season = await this.seasonService.findOrCreate({ starting: course.startDate, ending: course.endDate });
+            let season = await this.seasonService.findOrCreate({
+              starting: course.startDate,
+              ending: course.endDate,
+            });
             await this.courseService.addSeason(course.id, { season });
             await this.seasonService.addCourse(season.id, { course });
-          })
+          });
         })
       );
       this.ok({ courses });
@@ -226,5 +243,39 @@ export default class CourseController extends BaseController {
 
   private tutorCoursesParams() {
     return joi.object({});
+  }
+
+  private async coursesStudents() {
+    const me = await this.cv.getUser();
+    const params = this.getParams();
+    if (!me) {
+      return this.forbidden("User needs to be logged in!");
+    }
+
+    const role = await this.cv.getRole();
+
+    if (role === UserRoleName.TUTOR) {
+      const isOwner = await this.tutorCourseService.isUserOwnerOfCourse({
+        userId: me.id,
+        courseKey: params.courseKey,
+      });
+
+      if (!isOwner) {
+        this.forbidden("You are not an owner of this course");
+        return;
+      }
+    }
+
+    const students = await this.studentCourseService.getStudentsFromCourse({
+      courseKey: params.courseKey,
+    });
+
+    this.ok({ students });
+  }
+
+  private coursesStudentsParams() {
+    return joi.object({
+      courseKey: joi.string().required(),
+    });
   }
 }
