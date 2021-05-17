@@ -1,3 +1,5 @@
+import { Season } from "../../entities/SeasonEntity";
+
 export interface IAddArgs {
-  season_id: string
+  season: Season
 }

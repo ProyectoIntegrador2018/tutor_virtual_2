@@ -4,6 +4,7 @@ import { Service } from "typedi";
 import { Container } from "typeorm-typedi-extensions";
 import { CourseService } from "../services/CourseService";
 import { SeasonService } from "../services/SeasonService";
+import { Season } from "../entities/SeasonEntity";
 import { Course } from "../entities/CourseEntity";
 import { logger } from "../utils/logger";
 import { ExcelFile } from "../lib/ExcelFile";
@@ -36,9 +37,7 @@ export default class CourseController extends BaseController {
       startDate: params.startDate,
       endDate: params.endDate,
     });
-    const season = await this.seasonService.findOrCreate({ starting: params.startDate, ending: params.endDate });
-    await this.courseService.addSeason(course.id, { season });
-    await this.seasonService.addCourse(season.id, { course });
+    await this.seasonService.findOrCreate({ starting: params.startDate, ending: params.endDate });
     logger.info(`Course "${course.name}" succesfully registered!`);
     this.ok({ course });
   }
@@ -85,7 +84,6 @@ export default class CourseController extends BaseController {
     const worksheet = worksheets[0];
 
     const promises: Promise<Course>[] = [];
-    let seasonDates: { starting: string, ending: string }[] = [];
 
     const schema: { [key: string]: Joi.Schema } = {
       topic: Joi.string().required(),
@@ -127,29 +125,18 @@ export default class CourseController extends BaseController {
             logger.error(error);
           }
         });
-        seasonDates.push({ starting: course.startDate, ending: course.endDate });
+        this.seasonService.findOrCreate({ starting: course.startDate, ending: course.endDate });
         promises.push(this.courseService.create(course));
       }
     });
 
-    for (let i = 0; i < seasonDates.length; i++) {
-      await this.seasonService.findOrCreate({
-        starting: seasonDates[i].starting, ending: seasonDates[i].ending
-      });
-    }
-
     try {
       const courses = await Promise.all(
-        promises.map((promise) => {
+        promises.map((promise) =>
           promise.catch(({ message }) => ({
             message,
           }))
-          promise.then(async (course) => {
-            let season = await this.seasonService.findOrCreate({ starting: course.startDate, ending: course.endDate });
-            await this.courseService.addSeason(course.id, { season });
-            await this.seasonService.addCourse(season.id, { course });
-          })
-        })
+        )
       );
       this.ok({ courses });
     } catch (e) {

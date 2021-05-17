@@ -104,11 +104,12 @@ export function CoursesPageContent() {
                 duration: 0,
                 recognitionType: "",
                 url: "",
+                claveCurso: "",
                 startDate: "",
                 endDate: ""
               }}
               onSubmit={(
-                { name, topic, duration, recognitionType, url, startDate, endDate },
+                { name, topic, duration, recognitionType, url, claveCurso, startDate, endDate },
                 actions
               ) => {
                 mutate(
@@ -118,6 +119,7 @@ export function CoursesPageContent() {
                     duration,
                     recognitionType,
                     url,
+                    claveCurso,
                     startDate,
                     endDate
                   },
