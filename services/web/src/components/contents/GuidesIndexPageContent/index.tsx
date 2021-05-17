@@ -10,6 +10,7 @@ export function GuidesIndexPageContent() {
   const isSuperadmin = role === UserRoleName.SUPERADMIN;
   const isTutor = role === UserRoleName.TUTOR;
   const isSupervisor = role === UserRoleName.SUPERVISOR;
+  // TODO: Convert these to entity based guides.
   return (
     <Box>
       <HeaderContent />
@@ -68,6 +69,11 @@ export function GuidesIndexPageContent() {
               filename="ReporteDeDesempenoTutores.xlsx"
             />
           )}
+          <DownloadCard
+            title="Instrucciones detalladas"
+            description="Archivo PDF"
+            filename="InstruccionesDetalladas.pdf"
+          />
         </SimpleGrid>
       </Box>
     </Box>

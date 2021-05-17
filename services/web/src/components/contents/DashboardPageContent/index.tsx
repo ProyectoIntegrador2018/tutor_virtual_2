@@ -1,9 +1,14 @@
 import React from "react";
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { useAuth } from "lib/hooks/useAuth";
+import { LoadingSpinner } from "components/modules/LoadingSpinner";
 
 export function DashboardPageContent() {
   const { user } = useAuth();
+
+  if (!user) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Box>
