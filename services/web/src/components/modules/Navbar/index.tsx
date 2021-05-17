@@ -1,4 +1,12 @@
-import { Box, Button, Center, Flex, Stack, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Stack,
+  useToast,
+  Text,
+} from "@chakra-ui/react";
 import NavbarItem from "components/elements/NavbarItem";
 import NavbarLayout from "components/layouts/NavbarLayout";
 import { useAuth } from "lib/hooks/useAuth";
@@ -33,8 +41,13 @@ export default function Navbar() {
             )}
           </Flex>
           {!loading && (
-            <Flex p={5} color="gray.400">
-              {user.firstName} {user.paternalName} {user.maternalName}
+            <Flex flexDir="column" p={5} color="gray.400">
+              <Text>
+                {user.firstName} {user.paternalName} {user.maternalName}
+              </Text>
+              <Text mt={3} fontStyle="italic" fontSize="xs">
+                {role}
+              </Text>
             </Flex>
           )}
           <Button
