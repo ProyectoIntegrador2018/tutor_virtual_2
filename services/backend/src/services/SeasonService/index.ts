@@ -35,7 +35,6 @@ export class SeasonService {
       });
       season = await this.seasonRepository.save(seasonData);
       logger.info(`Apertura de ${season.starting} - ${season.ending} creada con éxito!`);
-    } else {
     }
     return season;
   }
@@ -45,6 +44,8 @@ export class SeasonService {
     if (season) {
       season.courses.push(args.course);
       this.seasonRepository.save(season);
+    } else {
+      logger.error("Season does not exist");
     }
     return season;
   }
