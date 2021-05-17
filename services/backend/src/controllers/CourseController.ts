@@ -4,24 +4,40 @@ import { Service } from "typedi";
 import { Container } from "typeorm-typedi-extensions";
 import { CourseService } from "../services/CourseService";
 import { SeasonService } from "../services/SeasonService";
+import { SupervisorCourseService } from "../services/SupervisorCourseService";
 import { Course } from "../entities/CourseEntity";
-import { Season } from "../entities/SeasonEntity";
 import { logger } from "../utils/logger";
 import { ExcelFile } from "../lib/ExcelFile";
 import Joi from "joi";
 import { ICreateArgs } from "../services/CourseService/ICreateArgs";
 
-const courseProperty = ["program", "topic", "name", "group", "claveCurso", "inscriptionStart", "inscriptionEnd", "startDate", "endDate", "recognitionType", "duration", "activities", "url"];
+const courseProperty = [
+  "program",
+  "topic",
+  "name",
+  "group",
+  "claveCurso",
+  "inscriptionStart",
+  "inscriptionEnd",
+  "startDate",
+  "endDate",
+  "recognitionType",
+  "duration",
+  "activities",
+  "url",
+];
 
 @Service()
 export default class CourseController extends BaseController {
   courseService: CourseService;
   seasonService: SeasonService;
+  supervisorCourseService: SupervisorCourseService;
 
   constructor(args: IArgs) {
     super(args);
     this.courseService = Container.get(CourseService);
     this.seasonService = Container.get(SeasonService);
+    this.supervisorCourseService = Container.get(SupervisorCourseService);
   }
 
   private async create() {
@@ -140,6 +156,21 @@ export default class CourseController extends BaseController {
   }
 
   private uploadCoursesParams() {
+    return joi.object({});
+  }
+
+  private async supervisorCourses() {
+    const me = await this.cv.getUser();
+    if (!me) {
+      return this.forbidden("User needs to be logged in!");
+    }
+    const courses = await this.supervisorCourseService.findCoursesForUser({
+      userId: me.id,
+    });
+    this.ok({ courses });
+  }
+
+  private supervisorCoursesParams() {
     return joi.object({});
   }
 }

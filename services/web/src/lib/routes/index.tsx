@@ -33,6 +33,11 @@ const routes: { [key in UserRoleName]?: IRoute[] } = {
       icon: <FiUsers />,
     },
     {
+      title: "Mis cursos",
+      route: "/supervisor/courses",
+      icon: <FiBookOpen />,
+    },
+    {
       title: "Guías",
       route: "/guides",
       icon: <HiOutlineDocument />,
