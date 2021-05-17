@@ -1,5 +1,5 @@
 import { Service } from "typedi";
-import { Repository } from "typeorm";
+import { Repository, FindOneOptions, FindConditions } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { ICreateArgs } from "./ICreateArgs";
 import { Student } from "../../entities/StudentEntity";
@@ -15,5 +15,12 @@ export class StudentService {
     const student = new Student();
     Object.assign(student, args);
     return this.studentRepository.save(student);
+  }
+
+  public async findOne(
+    conds?: FindConditions<Student>,
+    opts?: FindOneOptions<Student>
+  ): Promise<Student | undefined> {
+    return this.studentRepository.findOne(conds, opts);
   }
 }

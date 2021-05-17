@@ -11,6 +11,7 @@ import { StudentService } from "../services/StudentService";
 import { AllyService } from "../services/AllyService";
 import { TutorCourseService } from "../services/TutorCourseService";
 import { SupervisorCourseService } from "../services/SupervisorCourseService";
+import { StudentCourseService } from "../services/StudentCourseService";
 import { Role, UserRoleName } from "../entities/RoleEntity";
 import { ExcelFile } from "../lib/ExcelFile";
 import { logger } from "../utils/logger";
@@ -23,6 +24,7 @@ export default class UserController extends BaseController {
   allyService: AllyService;
   tutorCourseService: TutorCourseService;
   supervisorCourseService: SupervisorCourseService;
+  studentCourseService: StudentCourseService;
 
   constructor(args: IArgs) {
     super(args);
@@ -32,6 +34,7 @@ export default class UserController extends BaseController {
     this.allyService = Container.get(AllyService);
     this.tutorCourseService = Container.get(TutorCourseService);
     this.supervisorCourseService = Container.get(SupervisorCourseService);
+    this.studentCourseService = Container.get(StudentCourseService);
   }
 
   private async create() {
@@ -261,16 +264,16 @@ export default class UserController extends BaseController {
       [key: string]: string;
     } = {
       username: "A",
-      password: "B",
-      name: "C",
-      paternalName: "D",
-      maternalName: "E",
-      email: "G",
-      userStatus: "L",
-      ally: "Y",
-      country: "V",
-      state: "W",
-      city: "X",
+      password: "C",
+      name: "D",
+      paternalName: "E",
+      maternalName: "F",
+      email: "H",
+      userStatus: "M",
+      ally: "Z",
+      country: "W",
+      state: "X",
+      city: "Y",
       courseKey: "J", // Clave del curso al que está asociado este usuario.
     };
     const entityData: { [key: string]: string } = {};
@@ -282,9 +285,10 @@ export default class UserController extends BaseController {
       }
       entityData[key] = cellData;
     });
-    const roleColumn = "H";
+    const roleColumn = "I";
     const role = row.getCell(roleColumn).text.toLowerCase();
-    if (role === "student") {
+    const studentRoleInExcel = "student";
+    if (role === studentRoleInExcel) {
       const student = this.createStudentFromRow(entityData);
       return {
         student,
@@ -303,29 +307,38 @@ export default class UserController extends BaseController {
     };
   }
 
-  private async createStudentFromRow(entityData: { [key: string]: string }) {
+  private async createStudentFromRow(entityData: {
+    [key: string]: string;
+  }): Promise<Student> {
     let ally = await this.allyService.findOne({ name: entityData.ally });
     if (!ally) {
       ally = await this.allyService.getDefaultAlly();
     }
-    return this.studentService.create({
-      name: entityData.name,
-      maternal_name: entityData.maternalName,
-      password: entityData.password,
-      paternal_name: entityData.paternalName,
-      username: entityData.username,
+    let student = await this.studentService.findOne({
       email: entityData.email,
-      ally: ally.id,
-      country: entityData.country,
-      state: entityData.state,
-      city: entityData.city,
     });
+    if (!student) {
+      student = await this.studentService.create({
+        name: entityData.name,
+        maternal_name: entityData.maternalName,
+        password: entityData.password,
+        paternal_name: entityData.paternalName,
+        username: entityData.username,
+        email: entityData.email,
+        ally: ally.id,
+        country: entityData.country,
+        state: entityData.state,
+        city: entityData.city,
+      });
+    }
+    await this.associateStudentWithCourse(student, entityData.courseKey);
+    return student;
   }
 
   private async createOrFindUserFromRow(
     role: string,
     entityData: { [key: string]: string }
-  ) {
+  ): Promise<User> {
     const tutorRole = "teacher";
     const supervisorRole = "coordinador";
     let roleObject: Role;
@@ -384,12 +397,26 @@ export default class UserController extends BaseController {
         supervisorId: user.id,
         courseKey: courseKey,
       });
-      logger.info(
-        `Succesfully associated course ${courseKey} with supervisor: ${user.email}`
-      );
     } catch (err) {
       logger.error(
         `Could not associate course ${courseKey} with supervisor: ${user.email}`
+      );
+      logger.error(err);
+    }
+  }
+
+  private async associateStudentWithCourse(
+    student: Student,
+    courseKey: string
+  ) {
+    try {
+      await this.studentCourseService.create({
+        studentId: student.id,
+        courseKey: courseKey,
+      });
+    } catch (err) {
+      logger.error(
+        `Could not associate course ${courseKey} with student: ${student.email}`
       );
       logger.error(err);
     }

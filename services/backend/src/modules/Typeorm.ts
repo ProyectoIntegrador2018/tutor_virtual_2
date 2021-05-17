@@ -11,6 +11,7 @@ import { Student } from "../entities/StudentEntity";
 import { Grade } from "../entities/GradeEntity";
 import { TutorCourse } from "../entities/TutorCourseEntity";
 import { SupervisorCourse } from "../entities/SupervisorCourseEntity";
+import { StudentCourse } from "../entities/StudentCourseEntity";
 
 const startTypeorm = (): Promise<Connection> => {
   /*
@@ -44,6 +45,7 @@ const startTypeorm = (): Promise<Connection> => {
       Grade,
       TutorCourse,
       SupervisorCourse,
+      StudentCourse,
     ],
     extra: __prod__
       ? {
