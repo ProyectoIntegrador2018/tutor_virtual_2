@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
+import { StudentsTable } from "components/contents/TutorCoursesStudentsPageContent/StudentsTable";
 import { Student } from "lib/types/student";
 import React from "react";
-import { StudentsTable } from "../StudentsTable";
 
 interface IProps {
   data?: Student[];
