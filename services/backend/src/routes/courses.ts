@@ -33,6 +33,15 @@ export const routes: IRoute[] = [
     },
   }),
   new Route({
+    path: "/course",
+    method: "GET",
+    requireAuth: [RouteAuthRolesEnum.SUPERADMIN, RouteAuthRolesEnum.SUPERVISOR, RouteAuthRolesEnum.TUTOR],
+    withController: {
+      action: "getCourse",
+      controller: CourseController,
+    },
+  }),
+  new Route({
     path: "/courses",
     method: "POST",
     requireAuth: [RouteAuthRolesEnum.SUPERADMIN],
