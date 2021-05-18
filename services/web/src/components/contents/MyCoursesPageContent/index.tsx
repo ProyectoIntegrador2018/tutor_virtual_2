@@ -3,11 +3,12 @@ import { Box, Heading, Text, SimpleGrid } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { fetcherV1 } from "fetchers";
 import { LoadingSpinner } from "components/modules/LoadingSpinner";
+import { UserRoleName } from "lib/types/role";
 import { CourseCard } from "./CourseCard";
 
 interface IProps {
   myCoursesURL: string;
-  roleName: string;
+  roleName: UserRoleName;
 }
 
 export function MyCoursesPageContent({ myCoursesURL, roleName }: IProps) {
@@ -34,7 +35,7 @@ export function MyCoursesPageContent({ myCoursesURL, roleName }: IProps) {
       <Heading fontSize="5xl">Mis cursos</Heading>
       <SimpleGrid mt={10} spacing={8} columns={[1, 1, null, 2]}>
         {courses.map((c) => (
-          <CourseCard course={c} roleName={roleName}/>
+          <CourseCard course={c} roleName={roleName} />
         ))}
       </SimpleGrid>
     </Box>

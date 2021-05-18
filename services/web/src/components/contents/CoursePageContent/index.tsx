@@ -1,13 +1,20 @@
-import { Box, Heading, Link, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import { fetcherV1 } from "fetchers";
 import { Course } from "lib/types/course";
-import NextLink from "next/link";
 import React, { useMemo } from "react";
 import { useQuery } from "react-query";
+import { useAuth } from "lib/hooks/useAuth";
+import { UserRoleName } from "lib/types/role";
+import { LoadingSpinner } from "components/modules/LoadingSpinner";
 import { CourseStudent } from "../MyCoursesPageContent/CourseStudent";
+import { TutorsInCourse } from "./TutorsInCourse";
 
-export function CoursePageContent(props) {
-  const id = props.courseID;
+interface IProps {
+  courseID: string;
+}
+
+export function CoursePageContent({ courseID }: IProps) {
+  const id = courseID;
   const { data, isLoading, isFetched } = useQuery<
     { course: Course },
     Error,
@@ -21,7 +28,12 @@ export function CoursePageContent(props) {
       })
       .then((res) => res.data)
   );
+  const { loading: isAuthLoading, role } = useAuth();
   const courseData = useMemo(() => data, [isLoading, isFetched]);
+
+  if (isAuthLoading || isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Box>
@@ -46,20 +58,12 @@ export function CoursePageContent(props) {
               <Text mb={2} fontSize="md" fontStyle="italic">
                 Fecha de fin: {courseData.course.endDate}
               </Text>
-              <Box mt={6}>
-                <NextLink href={courseData.course.url} prefetch={false}>
-                  <Link
-                    target="_blank"
-                    color="primary.200"
-                    href={courseData.course.url}
-                  >
-                    {courseData.course.url}
-                  </Link>
-                </NextLink>
-              </Box>
             </Box>
           </Box>
         </>
+      )}
+      {role === UserRoleName.SUPERVISOR && (
+        <TutorsInCourse courseID={courseID} />
       )}
       <Box mt={8}>
         <CourseStudent id={id} />

@@ -76,4 +76,13 @@ export const routes: IRoute[] = [
       controller: CourseController,
     },
   }),
+  new Route({
+    path: "/courses/tutors",
+    method: "GET",
+    requireAuth: [RouteAuthRolesEnum.SUPERVISOR, RouteAuthRolesEnum.SUPERADMIN],
+    withController: {
+      action: "getTutors",
+      controller: CourseController,
+    },
+  }),
 ];

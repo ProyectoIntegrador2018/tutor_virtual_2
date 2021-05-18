@@ -1,5 +1,5 @@
 import { Service } from "typedi";
-import { Repository } from "typeorm";
+import { Repository, FindConditions } from "typeorm";
 import { InjectRepository, Container } from "typeorm-typedi-extensions";
 import { ICreateArgs } from "./ICreateArgs";
 import { IFindCoursesForUser } from "./IFindCoursesForUser";
@@ -64,5 +64,12 @@ export class TutorCourseService {
       courseKey,
     });
     return tutorCourses != null;
+  }
+
+  public async find(
+    conds?: FindConditions<TutorCourse>
+  ): Promise<TutorCourse[]> {
+    this.tutorCourseRepository.find({ courseKey: "" });
+    return this.tutorCourseRepository.find(conds);
   }
 }
