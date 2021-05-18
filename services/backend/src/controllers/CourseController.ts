@@ -287,4 +287,35 @@ export default class CourseController extends BaseController {
       id: joi.string().required(),
     });
   }
+
+  private async getTutors() {
+    const me = await this.cv.getUser();
+    const role = await this.cv.getRole();
+    if (!me || role !== UserRoleName.SUPERVISOR) {
+      return this.forbidden("User needs to be logged in!");
+    }
+    const params = this.getParams();
+    const { courseID } = params;
+    const course = await this.courseService.findOne({ id: courseID });
+    if (!course) {
+      return this.notFound("No course with that id");
+    }
+    const isOwner = await this.supervisorCourseService.isUserOwnerOfCourse({
+      supervisorID: me.id,
+      courseKey: course.claveCurso,
+    });
+    if (!isOwner) {
+      return this.forbidden("You are not an owner of this course!");
+    }
+    const tutors = await this.courseService.getTutors({
+      courseKey: course.claveCurso,
+    });
+    this.ok({ tutors });
+  }
+
+  private getTutorsParams() {
+    return joi.object({
+      courseID: joi.string().required(),
+    });
+  }
 }

@@ -1,70 +1,44 @@
 import React, { useMemo } from "react";
-import {
-  Box,
-  Table,
-  Th,
-  Tr,
-  Td,
-  Thead,
-  Tbody,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Table, Th, Tr, Td, Thead, Tbody } from "@chakra-ui/react";
 import { useTable } from "react-table";
-import { Student } from "lib/types/student";
-import { Button } from "components/elements/Button";
-import { StudentGradeModal } from "../StudentGradeModal";
+import { User } from "lib/types/user";
 
 interface IProps {
-  data: Student[];
+  tutors: User[];
 }
 
-export function StudentsTable({ data }: IProps) {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+export function TutorsTable({ tutors }: IProps) {
   const columns = useMemo(
     () => [
       {
         Header: "Nombre",
-        accessor: "name",
+        accessor: "firstName",
       },
-
       {
         Header: "Apellidos",
-        accessor: (row: Student) => `${row.paternal_name} ${row.maternal_name}`,
+        accessor: (row: User) => `${row.paternalName} ${row.maternalName}`,
       },
       {
-        Header: "Usuario",
-        accessor: "username",
-      },
-      {
-        Header: "correo",
+        Header: "Correo",
         accessor: "email",
       },
       {
-        Header: "contraseña",
+        Header: "Contraseña",
         accessor: "password",
-      },
-      {
-        Header: "Calificaciones",
-        accessor: "id",
-        Cell: () => (
-          <Button colorVariant="primary" type="button" onClick={onOpen}>
-            Ver Calificaciones
-          </Button>
-        ),
       },
     ],
     []
   );
-
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns: columns as any, data });
+  } = useTable({ columns: columns as any, data: tutors });
+
   return (
-    <Box>
+    <Box p={2} mt={4}>
       <Table {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => (
@@ -88,7 +62,6 @@ export function StudentsTable({ data }: IProps) {
           })}
         </Tbody>
       </Table>
-      <StudentGradeModal isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 }
