@@ -12,24 +12,16 @@ export function CoursesTable({ data }: IProps) {
   const columns = useMemo(
     () => [
       {
+        Header: "Clave",
+        accessor: "claveCurso"
+      },
+      {
         Header: "Nombre",
         accessor: "name",
       },
       {
-        Header: "Tematica",
+        Header: "Temática",
         accessor: "topic",
-      },
-      {
-        Header: "Duracion",
-        accessor: "duration",
-      },
-      {
-        Header: "Tipo de Rec",
-        accessor: "recognitionType",
-      },
-      {
-        Header: "Clave Curso",
-        accessor: "claveCurso"
       },
       {
         Header: "Inicio",
@@ -46,8 +38,12 @@ export function CoursesTable({ data }: IProps) {
         },
       },
       {
-        Header: "URL",
-        accessor: "url",
+        Header: "Duración",
+        accessor: "duration",
+      },
+      {
+        Header: "Reconocimiento",
+        accessor: "recognitionType",
       },
     ],
     []

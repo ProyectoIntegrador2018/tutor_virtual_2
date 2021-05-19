@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Text, Button, Flex } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { parseISO, format } from "date-fns";
 
 interface IProps {
@@ -7,6 +8,7 @@ interface IProps {
 }
 
 export function SeasonCard({ season }: IProps) {
+  const router = useRouter();
   return (
     <Box boxShadow="lg" p={4} borderRadius="md">
       <Text fontSize="lg">Iniciando en</Text>
@@ -20,7 +22,7 @@ export function SeasonCard({ season }: IProps) {
         {format(parseISO(season.ending), 'dd/MM/yyyy')}
       </Text>
       <Flex justifyContent="flex-end">
-        <Button colorScheme="primary">Ver detalle</Button>
+        <Button colorScheme="primary" onClick={ ()=> router.push(`/seasons/${season.id}`) } >Ver cursos</Button>
       </Flex>
     </Box>
   );
