@@ -51,4 +51,8 @@ export class StudentService {
 
     return gradeByCourse;
   }
+
+  public createQueryBuilder(alias: string) {
+    return this.studentRepository.createQueryBuilder(alias);
+  }
 }

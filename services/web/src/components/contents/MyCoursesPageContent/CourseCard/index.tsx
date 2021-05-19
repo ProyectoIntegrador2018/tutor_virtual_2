@@ -1,11 +1,11 @@
 import React from "react";
-import NextLink from "next/link";
-import { Box, Text, Link, Button, Flex } from "@chakra-ui/react";
+import { Box, Text, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { UserRoleName } from "lib/types/role";
 
 interface IProps {
   course: any;
-  roleName: string;
+  roleName: UserRoleName;
 }
 
 export function CourseCard({ course, roleName }: IProps) {
@@ -19,16 +19,18 @@ export function CourseCard({ course, roleName }: IProps) {
         {course.claveCurso}
       </Text>
       <Text>{course.recognitionType}</Text>
-      <Flex mt={4} justifyContent="space-between" alignItems="center">
-        <NextLink href={course.url} prefetch={false}>
-          <Link target="_blank" color="primary.200" href={course.url}>
-            {course.url}
-          </Link>
-        </NextLink>
+      <Flex
+        mt={4}
+        justifyContent="space-between"
+        flexDir="row-reverse"
+        alignItems="center"
+      >
         <Button
           colorScheme="primary"
           mt="5"
-          onClick={() => router.push(`/${roleName}/courses/${course.id}`)}
+          onClick={() =>
+            router.push(`/${roleName.toLowerCase()}/courses/${course.id}`)
+          }
         >
           Ver curso
         </Button>

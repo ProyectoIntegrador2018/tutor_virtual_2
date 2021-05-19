@@ -64,4 +64,18 @@ export default class StudentController extends BaseController {
       student: joi.string().required(),
     });
   }
+
+  private async getAllStudents() {
+    let query = this.studentService.createQueryBuilder("students");
+    const params = this.getParams();
+    query = query.take(20).skip(params.page * 20);
+    const students = await query.getMany();
+    this.ok({ students });
+  }
+
+  private getAllStudentsParams() {
+    return joi.object({
+      page: joi.number().min(0).required(),
+    });
+  }
 }

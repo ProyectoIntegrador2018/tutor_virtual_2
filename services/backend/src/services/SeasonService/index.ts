@@ -5,6 +5,7 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 import { ICreateArgs } from "./ICreateArgs";
 import { IFindOrCreateArgs } from "./IFindOrCreateArgs";
 import { IAddCourseArgs } from "./IAddCourseArgs";
+import { IFindCoursesArgs } from "./IFindCoursesArgs";
 import { Course } from "../../entities/CourseEntity";
 import { logger } from "../../utils/logger";
 
@@ -50,12 +51,15 @@ export class SeasonService {
     return season;
   }
 
-  public async findCourses(id: string): Promise<Course[]> {
-    const season = await this.seasonRepository.findOne({ id }, { relations: ["courses"] });
+  public async findCourses(args: IFindCoursesArgs): Promise<Course[]> {
+    const season = await this.seasonRepository.findOne(args.season_id, { relations: ["courses"] });
+    let courses: Course[] = [];
     if (!season) {
-      return <Course[]>[]; 
+      logger.error("Didn't find the season");
+      return courses;
     }
-    return season.courses;
+    courses = season.courses;
+    return courses;
   }
 
   public async find(opts?: FindManyOptions<Season>): Promise<Season[]> {

@@ -8,6 +8,7 @@ import { CourseService } from "../CourseService";
 import { UserRoleName } from "../../entities/RoleEntity";
 import { ICreateArgs } from "./ICreateArgs";
 import { IFindCoursesForUser } from "./IFindCoursesForUser";
+import { IUserOwnerOfCourse } from "./IUserOwnerOfCourse";
 
 @Service()
 export class SupervisorCourseService {
@@ -52,5 +53,16 @@ export class SupervisorCourseService {
       })
     );
     return courses;
+  }
+
+  public async isUserOwnerOfCourse({
+    supervisorID,
+    courseKey,
+  }: IUserOwnerOfCourse): Promise<boolean> {
+    const course = await this.supervisorCourseRepository.findOne({
+      supervisorId: supervisorID,
+      courseKey,
+    });
+    return course !== null && course !== undefined;
   }
 }

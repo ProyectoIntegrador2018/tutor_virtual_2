@@ -1,18 +1,25 @@
 import { Service } from "typedi";
-import { Repository, FindOneOptions, FindConditions } from "typeorm";
+import { Repository, FindOneOptions, FindConditions, In } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
+import { User } from "../../entities/UserEntity";
+import { TutorCourse } from "../../entities/TutorCourseEntity";
 import { ICreateArgs } from "./ICreateArgs";
 import { IAddArgs } from "./IAddArgs";
+import { IGetTutorsArgs } from "./IGetTutorsArgs";
 import { Course } from "../../entities/CourseEntity";
 
 @Service()
 export class CourseService {
-	constructor(
-		@InjectRepository(Course)
-		private courseRepository: Repository<Course>
-	) {}
+  constructor(
+    @InjectRepository(Course)
+    private courseRepository: Repository<Course>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(TutorCourse)
+    private tutorCourseRepo: Repository<TutorCourse>
+  ) {}
 
-	public async create(args: ICreateArgs): Promise<Course> {
+  public async create(args: ICreateArgs): Promise<Course> {
     const course = new Course();
     course.name = args.name;
     course.topic = args.topic;
@@ -30,7 +37,10 @@ export class CourseService {
     return this.courseRepository.save({ id, ...args });
   }
 
-  public findOne(conds?: FindConditions<Course>, opts?: FindOneOptions<Course>) {
+  public findOne(
+    conds?: FindConditions<Course>,
+    opts?: FindOneOptions<Course>
+  ) {
     return this.courseRepository.findOne(conds, opts);
   }
 
@@ -40,5 +50,19 @@ export class CourseService {
 
   public createQueryBuilder(alias: string) {
     return this.courseRepository.createQueryBuilder(alias);
+  }
+
+  public async getTutors({ courseKey }: IGetTutorsArgs): Promise<User[]> {
+    const tutorCourses = await this.tutorCourseRepo.find({ courseKey });
+    const tutors: User[] = [];
+    await Promise.all(
+      tutorCourses.map(async (tc) => {
+        const user = await this.userRepository.findOne({ id: tc.tutorId });
+        if (user) {
+          tutors.push(user);
+        }
+      })
+    );
+    return tutors;
   }
 }

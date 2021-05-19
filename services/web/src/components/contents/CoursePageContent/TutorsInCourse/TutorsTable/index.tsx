@@ -1,63 +1,44 @@
 import React, { useMemo } from "react";
 import { Box, Table, Th, Tr, Td, Thead, Tbody } from "@chakra-ui/react";
 import { useTable } from "react-table";
-import { Course } from "lib/types/course";
-import { parseISO, format } from "date-fns";
+import { User } from "lib/types/user";
 
 interface IProps {
-  data: Course[];
+  tutors: User[];
 }
 
-export function CoursesTable({ data }: IProps) {
+export function TutorsTable({ tutors }: IProps) {
   const columns = useMemo(
     () => [
       {
-        Header: "Clave",
-        accessor: "claveCurso"
-      },
-      {
         Header: "Nombre",
-        accessor: "name",
+        accessor: "firstName",
       },
       {
-        Header: "Temática",
-        accessor: "topic",
+        Header: "Apellidos",
+        accessor: (row: User) => `${row.paternalName} ${row.maternalName}`,
       },
       {
-        Header: "Inicio",
-        accessor: "startDate",
-        Cell: ({ value }) => { 
-          return format(parseISO(value), 'dd/MM/yyyy');
-        },
+        Header: "Correo",
+        accessor: "email",
       },
       {
-        Header: "Fin",
-        accessor: "endDate",
-        Cell: ({ value }) => { 
-          return format(parseISO(value), 'dd/MM/yyyy');
-        },
-      },
-      {
-        Header: "Duración",
-        accessor: "duration",
-      },
-      {
-        Header: "Reconocimiento",
-        accessor: "recognitionType",
+        Header: "Contraseña",
+        accessor: "password",
       },
     ],
     []
   );
-
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns: columns as any, data });
+  } = useTable({ columns: columns as any, data: tutors });
+
   return (
-    <Box>
+    <Box p={2} mt={4}>
       <Table {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => (

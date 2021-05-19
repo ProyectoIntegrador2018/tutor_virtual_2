@@ -1,37 +1,19 @@
-import React, { useMemo, useState } from "react";
-import {
-  Box,
-  Table,
-  Th,
-  Tr,
-  Td,
-  Thead,
-  Tbody,
-  useDisclosure,
-} from "@chakra-ui/react";
+import React, { useMemo } from "react";
+import { Box, Table, Th, Tr, Td, Thead, Tbody } from "@chakra-ui/react";
 import { useTable } from "react-table";
 import { Student } from "lib/types/student";
-import { Button } from "components/elements/Button";
-import { StudentGradeModal } from "../StudentGradeModal";
 
 interface IProps {
-  data: Student[];
-  course: string;
+  students: Student[];
 }
 
-export function StudentsTable({ data, course }: IProps) {
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const [student, setStudent] = useState(null);
+export function StudentsTable({ students }: IProps) {
   const columns = useMemo(
     () => [
-      {
-        accessor: "id",
-      },
       {
         Header: "Nombre",
         accessor: "name",
       },
-
       {
         Header: "Apellidos",
         accessor: (row: Student) => `${row.paternal_name} ${row.maternal_name}`,
@@ -41,28 +23,12 @@ export function StudentsTable({ data, course }: IProps) {
         accessor: "username",
       },
       {
-        Header: "correo",
+        Header: "Email",
         accessor: "email",
       },
       {
-        Header: "contraseña",
+        Header: "Contraseña",
         accessor: "password",
-      },
-      {
-        Header: "Calificaciones",
-        accessor: "calificaciones",
-        Cell: (cell) => (
-          <Button
-            colorVariant="primary"
-            type="button"
-            onClick={() => {
-              setStudent(cell.row.values.id);
-              onOpen();
-            }}
-          >
-            Ver Calificaciones
-          </Button>
-        ),
       },
     ],
     []
@@ -74,13 +40,9 @@ export function StudentsTable({ data, course }: IProps) {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({
-    columns: columns as any,
-    data,
-    initialState: { hiddenColumns: ["id"] },
-  });
+  } = useTable({ columns: columns as any, data: students });
   return (
-    <Box>
+    <Box mt={10}>
       <Table {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => (
@@ -104,14 +66,6 @@ export function StudentsTable({ data, course }: IProps) {
           })}
         </Tbody>
       </Table>
-      {student && (
-        <StudentGradeModal
-          isOpen={isOpen}
-          onClose={onClose}
-          student={student}
-          course={course}
-        />
-      )}
     </Box>
   );
 }
