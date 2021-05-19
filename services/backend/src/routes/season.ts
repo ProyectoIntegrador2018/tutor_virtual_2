@@ -21,4 +21,13 @@ export const routes: IRoute[] = [
     },
     requireAuth: [RouteAuthRolesEnum.SUPERADMIN],
   }),
+  new Route({
+    path: "/coursesBySeason",
+    method: "GET",
+    requireAuth: [RouteAuthRolesEnum.SUPERADMIN],
+    withController: {
+      action: "getCourses",
+      controller: SeasonController,
+    },
+  }),
 ];

@@ -39,4 +39,17 @@ export default class SeasonController extends BaseController {
   private fetchSeasonsParams() {
     return joi.object({});
   }
+
+  private async getCourses() {
+    const params = this.getParams();
+    const season_id = params.season_id;
+    const courses = await this.seasonService.findCourses({ season_id: season_id });
+    this.ok({ courses });
+  }
+
+  private getCoursesParams() {
+    return joi.object({
+      season_id: joi.string().min(2).max(200).required()
+    })
+  }
 }
