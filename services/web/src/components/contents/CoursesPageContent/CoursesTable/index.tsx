@@ -45,10 +45,6 @@ export function CoursesTable({ data }: IProps) {
         Header: "Reconocimiento",
         accessor: "recognitionType",
       },
-      {
-        Header: "URL",
-        accessor: "url",
-      },
     ],
     []
   );
