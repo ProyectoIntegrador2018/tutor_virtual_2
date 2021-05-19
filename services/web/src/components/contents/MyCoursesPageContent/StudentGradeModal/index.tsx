@@ -1,43 +1,53 @@
 import {
+  Button,
   Modal,
-  ModalOverlay,
   ModalBody,
   ModalContent,
   ModalFooter,
-  Button,
+  ModalOverlay,
 } from "@chakra-ui/react";
+import { LoadingSpinner } from "components/modules/LoadingSpinner";
+import { fetcherV1 } from "fetchers";
+import React from "react";
+import { useQuery } from "react-query";
 import { StudentGradeTable } from "../StudentGradeTable";
 
 interface IProps {
   isOpen: boolean;
   onClose: () => void;
+  student: string;
+  course: string;
 }
 
-const mockData = [
-  {
-    grade: 100,
-    activity: 1,
-    id: "2",
-  },
-  {
-    grade: 94,
-    activity: 2,
-    id: "2",
-  },
-  {
-    grade: 83,
-    activity: 3,
-    id: "2",
-  },
-];
+export function StudentGradeModal({
+  isOpen,
+  onClose,
+  course,
+  student,
+}: IProps) {
+  const { data, isLoading } = useQuery(
+    ["/student/course/grades", student],
+    () =>
+      fetcherV1
+        .get("/student/course/grades", {
+          params: {
+            course,
+            student,
+          },
+        })
+        .then((res) => res.data)
+  );
 
-export function StudentGradeModal({ isOpen, onClose }: IProps) {
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalBody>
-          <StudentGradeTable data={mockData} />
+          {data && data.grades && <StudentGradeTable data={data.grades} />}
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={onClose}>

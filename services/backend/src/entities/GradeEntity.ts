@@ -1,8 +1,15 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Course } from "./CourseEntity";
 import { Student } from "./StudentEntity";
 
 @Entity({ name: "grades" })
+@Index(["course", "student", "activity"], { unique: true })
 export class Grade {
   @PrimaryGeneratedColumn("uuid")
   id: string;

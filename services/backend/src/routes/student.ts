@@ -11,4 +11,20 @@ export const routes: IRoute[] = [
       controller: StudentController,
     },
   }),
+  new Route({
+    path: "/student/course/grades",
+    method: "GET",
+    withController: {
+      action: "getStudentGradeFromCourse",
+      controller: StudentController,
+    },
+  }),
+  new Route({
+    path: "/student/grades",
+    method: "GET",
+    withController: {
+      action: "getStudentGrades",
+      controller: StudentController,
+    },
+  }),
 ];

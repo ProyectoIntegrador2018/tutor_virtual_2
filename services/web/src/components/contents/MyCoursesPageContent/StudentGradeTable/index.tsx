@@ -13,6 +13,7 @@ export function StudentGradeTable({ data }: IProps) {
       {
         Header: "Num. Actividad",
         accessor: "activity",
+        Cell: (cell) => cell.row.values.activity + 1,
       },
 
       {

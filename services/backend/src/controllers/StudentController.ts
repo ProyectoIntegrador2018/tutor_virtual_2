@@ -37,4 +37,32 @@ export default class StudentController extends BaseController {
       email: joi.string().required(),
     });
   }
+
+  private async getStudentGradeFromCourse() {
+    const params = this.getParams();
+
+    const grades = await this.studentService.getCourseGrade(params);
+    this.ok({ grades });
+  }
+
+  private getStudentGradeFromCourseParams() {
+    return joi.object({
+      course: joi.string().required(),
+      student: joi.string().required(),
+    });
+  }
+
+  private async getStudentGrades() {
+    const params = this.getParams();
+
+    const grades = await this.studentService.getGradesByCourse(params);
+    console.log(grades);
+    this.ok({ grades });
+  }
+
+  private getStudentGradesParams() {
+    return joi.object({
+      student: joi.string().required(),
+    });
+  }
 }

@@ -138,6 +138,7 @@ export default class CourseController extends BaseController {
       url: Joi.string().required(),
       claveCurso: Joi.string().required(),
       startDate: Joi.date().required(),
+      activities: Joi.number().required(),
       endDate: Joi.date().required(),
     };
 
@@ -154,6 +155,7 @@ export default class CourseController extends BaseController {
           claveCurso: "",
           startDate: "",
           endDate: "",
+          activities: 0,
         };
         row.eachCell((cell, colNumber) => {
           try {

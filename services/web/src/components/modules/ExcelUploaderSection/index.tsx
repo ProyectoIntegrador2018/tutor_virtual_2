@@ -23,6 +23,11 @@ interface IProps extends BoxProps {
    * Optional on error callback;
    */
   onError?: (err: any) => void;
+
+  /**
+   * Optional parameters;
+   */
+  params?: { [key: string]: string };
 }
 
 /**
@@ -33,6 +38,7 @@ export function ExcelUploaderSection({
   urlPath,
   onSubmit,
   onError,
+  params = {},
   ...rest
 }: IProps) {
   const [isFilePicked, setIsFilePicked] = useState(false);
@@ -54,7 +60,14 @@ export function ExcelUploaderSection({
   const handleUploadButton = useCallback(() => {
     const formData = new FormData();
     formData.append("excelFile", selectedFile);
-    fetcherV1({ method: httpMethod, url: urlPath, data: formData })
+    Object.keys(params).forEach((key) => {
+      formData.append(key, params[key]);
+    });
+    fetcherV1({
+      method: httpMethod,
+      url: urlPath,
+      data: formData,
+    })
       .then(() => {
         toast({
           status: "success",

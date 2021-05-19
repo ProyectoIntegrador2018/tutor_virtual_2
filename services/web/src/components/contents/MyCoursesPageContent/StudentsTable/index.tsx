@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Box,
   Table,
@@ -16,12 +16,17 @@ import { StudentGradeModal } from "../StudentGradeModal";
 
 interface IProps {
   data: Student[];
+  course: string;
 }
 
-export function StudentsTable({ data }: IProps) {
+export function StudentsTable({ data, course }: IProps) {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [student, setStudent] = useState(null);
   const columns = useMemo(
     () => [
+      {
+        accessor: "id",
+      },
       {
         Header: "Nombre",
         accessor: "name",
@@ -37,9 +42,16 @@ export function StudentsTable({ data }: IProps) {
       },
       {
         Header: "Calificaciones",
-        accessor: "id",
-        Cell: () => (
-          <Button colorVariant="primary" type="button" onClick={onOpen}>
+        accessor: "calificaciones",
+        Cell: (cell) => (
+          <Button
+            colorVariant="primary"
+            type="button"
+            onClick={() => {
+              setStudent(cell.row.values.id);
+              onOpen();
+            }}
+          >
             Ver Calificaciones
           </Button>
         ),
@@ -54,7 +66,11 @@ export function StudentsTable({ data }: IProps) {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns: columns as any, data });
+  } = useTable({
+    columns: columns as any,
+    data,
+    initialState: { hiddenColumns: ["id"] },
+  });
   return (
     <Box>
       <Table {...getTableProps()}>
@@ -80,7 +96,14 @@ export function StudentsTable({ data }: IProps) {
           })}
         </Tbody>
       </Table>
-      <StudentGradeModal isOpen={isOpen} onClose={onClose} />
+      {student && (
+        <StudentGradeModal
+          isOpen={isOpen}
+          onClose={onClose}
+          student={student}
+          course={course}
+        />
+      )}
     </Box>
   );
 }

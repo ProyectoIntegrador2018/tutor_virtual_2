@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+} from "typeorm";
 import { Grade } from "./GradeEntity";
 import { Season } from "./SeasonEntity";
 
@@ -16,6 +22,9 @@ export class Course {
   @Column()
   duration: number;
 
+  @Column({ nullable: true })
+  activities?: number;
+
   @Column()
   recognitionType: string;
 
@@ -30,8 +39,8 @@ export class Course {
 
   @Column({ type: "date" })
   endDate: string;
-  
-  @ManyToOne(() => Season, (season) => season.courses) 
+
+  @ManyToOne(() => Season, (season) => season.courses)
   season: Season;
 
   @OneToMany(() => Grade, (grade) => grade.course)
