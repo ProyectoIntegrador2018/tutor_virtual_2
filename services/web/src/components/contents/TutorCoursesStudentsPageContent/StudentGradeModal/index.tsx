@@ -42,12 +42,14 @@ export function StudentGradeModal({ isOpen, onClose, student }: IProps) {
       <ModalContent>
         <ModalBody>
           <Stack spacing={4} p={4}>
-            {Object.keys(data.grades).map((key) => (
-              <Box>
-                <Heading fontSize="2xl">{key}</Heading>
-                <StudentGradeTable data={data.grades[key]} />
-              </Box>
-            ))}
+            {data &&
+              data.courses &&
+              Object.keys(data.courses).map((key) => (
+                <Box>
+                  <Heading fontSize="2xl">{key}</Heading>
+                  <StudentGradeTable data={data.courses[key]} />
+                </Box>
+              ))}
           </Stack>
         </ModalBody>
         <ModalFooter>

@@ -55,9 +55,8 @@ export default class StudentController extends BaseController {
   private async getStudentGrades() {
     const params = this.getParams();
 
-    const grades = await this.studentService.getGradesByCourse(params);
-    console.log(grades);
-    this.ok({ grades });
+    const courses = await this.studentService.getGradesByCourse(params);
+    this.ok({ courses });
   }
 
   private getStudentGradesParams() {

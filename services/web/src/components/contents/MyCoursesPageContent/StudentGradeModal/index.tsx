@@ -43,7 +43,7 @@ export function StudentGradeModal({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size="2xl">
       <ModalOverlay />
       <ModalContent>
         <ModalBody>
