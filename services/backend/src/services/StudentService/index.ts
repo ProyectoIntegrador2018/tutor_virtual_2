@@ -23,4 +23,8 @@ export class StudentService {
   ): Promise<Student | undefined> {
     return this.studentRepository.findOne(conds, opts);
   }
+
+  public createQueryBuilder(alias: string) {
+    return this.studentRepository.createQueryBuilder(alias);
+  }
 }

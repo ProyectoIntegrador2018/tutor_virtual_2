@@ -7,6 +7,7 @@ import {
   FiCalendar,
   FiBookOpen,
 } from "react-icons/fi";
+import { FaUserGraduate } from "react-icons/fa";
 import { HiOutlineDocument } from "react-icons/hi";
 
 interface IRoute {
@@ -65,6 +66,11 @@ const routes: { [key in UserRoleName]?: IRoute[] } = {
       title: "Usuarios",
       route: "/admin/users",
       icon: <FiUsers />,
+    },
+    {
+      title: "Estudiantes",
+      route: "/admin/students",
+      icon: <FaUserGraduate />,
     },
     {
       title: "Aliados",
