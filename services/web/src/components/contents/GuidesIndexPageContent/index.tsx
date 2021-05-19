@@ -71,8 +71,8 @@ export function GuidesIndexPageContent() {
           )}
           <DownloadCard
             title="Instrucciones detalladas"
-            description="Archivo PDF"
-            filename="InstruccionesDetalladas.pdf"
+            description="Archivo Excel"
+            filename="InstruccionesDetalladas.xlsx"
           />
         </SimpleGrid>
       </Box>
