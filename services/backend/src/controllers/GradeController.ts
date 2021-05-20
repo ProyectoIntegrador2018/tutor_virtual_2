@@ -61,7 +61,7 @@ export default class GradeController extends BaseController {
     const course = await this.courseService.findOne({ id: course_id });
 
     if (!course) {
-      return this.notAcceptable("El curso que quiere calificar no existe");
+      return this.notFound("El curso que quiere calificar no existe");
     }
 
     try {
@@ -118,14 +118,15 @@ export default class GradeController extends BaseController {
       logger.error("Student not fount");
       return result;
     }
-    const activityNumber = course.activities || "0";
+    const activityNumber = course.activities || 0;
     for (let index = 0; index < activityNumber; index++) {
       const currentColumn = String.fromCharCode(
         gradeColumn.charCodeAt(0) + index
       );
-      const grade = row.getCell(currentColumn).text;
+      const gradeString = row.getCell(currentColumn).text;
+      const grade = Number(gradeString);
       const gradeobj = {
-        grade: parseInt(grade),
+        grade: grade ?? 0,
         activity: index,
         student: student.id,
         course: course.id,
