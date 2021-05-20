@@ -38,6 +38,33 @@ export default class StudentController extends BaseController {
     });
   }
 
+  private async getStudentGradeFromCourse() {
+    const params = this.getParams();
+
+    const grades = await this.studentService.getCourseGrade(params);
+    this.ok({ grades });
+  }
+
+  private getStudentGradeFromCourseParams() {
+    return joi.object({
+      course: joi.string().required(),
+      student: joi.string().required(),
+    });
+  }
+
+  private async getStudentGrades() {
+    const params = this.getParams();
+
+    const courses = await this.studentService.getGradesByCourse(params);
+    this.ok({ courses });
+  }
+
+  private getStudentGradesParams() {
+    return joi.object({
+      student: joi.string().required(),
+    });
+  }
+
   private async getAllStudents() {
     let query = this.studentService.createQueryBuilder("students");
     const params = this.getParams();

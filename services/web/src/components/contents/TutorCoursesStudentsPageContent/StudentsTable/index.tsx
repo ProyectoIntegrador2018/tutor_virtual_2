@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Box,
   Table,
@@ -20,6 +20,7 @@ interface IProps {
 
 export function StudentsTable({ data }: IProps) {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [student, setStudent] = useState(null);
   const columns = useMemo(
     () => [
       {
@@ -38,8 +39,15 @@ export function StudentsTable({ data }: IProps) {
       {
         Header: "Calificaciones",
         accessor: "id",
-        Cell: () => (
-          <Button colorVariant="primary" type="button" onClick={onOpen}>
+        Cell: (cell) => (
+          <Button
+            colorVariant="primary"
+            type="button"
+            onClick={() => {
+              setStudent(cell.row.values.id);
+              onOpen();
+            }}
+          >
             Ver Calificaciones
           </Button>
         ),
@@ -80,7 +88,7 @@ export function StudentsTable({ data }: IProps) {
           })}
         </Tbody>
       </Table>
-      <StudentGradeModal isOpen={isOpen} onClose={onClose} />
+      <StudentGradeModal isOpen={isOpen} onClose={onClose} student={student} />
     </Box>
   );
 }
