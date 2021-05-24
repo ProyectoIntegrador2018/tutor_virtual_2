@@ -13,7 +13,7 @@ export function CoursesTable({ data }: IProps) {
     () => [
       {
         Header: "Clave",
-        accessor: "claveCurso"
+        accessor: "claveCurso",
       },
       {
         Header: "Nombre",
@@ -26,16 +26,12 @@ export function CoursesTable({ data }: IProps) {
       {
         Header: "Inicio",
         accessor: "startDate",
-        Cell: ({ value }) => { 
-          return format(parseISO(value), 'dd/MM/yyyy');
-        },
+        Cell: ({ value }) => format(parseISO(value), "dd/MM/yyyy"),
       },
       {
         Header: "Fin",
         accessor: "endDate",
-        Cell: ({ value }) => { 
-          return format(parseISO(value), 'dd/MM/yyyy');
-        },
+        Cell: ({ value }) => format(parseISO(value), "dd/MM/yyyy"),
       },
       {
         Header: "Duración",

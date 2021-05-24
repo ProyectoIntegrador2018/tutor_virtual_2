@@ -1,63 +1,71 @@
 import React from "react";
-import { FormControl, Input, FormLabel, FormErrorMessage, Stack } from "@chakra-ui/react";
+import {
+  FormControl,
+  Input,
+  FormLabel,
+  FormErrorMessage,
+  Stack,
+} from "@chakra-ui/react";
 import { Formik, Form, Field, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import { Button } from "../../../elements/Button";
 import DatePicker from "components/elements/DatePicker";
+import { Button } from "../../../elements/Button";
 
 const schema = Yup.object({
   name: Yup.string().required("Porfavor escribe el nombre del curso!"),
   topic: Yup.string().required("Porfavor escribe la materia del curso!"),
   duration: Yup.number().required("Porfavor escribe la duración del curso!"),
-  recognitionType: Yup.string().required("Porfavor escribe el tipo de reconocimiento del curso!"),
+  recognitionType: Yup.string().required(
+    "Porfavor escribe el tipo de reconocimiento del curso!"
+  ),
   url: Yup.string().required("Porfavor escribe el url del curso!"),
   claveCurso: Yup.string().required("Porfavor escribe la clave del curso!"),
   startDate: Yup.string().required("Porfavor selecciona la fecha de inicio!"),
   endDate: Yup.string().required("Porfavor selecciona la fecha de fin!"),
-})
+});
 
 interface IValues {
-	name: string;
-	topic: string;
-	duration: number;
-	recognitionType: string;
-	url: string;
+  name: string;
+  topic: string;
+  duration: number;
+  recognitionType: string;
+  url: string;
   claveCurso: string;
   startDate: string;
   endDate: string;
 }
 
 interface IProps {
-	initialValues: IValues;
-	onSubmit: (vals: IValues, actions: FormikHelpers<IValues>) => void;
+  initialValues: IValues;
+  onSubmit: (vals: IValues, actions: FormikHelpers<IValues>) => void;
 }
 
 export function CourseForm({ initialValues, onSubmit }: IProps) {
-	return (
-		<Formik
+  return (
+    <Formik
       validationSchema={schema}
       initialValues={initialValues}
       onSubmit={onSubmit}
-		>
-			{(formProps) => (
+    >
+      {(formProps) => (
         <Form>
           <Stack spacing={4}>
             <Field name="claveCurso">
               {({ field, form }: FieldProps<any, IValues>) => (
-                <FormControl
-                  isInvalid={form.errors.name && form.touched.name}
-                >
+                <FormControl isInvalid={form.errors.name && form.touched.name}>
                   <FormLabel htmlFor="claveCurso">Clave del Curso</FormLabel>
-                  <Input {...field} id="claveCurso" placeholder="Clave del Curso" />
+                  <Input
+                    {...field}
+                    id="claveCurso"
+                    placeholder="Clave del Curso"
+                  />
                   <FormErrorMessage>{form.errors.claveCurso}</FormErrorMessage>
                 </FormControl>
               )}
             </Field>
             <Field name="name">
               {({ field, form }: FieldProps<any, IValues>) => (
-                <FormControl
-                  isInvalid={form.errors.name && form.touched.name}
-                >
+                <FormControl isInvalid={form.errors.name && form.touched.name}>
                   <FormLabel htmlFor="name">Nombre</FormLabel>
                   <Input {...field} id="name" placeholder="Nombre" />
                   <FormErrorMessage>{form.errors.name}</FormErrorMessage>
@@ -127,19 +135,27 @@ export function CourseForm({ initialValues, onSubmit }: IProps) {
             <Field name="recognitionType">
               {({ field, form }: FieldProps<any, IValues>) => (
                 <FormControl
-                  isInvalid={form.errors.recognitionType && form.touched.recognitionType}
+                  isInvalid={
+                    form.errors.recognitionType && form.touched.recognitionType
+                  }
                 >
-                  <FormLabel htmlFor="recognitionType">Tipo de Reconocimiento</FormLabel>
-                  <Input {...field} id="recognitionType" placeholder="Tipo de Reconocimiento" />
-                  <FormErrorMessage>{form.errors.recognitionType}</FormErrorMessage>
+                  <FormLabel htmlFor="recognitionType">
+                    Tipo de Reconocimiento
+                  </FormLabel>
+                  <Input
+                    {...field}
+                    id="recognitionType"
+                    placeholder="Tipo de Reconocimiento"
+                  />
+                  <FormErrorMessage>
+                    {form.errors.recognitionType}
+                  </FormErrorMessage>
                 </FormControl>
               )}
             </Field>
             <Field name="url">
               {({ field, form }: FieldProps<any, IValues>) => (
-                <FormControl
-                  isInvalid={form.errors.url && form.touched.url}
-                >
+                <FormControl isInvalid={form.errors.url && form.touched.url}>
                   <FormLabel htmlFor="url">Url</FormLabel>
                   <Input {...field} id="url" placeholder="Url" />
                   <FormErrorMessage>{form.errors.url}</FormErrorMessage>
@@ -156,6 +172,6 @@ export function CourseForm({ initialValues, onSubmit }: IProps) {
           </Stack>
         </Form>
       )}
-		</Formik>
-	);
+    </Formik>
+  );
 }
