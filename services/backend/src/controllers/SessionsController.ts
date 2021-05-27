@@ -7,7 +7,11 @@ import { UserService } from "../services/UserService";
 import addDays from "date-fns/addDays";
 import { TokenMaker } from "../lib/TokenMaker";
 import { logger } from "../utils/logger";
-import { AUTH_COOKIE_NAME, AUTH_TOKEN_EXPIRY_DAYS } from "../constants";
+import {
+  AUTH_COOKIE_NAME,
+  AUTH_TOKEN_EXPIRY_DAYS,
+  __prod__,
+} from "../constants";
 
 @Service()
 export default class SessionsController extends BaseController {
@@ -68,6 +72,8 @@ export default class SessionsController extends BaseController {
     this.res.cookie(AUTH_COOKIE_NAME, cookieValue, {
       httpOnly: true,
       expires: expiryDate,
+      secure: __prod__,
+      sameSite: "lax",
     });
   }
 
@@ -77,6 +83,8 @@ export default class SessionsController extends BaseController {
     this.res.cookie(AUTH_COOKIE_NAME, cookieValue, {
       httpOnly: true,
       expires: expiryDate,
+      secure: __prod__,
+      sameSite: "lax",
     });
   }
 }
