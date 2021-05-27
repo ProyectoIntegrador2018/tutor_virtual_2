@@ -7,7 +7,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "cd services/backend && yarn install --production=false && yarn build"
+    "build": "front && back",
+    "front": "cd services/web && yarn install --production=false && yarn build",
+    "back": "cd services/backend && yarn install --production=false && yarn build"
   },
   "workspaces": [
     "services/*"
