@@ -69,20 +69,24 @@ export default class SessionsController extends BaseController {
   private setLoginCookieHeaders(authToken: string) {
     const expiryDate = addDays(new Date(), AUTH_TOKEN_EXPIRY_DAYS);
     const cookieValue = `Bearer ${authToken}`;
+    const domain = process.env.LOGIN_COOKIE_DOMAIN;
     this.res.cookie(AUTH_COOKIE_NAME, cookieValue, {
       httpOnly: true,
       expires: expiryDate,
       secure: __prod__,
+      domain,
     });
   }
 
   private removeLoginCookieHeaders() {
     const expiryDate = new Date(Date.now());
     const cookieValue = "none";
+    const domain = process.env.LOGIN_COOKIE_DOMAIN;
     this.res.cookie(AUTH_COOKIE_NAME, cookieValue, {
       httpOnly: true,
       expires: expiryDate,
       secure: __prod__,
+      domain,
     });
   }
 }
