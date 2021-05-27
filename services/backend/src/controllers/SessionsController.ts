@@ -73,7 +73,6 @@ export default class SessionsController extends BaseController {
       httpOnly: true,
       expires: expiryDate,
       secure: __prod__,
-      sameSite: "lax",
     });
   }
 
@@ -84,7 +83,6 @@ export default class SessionsController extends BaseController {
       httpOnly: true,
       expires: expiryDate,
       secure: __prod__,
-      sameSite: "lax",
     });
   }
 }
