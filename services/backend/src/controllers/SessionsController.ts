@@ -75,6 +75,7 @@ export default class SessionsController extends BaseController {
       expires: expiryDate,
       secure: __prod__,
       domain,
+      sameSite: "none",
     });
   }
 
@@ -87,6 +88,7 @@ export default class SessionsController extends BaseController {
       expires: expiryDate,
       secure: __prod__,
       domain,
+      sameSite: "none",
     });
   }
 }
