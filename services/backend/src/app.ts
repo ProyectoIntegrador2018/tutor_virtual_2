@@ -23,7 +23,12 @@ export async function main() {
   }
 
   try {
-    await startTypeorm();
+    const connection = await startTypeorm();
+    logger.info("Running migrations...");
+    await connection.runMigrations({
+      transaction: "each",
+    });
+    logger.info("Succesfully ran migrations");
   } catch (error) {
     logger.error(error);
   }
