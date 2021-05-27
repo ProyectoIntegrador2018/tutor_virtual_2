@@ -1,7 +1,12 @@
 import { User } from "../entities/UserEntity";
 import { Role } from "../entities/RoleEntity";
 import { Course } from "../entities/CourseEntity";
-import { Connection, createConnection, useContainer } from "typeorm";
+import {
+  Connection,
+  createConnection,
+  useContainer,
+  ConnectionOptions,
+} from "typeorm";
 import { Container } from "typeorm-typedi-extensions";
 import { Season } from "../entities/SeasonEntity";
 import { __prod__ } from "../constants";
@@ -13,7 +18,7 @@ import { TutorCourse } from "../entities/TutorCourseEntity";
 import { SupervisorCourse } from "../entities/SupervisorCourseEntity";
 import { StudentCourse } from "../entities/StudentCourseEntity";
 
-const startTypeorm = (): Promise<Connection> => {
+const startTypeorm = async (): Promise<Connection> => {
   /*
     Start Depencency Injection Container
   */
@@ -30,10 +35,10 @@ const startTypeorm = (): Promise<Connection> => {
     throw new Error("No database URL SPECIFIED!");
   }
 
-  return createConnection({
+  const opts: ConnectionOptions = {
     url: databaseURL,
     type: "postgres",
-    synchronize: !__prod__,
+    synchronize: false,
     ssl: __prod__,
     entities: [
       User,
@@ -47,6 +52,10 @@ const startTypeorm = (): Promise<Connection> => {
       SupervisorCourse,
       StudentCourse,
     ],
+    migrations: ["./dist/migrations/**/*.js"],
+    cli: {
+      migrationsDir: "./src/migrations/",
+    },
     extra: __prod__
       ? {
           ssl: {
@@ -54,7 +63,12 @@ const startTypeorm = (): Promise<Connection> => {
           },
         }
       : undefined,
-  });
+  };
+  if (opts.dropSchema && __prod__) {
+    logger.error("WARNING: ATTEMPTING TO DROP SCHEMA IN PRODUCTION");
+    throw new Error("Tried to drop schema in production");
+  }
+  return createConnection(opts);
 };
 
 export default startTypeorm;
