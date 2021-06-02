@@ -11,6 +11,14 @@ export function StudentsTable({ students }: IProps) {
   const columns = useMemo(
     () => [
       {
+        Header: "Usuario",
+        accessor: "username",
+      },
+      {
+        Header: "Contraseña",
+        accessor: "password",
+      },
+      {
         Header: "Nombre",
         accessor: "name",
       },
@@ -19,16 +27,8 @@ export function StudentsTable({ students }: IProps) {
         accessor: (row: Student) => `${row.paternal_name} ${row.maternal_name}`,
       },
       {
-        Header: "Usuario",
-        accessor: "username",
-      },
-      {
         Header: "Email",
         accessor: "email",
-      },
-      {
-        Header: "Contraseña",
-        accessor: "password",
       },
     ],
     []

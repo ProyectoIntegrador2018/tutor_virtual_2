@@ -11,7 +11,7 @@ export function AlliesTable({ data }: IProps) {
   const columns = useMemo(
     () => [
       {
-        Header: "id",
+        Header: "ID",
         accessor: "vanity_id",
       },
       {
@@ -19,7 +19,7 @@ export function AlliesTable({ data }: IProps) {
         accessor: "name",
       },
       {
-        Header: "Giro Soc",
+        Header: "Giro Social",
         accessor: "type",
       },
       {

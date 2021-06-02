@@ -33,6 +33,14 @@ export function UsersTable({ data, currentSelectedRole, refetchData }: IProps) {
   const columns = useMemo(
     () => [
       {
+        Header: "Username",
+        accessor: "username",
+      },
+      {
+        Header: "Contraseña",
+        accessor: "password",
+      },
+      {
         Header: "Nombre",
         accessor: "firstName",
       },
@@ -47,10 +55,6 @@ export function UsersTable({ data, currentSelectedRole, refetchData }: IProps) {
       {
         Header: "Email",
         accessor: "email",
-      },
-      {
-        Header: "Contraseña",
-        accessor: "password",
       },
       {
         Header: "Cuenta activa",
