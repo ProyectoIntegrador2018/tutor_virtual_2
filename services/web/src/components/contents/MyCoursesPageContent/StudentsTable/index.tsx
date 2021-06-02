@@ -28,25 +28,24 @@ export function StudentsTable({ data, course }: IProps) {
         accessor: "id",
       },
       {
+        Header: "Usuario",
+        accessor: "username",
+      },
+      {
+        Header: "contraseña",
+        accessor: "password",
+      },
+      {
         Header: "Nombre",
         accessor: "name",
       },
-
       {
         Header: "Apellidos",
         accessor: (row: Student) => `${row.paternal_name} ${row.maternal_name}`,
       },
       {
-        Header: "Usuario",
-        accessor: "username",
-      },
-      {
         Header: "correo",
         accessor: "email",
-      },
-      {
-        Header: "contraseña",
-        accessor: "password",
       },
       {
         Header: "Calificaciones",
