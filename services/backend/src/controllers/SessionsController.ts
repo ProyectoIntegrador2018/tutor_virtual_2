@@ -73,7 +73,7 @@ export default class SessionsController extends BaseController {
     this.res.cookie(AUTH_COOKIE_NAME, cookieValue, {
       httpOnly: true,
       expires: expiryDate,
-      secure: __prod__,
+      secure: false,
       domain,
       sameSite: "lax",
     });
@@ -86,7 +86,7 @@ export default class SessionsController extends BaseController {
     this.res.cookie(AUTH_COOKIE_NAME, cookieValue, {
       httpOnly: true,
       expires: expiryDate,
-      secure: __prod__,
+      secure: false,
       domain,
       sameSite: "lax",
     });
