@@ -16,7 +16,7 @@ export default function Season() {
 
   return (
     <PrivateLayout>
-      <CoursesBySeasonPageContent seasonID={seasonID as string} />
+      <CoursesBySeasonPageContent season_id={seasonID as string} />
     </PrivateLayout>
   );
 }

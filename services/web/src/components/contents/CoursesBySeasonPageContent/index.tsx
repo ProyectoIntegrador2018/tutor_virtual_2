@@ -5,15 +5,15 @@ import { fetcherV1 } from "fetchers";
 import { CoursesTable } from "../CoursesPageContent/CoursesTable";
 
 interface IProps {
-  seasonID: string;
+  season_id: string;
 }
 
-export function CoursesBySeasonPageContent({ seasonID }: IProps) {
+export function CoursesBySeasonPageContent({ season_id }: IProps) {
   const { data, isLoading, isFetched } = useQuery(
-    ["/coursesBySeason", seasonID],
+    ["/coursesBySeason", season_id],
     () =>
       fetcherV1
-        .get("/coursesBySeason", { params: { seasonID } })
+        .get("/coursesBySeason", { params: { season_id } })
         .then((res) => res.data)
   );
   const tableData = useMemo(() => data, [isLoading, isFetched]);
