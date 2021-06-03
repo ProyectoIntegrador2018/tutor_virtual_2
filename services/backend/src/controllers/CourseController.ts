@@ -59,6 +59,7 @@ export default class CourseController extends BaseController {
       claveCurso: params.claveCurso,
       startDate: params.startDate,
       endDate: params.endDate,
+      activities: params.activities,
     });
     const season = await this.seasonService.findOrCreate({
       starting: params.startDate,
