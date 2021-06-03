@@ -59,6 +59,7 @@ export default class CourseController extends BaseController {
       claveCurso: params.claveCurso,
       startDate: params.startDate,
       endDate: params.endDate,
+      activities: params.activities,
     });
     const season = await this.seasonService.findOrCreate({
       starting: params.startDate,
@@ -80,6 +81,7 @@ export default class CourseController extends BaseController {
       claveCurso: joi.string().min(2).max(100).required(),
       startDate: joi.date().iso().less(joi.ref("endDate")).required(),
       endDate: joi.date().iso().required(),
+      activities: joi.number().min(1).required();
     });
   }
 
