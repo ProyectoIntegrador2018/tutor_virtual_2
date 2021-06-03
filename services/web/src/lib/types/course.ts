@@ -7,4 +7,5 @@ export type Course = {
   claveCurso: string;
   startDate: string;
   endDate: string;
+  activities: number;
 };

@@ -120,6 +120,7 @@ export function CoursesPageContent() {
                 claveCurso: "",
                 startDate: "",
                 endDate: "",
+                activities: 0,
               }}
               onSubmit={(
                 {
@@ -131,6 +132,7 @@ export function CoursesPageContent() {
                   claveCurso,
                   startDate,
                   endDate,
+                  activities,
                 },
                 actions
               ) => {
@@ -144,6 +146,7 @@ export function CoursesPageContent() {
                     claveCurso,
                     startDate,
                     endDate,
+                    activities,
                   },
                   {
                     onSuccess: () => {

@@ -22,6 +22,9 @@ const schema = Yup.object({
   claveCurso: Yup.string().required("Porfavor escribe la clave del curso!"),
   startDate: Yup.string().required("Porfavor selecciona la fecha de inicio!"),
   endDate: Yup.string().required("Porfavor selecciona la fecha de fin!"),
+  activities: Yup.number()
+    .min(1, "Las actividades deben de ser mayor a 1")
+    .required("Porfavor ingrese el numero de actividades"),
 });
 
 interface IValues {
@@ -33,6 +36,7 @@ interface IValues {
   claveCurso: string;
   startDate: string;
   endDate: string;
+  activities: number;
 }
 
 interface IProps {
@@ -159,6 +163,17 @@ export function CourseForm({ initialValues, onSubmit }: IProps) {
                   <FormLabel htmlFor="url">Url</FormLabel>
                   <Input {...field} id="url" placeholder="Url" />
                   <FormErrorMessage>{form.errors.url}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+            <Field name="activities">
+              {({ field, form }: FieldProps<any, IValues>) => (
+                <FormControl
+                  isInvalid={form.errors.activities && form.touched.activities}
+                >
+                  <FormLabel htmlFor="activities">Actividades</FormLabel>
+                  <Input {...field} id="activities" placeholder="Actividades" />
+                  <FormErrorMessage>{form.errors.activities}</FormErrorMessage>
                 </FormControl>
               )}
             </Field>
