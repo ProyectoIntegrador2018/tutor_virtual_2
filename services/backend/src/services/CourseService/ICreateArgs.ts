@@ -7,4 +7,5 @@ export interface ICreateArgs {
   claveCurso: string;
   startDate: string;
   endDate: string;
+  activities: number;
 }

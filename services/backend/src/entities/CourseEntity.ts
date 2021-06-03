@@ -22,8 +22,8 @@ export class Course {
   @Column()
   duration: number;
 
-  @Column({ nullable: true })
-  activities?: number;
+  @Column()
+  activities: number;
 
   @Column()
   recognitionType: string;

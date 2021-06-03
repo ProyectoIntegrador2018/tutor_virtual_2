@@ -139,13 +139,17 @@ export default class CourseController extends BaseController {
       claveCurso: Joi.string().required(),
       startDate: Joi.date().required(),
       activities: Joi.number().required(),
+      inscriptionStart: Joi.string(),
+      program: Joi.string(),
+      group: Joi.string(),
+      inscriptionEnd: Joi.string(),
       endDate: Joi.date().required(),
     };
 
     worksheet.eachRow((row, number) => {
       if (number > 1) {
         const course: ICreateArgs & {
-          [key: string]: string | number;
+          [key: string]: string | number | Date;
         } = {
           topic: "",
           name: "",
@@ -153,8 +157,8 @@ export default class CourseController extends BaseController {
           duration: 0,
           url: "",
           claveCurso: "",
-          startDate: "",
-          endDate: "",
+          startDate: Date(),
+          endDate: Date(),
           activities: 0,
         };
         row.eachCell((cell, colNumber) => {
@@ -168,9 +172,11 @@ export default class CourseController extends BaseController {
               courseProperty[colNumber - 1] === "endDate"
             ) {
               value = format(value, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
-              value = add(parseISO(value), { days: 1 });
+              const typedDate: Date = add(parseISO(value), { days: 1 });
+              course[courseProperty[colNumber - 1]] = typedDate;
+            } else {
+              course[courseProperty[colNumber - 1]] = value;
             }
-            course[courseProperty[colNumber - 1]] = value;
           } catch (error) {
             logger.error(error);
           }

@@ -29,6 +29,7 @@ export class CourseService {
     course.claveCurso = args.claveCurso;
     course.startDate = args.startDate;
     course.endDate = args.endDate;
+    course.activities = args.activities;
     const savedCourse = await this.courseRepository.save(course);
     return savedCourse;
   }
