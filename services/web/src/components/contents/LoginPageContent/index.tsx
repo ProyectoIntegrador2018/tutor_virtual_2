@@ -10,7 +10,7 @@ export function LoginPageContent() {
   return (
     <Box>
       <Heading fontSize="5xl" textAlign="center" mt={6}>
-        Tutor Virtual
+        CVA Tracker
       </Heading>
       <Flex
         mt={5}
