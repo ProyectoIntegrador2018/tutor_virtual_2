@@ -1,12 +1,12 @@
 import React from "react";
-import { Box, Heading, Flex, Text, useToast, propNames } from "@chakra-ui/react";
+import { Box, Heading, Flex, Text, useToast } from "@chakra-ui/react";
 import { useAuth } from "lib/hooks/useAuth";
-import { RegisterForm } from "./RegisterForm/RegisterForm";
 import { UserRoleName } from "lib/types/role";
+import { RegisterForm } from "./RegisterForm/RegisterForm";
 
 interface IProps {
   roleName: UserRoleName;
- }
+}
 
 export function RegisterPageContent(props: IProps) {
   const toast = useToast();
@@ -15,7 +15,7 @@ export function RegisterPageContent(props: IProps) {
   return (
     <Box>
       <Heading fontSize="5xl" textAlign="center" mt={6}>
-        Tutor Virtual
+        CVA Tracker
       </Heading>
       <Flex
         mt={5}
@@ -31,7 +31,14 @@ export function RegisterPageContent(props: IProps) {
           Registro
         </Text>
         <RegisterForm
-          initialValues={{  firstName: "", paternalName: "", maternalName: "", email: "", password: "", confirmPassword: ""}}
+          initialValues={{
+            firstName: "",
+            paternalName: "",
+            maternalName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+          }}
           onSubmit={(vals, actions) => {
             signup({
               data: {
@@ -41,7 +48,7 @@ export function RegisterPageContent(props: IProps) {
                 email: vals.email,
                 password: vals.password,
                 confirmPassword: vals.confirmPassword,
-                roleName: props.roleName
+                roleName: props.roleName,
               },
               url: "/dashboard",
               onSuccess: () => {
