@@ -24,7 +24,7 @@ The second Tutor Virtual
 
 ### Environment URLS
 
-* **Production** - [TBD](TBD)
+* **Production** - [CVA Tracker](www.cvatracker.app)
 * **Development** - [TBD](TBD)
 
 ### The team
@@ -88,7 +88,7 @@ $ brew services start postgresql
 5. Once the service has been started succesfully, create the db.
 
 ```
-$ createdb TBD
+$ createdb tutorvirtual
 ```
 
 6. At the root of the directory run the following command to install all of the dependencies
@@ -97,8 +97,16 @@ $ createdb TBD
 $ yarn install
 ```
 
-### Running the stack for Development
+#### DB Makefile helper
+There is a Makefile target that starts the db.
+<br>
+In root:
+```
+$ make start_db
+```
 
+### Running the stack for Development
+Always make sure that postgresql is running locally.
 
 #### Start Web service
 
