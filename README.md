@@ -24,7 +24,7 @@ The second Tutor Virtual
 
 ### Environment URLS
 
-* **Production** - [CVA Tracker](www.cvatracker.app)
+* **Production** - [CVA Tracker](https://www.cvatracker.app)
 * **Development** - [TBD](TBD)
 
 ### The team
